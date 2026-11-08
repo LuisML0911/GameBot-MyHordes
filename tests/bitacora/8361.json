@@ -1314,7 +1314,8 @@
         {
           "x": 2,
           "y": -2,
-          "dried": false
+          "dried": false,
+          "diggedRuin": true
         },
         {
           "x": 1,
