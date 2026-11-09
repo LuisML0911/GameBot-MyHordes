@@ -468,8 +468,10 @@ async function betweenSafeDays(currentDay){
 			// valida que la puerta este
 			console.log("Inicia paso de validación de puerta");
 			const attackTime = (await pag.locator('.attack-time').textContent())?.trim() || '';
+			console.log(attackTime);
 			if (/^~00:[0-2]\d$/.test(attackTime)) {
 				const elemento = new DOMParser().parseFromString(await doAction('/jx/town/door', 'POST', {}), 'text/html').querySelector('span.warning');
+				console.log(elemento);
 				if (elemento) {
 					if (elemento.textContent.trim() === 'Portal abierto') {
 						// cerrar portal
