@@ -369,10 +369,7 @@ async function startPlayTown(currentDay){
 		},
 		async () => { // jugar en la ciudad
 			// valida que la puerta este
-			const attackTime = (
-				await page.locator('.attack-time').textContent()
-			)?.trim() || '';
-			
+			const attackTime = (await pag.locator('.attack-time').textContent())?.trim() || '';
 			if (/^~00:[0-2]\d$/.test(attackTime)) {
 				const elemento = new DOMParser().parseFromString(await doAction('/jx/town/door', 'POST', {}), 'text/html').querySelector('span.warning');
 				if (elemento) {
@@ -392,6 +389,7 @@ async function startPlayTown(currentDay){
 					}
 				}
 			}
+			dataSaved[`day${currentDay}`].currentStep--;
 			return false;
 		}
 	];
@@ -467,10 +465,7 @@ async function betweenSafeDays(currentDay){
 		},
 		async () => { // jugar en la ciudad
 			// valida que la puerta este
-			const attackTime = (
-				await page.locator('.attack-time').textContent()
-			)?.trim() || '';
-			
+			const attackTime = (await pag.locator('.attack-time').textContent())?.trim() || '';
 			if (/^~00:[0-2]\d$/.test(attackTime)) {
 				const elemento = new DOMParser().parseFromString(await doAction('/jx/town/door', 'POST', {}), 'text/html').querySelector('span.warning');
 				if (elemento) {
@@ -490,6 +485,7 @@ async function betweenSafeDays(currentDay){
 					}
 				}
 			}
+			dataSaved[`day${currentDay}`].currentStep--;
 			return false;
 		}
 	];
