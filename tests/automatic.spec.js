@@ -563,15 +563,15 @@ async function playInDeserted(){
 			await dropPlayerInventory(inv);
 			let playInv = await getPlayerInventory(inv);
 			let outfit = await searchItemIdInv([316], playInv);
-			console.log(`outfit: ${outfit}`);
+			//console.log(`outfit: ${outfit}`);
 			dataSaved.test[currentDate].outfit = outfit;
 			
 			let doActionObj = await doAction("/jx/town/house/dash", "POST", {});
-			console.log(`doActionObj: ${doActionObj}`);
-			dataSaved.test[currentDate].doActionObj = doActionObj;
+			//console.log(`doActionObj: ${doActionObj}`);
+			//dataSaved.test[currentDate].doActionObj = doActionObj;
 			
 			let getActionIdFromHtmlObj = getActionIdFromHtml(doActionObj, outfit);
-			console.log(`getActionIdFromHtmlObj: ${getActionIdFromHtmlObj}`);
+			//console.log(`getActionIdFromHtmlObj: ${getActionIdFromHtmlObj}`);
 			dataSaved.test[currentDate].getActionIdFromHtmlObj = getActionIdFromHtmlObj;
 			
 			await doAction("/api/town/house/action", "POST", {item: outfit, action: getActionIdFromHtmlObj});
