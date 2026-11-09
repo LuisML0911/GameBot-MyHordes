@@ -469,7 +469,7 @@ async function betweenSafeDays(currentDay){
 			console.log("Inicia paso de validación de puerta");
 			const attackTime = (await pag.locator('.attack-time').textContent())?.trim() || '';
 			console.log(attackTime);
-			if (/^~00:[0-2]\d$/.test(attackTime)) {
+			if (/^~[0]?0:[0-2]\d$/.test(attackTime)) {
 				console.log(await doAction('/jx/town/door', 'POST', {}));
 				const elemento = new DOMParser().parseFromString(await doAction('/jx/town/door', 'POST', {}), 'text/html').querySelector('span.warning');
 				console.log(elemento);
@@ -478,7 +478,7 @@ async function betweenSafeDays(currentDay){
 						// cerrar portal
 						if (await closePortal().error) {
 							// faltan 5 min o menos y no tiene PA, tomar lo que sea para cerrarlo
-							if (/^~00:[0-2][0-9]$/.test(attackTime)) {
+							if (/^~[0]?0:[0-2]\d$/.test(attackTime)) {
 								const inv = await getInventoryIds();
 								// usar objetos varios diarios
 								await UseAndReturn(inv, await getStorageInventory(inv), 32, '133');
