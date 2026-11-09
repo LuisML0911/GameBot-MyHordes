@@ -390,7 +390,7 @@ async function startPlayTown(currentDay){
 					}
 				}
 			}
-			dataSaved[`day${currentDay}`].currentStep--;
+			//dataSaved[`day${currentDay}`].currentStep--;
 			return false;
 		}
 	];
@@ -487,7 +487,7 @@ async function betweenSafeDays(currentDay){
 					}
 				}
 			}
-			dataSaved[`day${currentDay}`].currentStep--;
+			//dataSaved[`day${currentDay}`].currentStep--;
 			return false;
 		}
 	];
