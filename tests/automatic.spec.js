@@ -366,6 +366,33 @@ async function startPlayTown(currentDay){
 				// TODO: si no logró crear una ruta, entonces ejecutar jugar en ciudad
 			}
 			return true;
+		},
+		async () => { // jugar en la ciudad
+			// valida que la puerta este
+			const attackTime = (
+				await page.locator('.attack-time').textContent()
+			)?.trim() || '';
+			
+			if (/^~00:[0-2]\d$/.test(attackTime)) {
+				const elemento = new DOMParser().parseFromString(await doAction('/jx/town/door', 'POST', {}), 'text/html').querySelector('span.warning');
+				if (elemento) {
+					if (elemento.textContent.trim() === 'Portal abierto') {
+						// cerrar portal
+						if (await closePortal().error) {
+							// faltan 5 min o menos y no tiene PA, tomar lo que sea para cerrarlo
+							if (/^~00:[0-2][0-9]$/.test(attackTime)) {
+								const inv = await getInventoryIds();
+								// usar objetos varios diarios
+								await UseAndReturn(inv, await getStorageInventory(inv), 32, '133');
+								await UseAndReturn(inv, await getStorageInventory(inv), 130, '134');
+								// volver a intentar cerrar portal
+								await closePortal();
+							}
+						}
+					}
+				}
+			}
+			return false;
 		}
 	];
 	try{
