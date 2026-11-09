@@ -1737,7 +1737,7 @@
                 "nbr_item_bank_casse": 0
               },
               "76": {
-                "nbr_item": 3,
+                "nbr_item": 2,
                 "nbr_item_casse": 0,
                 "id": 76,
                 "id_mh": 76,
@@ -2031,7 +2031,7 @@
           "9": {
             "objet_sol": {
               "5004": {
-                "nbr_item": 33,
+                "nbr_item": 36,
                 "nbr_item_casse": 0,
                 "id": 5004,
                 "id_mh": 5004,
@@ -2455,7 +2455,7 @@
           }
         ]
       },
-      "date_dern_maj": "Dernière mise à jour le 09/11/2026 à 22:39 par test25",
+      "date_dern_maj": "Dernière mise à jour le 09/11/2026 à 22:42 par test25",
       "is_lead": false,
       "my_ville": false,
       "ville": {
@@ -22106,10 +22106,10 @@
           "x": 3,
           "y": 9,
           "ame_ids": [],
-          "zombie": 10,
+          "zombie": 7,
           "zombie_min": null,
           "zombie_max": null,
-          "zombie_kill": 8,
+          "zombie_kill": 11,
           "pdc": 5,
           "dried": false,
           "danger": 3,
@@ -22131,7 +22131,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": 0,
-          "heure_maj": "22:39:18",
+          "heure_maj": "22:42:53",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -22154,7 +22154,7 @@
           "zombie_recalcule": false,
           "indic_visite": "vueAuj",
           "diff_jours": 0,
-          "zombie_estim": 10,
+          "zombie_estim": 7,
           "carte_alter": {
             "112": 0,
             "113": 0,
@@ -22182,12 +22182,6 @@
           "status_bat": "bat",
           "items": [
             {
-              "id": 6113445,
-              "item_id": 76,
-              "nombre": 1,
-              "broken": false
-            },
-            {
               "id": 6113446,
               "item_id": 307,
               "nombre": 1,
@@ -22196,7 +22190,7 @@
             {
               "id": 6113447,
               "item_id": 5004,
-              "nombre": 8,
+              "nombre": 11,
               "broken": false
             }
           ],
@@ -59171,7 +59165,7 @@
         "devast": false,
         "water": 116,
         "saison": 19,
-        "date_time": "2026-11-09T22:39:18+01:00",
+        "date_time": "2026-11-09T22:42:53+01:00",
         "chaman": {
           "id": 6999,
           "id_my_hordes": 14112,
