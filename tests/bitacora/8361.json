@@ -5618,6 +5618,13 @@
         "method": "POST",
         "body": {}
       }
+    },
+    "20261110_224815_097": {
+      "request": {
+        "url": "/rest/v1/game/town/core/door/exit",
+        "method": "POST",
+        "body": {}
+      }
     }
   },
   "day1": {
