@@ -525,6 +525,7 @@ async function playInDeserted(){
 			return;
 		}
 		const currentSaved = dataSaved[`day${currentDay}`];
+		await tryFixCurrentCoordinates(currentSaved);
 		//console.log(currentSaved);
 		const currentPoss = currentSaved.route.way[currentSaved.route.currentPoss];
 		/*
@@ -2028,4 +2029,28 @@ async function takeSurvivalFood(currentSaved, inv){
 		await moveItem(inv.IdInvDes, inv.IdInvPer, tWater);
 		currentSaved.startItems.idInvWater = tWater;
 	}
+}
+
+async function tryFixCurrentCoordinates(currentSaved) {
+    const text = await pag.locator('.current-location').textContent();
+    if (!text) {
+        return;
+    }
+    const match = text.match(/(-?\d+)\s*\/\s*(-?\d+)/);
+    if (!match) {
+        return;
+    }
+    const x = Number(match[1]);
+    const y = Number(match[2]);
+    for (let i = 0; i < currentSaved.route.way.length; i++) {
+        const step = currentSaved.route.way[i];
+        if (
+            step.x === x &&
+            step.y === y &&
+            Math.abs(i - currentSaved.route.currentPoss) <= 2
+        ) {
+            currentSaved.route.currentPoss = i;
+            return;
+        }
+    }
 }
