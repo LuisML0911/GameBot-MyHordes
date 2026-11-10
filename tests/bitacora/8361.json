@@ -5412,6 +5412,13 @@
           "action": "163"
         }
       }
+    },
+    "20261110_213658_467": {
+      "request": {
+        "url": "/rest/v1/game/town/core/door/exit",
+        "method": "POST",
+        "body": {}
+      }
     }
   },
   "day1": {
