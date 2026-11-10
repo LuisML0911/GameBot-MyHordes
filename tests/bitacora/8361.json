@@ -5590,6 +5590,13 @@
         "method": "POST",
         "body": {}
       }
+    },
+    "20261110_224745_882": {
+      "request": {
+        "url": "/rest/v1/game/town/core/door/exit",
+        "method": "POST",
+        "body": {}
+      }
     }
   },
   "day1": {
