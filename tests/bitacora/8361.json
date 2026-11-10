@@ -5535,6 +5535,13 @@
           "action": null
         }
       }
+    },
+    "20261110_222121_871": {
+      "request": {
+        "url": "/rest/v1/game/town/core/door/exit",
+        "method": "POST",
+        "body": {}
+      }
     }
   },
   "day1": {
