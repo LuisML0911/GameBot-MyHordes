@@ -5377,6 +5377,41 @@
           "y": 0
         }
       }
+    },
+    "20261110_212416_587": {
+      "request": {
+        "url": "/api/beyond/desert/exit",
+        "method": "POST",
+        "body": {}
+      }
+    },
+    "20261110_212419_598": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8064418",
+        "method": "PATCH",
+        "body": {
+          "d": "down-all",
+          "mod": null,
+          "to": "8063158"
+        }
+      }
+    },
+    "20261110_212420_784": {
+      "request": {
+        "url": "/jx/town/house/dash",
+        "method": "POST",
+        "body": {}
+      }
+    },
+    "20261110_212421_201": {
+      "request": {
+        "url": "/api/town/house/action",
+        "method": "POST",
+        "body": {
+          "item": "29548926",
+          "action": "163"
+        }
+      }
     }
   },
   "day1": {
@@ -8221,6 +8256,10 @@
           "p": 1
         }
       }
+    },
+    "20261110_212416_328": {
+      "outfit": "29548926",
+      "getActionIdFromHtmlObj": "163"
     }
   },
   "day2": {
