@@ -2036,6 +2036,7 @@ async function tryFixCurrentCoordinates(currentSaved) {
     if (!text) {
         return;
     }
+	console.log(".current-location: " + text);
     const match = text.match(/(-?\d+)\s*\/\s*(-?\d+)/);
     if (!match) {
         return;
