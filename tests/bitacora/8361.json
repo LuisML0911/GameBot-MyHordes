@@ -4517,6 +4517,92 @@
           "y": 2
         }
       }
+    },
+    "20261110_200236_687": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8064418",
+        "method": "PATCH",
+        "body": {
+          "d": "down-all",
+          "mod": null,
+          "to": "8063967"
+        }
+      }
+    },
+    "20261110_200237_543": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8063967/29597693",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": 8064418
+        }
+      }
+    },
+    "20261110_200237_995": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8063967/29571979",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": 8064418
+        }
+      }
+    },
+    "20261110_200238_443": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8063967/29583506",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": 8064418
+        }
+      }
+    },
+    "20261110_200238_884": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8063967/29584991",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": 8064418
+        }
+      }
+    },
+    "20261110_200239_337": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8063967/29604983",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": 8064418
+        }
+      }
+    },
+    "20261110_200239_971": {
+      "request": {
+        "url": "/api/beyond/desert/action",
+        "method": "POST",
+        "body": {
+          "item": "29548933",
+          "action": null
+        }
+      }
+    },
+    "20261110_200257_169": {
+      "request": {
+        "url": "/api/beyond/desert/move",
+        "method": "POST",
+        "body": {
+          "x": 2,
+          "y": 2
+        }
+      }
     }
   },
   "day1": {
