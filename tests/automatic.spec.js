@@ -373,7 +373,7 @@ async function startPlayTown(currentDay){
 			}else{
 				// TODO: si no logró crear una ruta, entonces ejecutar jugar en ciudad
 			}
-			return true;
+			return false;
 		},
 		async () => { // jugar en la ciudad
 			// valida si tiene PA's, si tiene intenta aportar en contruccion
