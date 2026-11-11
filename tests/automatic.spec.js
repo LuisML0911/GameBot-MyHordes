@@ -2067,3 +2067,16 @@ async function tryFixCurrentCoordinates(currentSaved) {
         }
     }
 }
+function getBuildingsWithDifferentA(data) {
+    return data.buildings
+        .filter(building => {
+            const [x, y] = building.a;
+            building.pa = y - x - 1;
+
+            return x > 0 &&
+                   x !== y &&
+                   !building.t &&
+                   building.pa >= 1;
+        })
+        .sort((a, b) => a.pa - b.pa);
+}
