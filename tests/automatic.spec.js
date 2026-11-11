@@ -382,48 +382,24 @@ async function startPlayTown(currentDay){
 			return false;
 		},
 		async () => { // jugar en la ciudad
+			let currentPAs = parseInt(await pag.locator('b[data-incidental-target="ap"]').getAttribute('data-value'), 10);
 			// intenta mejorar su casa:
 			if(currentPAs > 2){
 				await doAction("/api/town/house/upgrade", "POST", {});
 			}
 			// valida si tiene PA's, si tiene intenta aportar en contruccion
-			let currentPAs = parseInt(await pag.locator('b[data-incidental-target="ap"]').getAttribute('data-value'), 10) - 1;
-			if(currentPAs > 0){
-				const buildings = getBuildingsWithDifferentA(await doAction("/rest/v1/game/town/core/building/list?completed=1", "GET", {}));
-				for (const building of buildings) {
-					let action;
-					if(building.pa < currentPAs){
-						action = await doAction(`/rest/v1/game/town/core/building${building.i}`, "PATCH", { "ap": building.pa});
-					}else{
-						action = await doAction(`/rest/v1/game/town/core/building${building.i}`, "PATCH", { "ap": currentPAs});
-					}
-					if(action.error){
-						continue;
-					}else{
-						if(building.pa < currentPAs){
-							currentPAs = currentPAs - building.pa;
-							if(currentPAs > 0){
-								continue;
-							}else{
-								break;
-							}
-						}else{
-							break;
-						}
-					}
-				}
-			}
+			await goBuild(currentPAs - 1)
 			// valida que la puerta este
 			console.log("Inicia paso de validación de puerta");
 			const attackTime = (await pag.locator('.attack-time').textContent())?.trim() || '';
-			if (/^~00:[0-2]\d$/.test(attackTime)) {
+			if (/^~0:[0-2]\d$/.test(attackTime)) {
 				const elemento = new DOMParser().parseFromString(await doAction('/jx/town/door', 'POST', {}), 'text/html').querySelector('span.warning');
 				if (elemento) {
 					if (elemento.textContent.trim() === 'Portal abierto') {
 						// cerrar portal
 						if (await closePortal().error) {
 							// faltan 5 min o menos y no tiene PA, tomar lo que sea para cerrarlo
-							if (/^~00:[0-2][0-9]$/.test(attackTime)) {
+							if (/^~0:[0-2][0-9]$/.test(attackTime)) {
 								const inv = await getInventoryIds();
 								// usar objetos varios diarios
 								await UseAndReturn(inv, await getStorageInventory(inv), 32, '133');
@@ -432,6 +408,8 @@ async function startPlayTown(currentDay){
 								await closePortal();
 							}
 						}
+					}else{
+						await goBuild(parseInt(await pag.locator('b[data-incidental-target="ap"]').getAttribute('data-value'), 10))
 					}
 				}
 			}
@@ -516,51 +494,24 @@ async function betweenSafeDays(currentDay){
 			return false;
 		},
 		async () => { // jugar en la ciudad
+			let currentPAs = parseInt(await pag.locator('b[data-incidental-target="ap"]').getAttribute('data-value'), 10);
 			// intenta mejorar su casa:
 			if(currentPAs > 2){
 				await doAction("/api/town/house/upgrade", "POST", {});
 			}
 			// valida si tiene PA's, si tiene intenta aportar en contruccion
-			let currentPAs = parseInt(await pag.locator('b[data-incidental-target="ap"]').getAttribute('data-value'), 10) - 1;
-			if(currentPAs > 0){
-				const buildings = getBuildingsWithDifferentA(await doAction("/rest/v1/game/town/core/building/list?completed=1", "GET", {}));
-				for (const building of buildings) {
-					let action;
-					if(building.pa < currentPAs){
-						action = await doAction(`/rest/v1/game/town/core/building${building.i}`, "PATCH", { "ap": building.pa});
-					}else{
-						action = await doAction(`/rest/v1/game/town/core/building${building.i}`, "PATCH", { "ap": currentPAs});
-					}
-					if(action.error){
-						continue;
-					}else{
-						if(building.pa < currentPAs){
-							currentPAs = currentPAs - building.pa;
-							if(currentPAs > 0){
-								continue;
-							}else{
-								break;
-							}
-						}else{
-							break;
-						}
-					}
-				}
-			}
+			await goBuild(currentPAs - 1)
 			// valida que la puerta este
 			console.log("Inicia paso de validación de puerta");
 			const attackTime = (await pag.locator('.attack-time').textContent())?.trim() || '';
-			console.log(attackTime);
 			if (/^~0:[0-2]\d$/.test(attackTime)) {
-				console.log(await doAction('/jx/town/door', 'POST', {}));
 				const elemento = new DOMParser().parseFromString(await doAction('/jx/town/door', 'POST', {}), 'text/html').querySelector('span.warning');
-				console.log(elemento);
 				if (elemento) {
 					if (elemento.textContent.trim() === 'Portal abierto') {
 						// cerrar portal
 						if (await closePortal().error) {
 							// faltan 5 min o menos y no tiene PA, tomar lo que sea para cerrarlo
-							if (/^~0:[0-2]\d$/.test(attackTime)) {
+							if (/^~0:[0-2][0-9]$/.test(attackTime)) {
 								const inv = await getInventoryIds();
 								// usar objetos varios diarios
 								await UseAndReturn(inv, await getStorageInventory(inv), 32, '133');
@@ -569,6 +520,8 @@ async function betweenSafeDays(currentDay){
 								await closePortal();
 							}
 						}
+					}else{
+						await goBuild(parseInt(await pag.locator('b[data-incidental-target="ap"]').getAttribute('data-value'), 10))
 					}
 				}
 			}
@@ -2155,4 +2108,31 @@ function getBuildingsWithDifferentA(data) {
                    building.pa >= 1;
         })
         .sort((a, b) => a.pa - b.pa);
+}
+async function goBuild(currentPAs){
+	if(currentPAs > 0){
+		const buildings = getBuildingsWithDifferentA(await doAction("/rest/v1/game/town/core/building/list?completed=1", "GET", {}));
+		for (const building of buildings) {
+			let action;
+			if(building.pa < currentPAs){
+				action = await doAction(`/rest/v1/game/town/core/building${building.i}`, "PATCH", { "ap": building.pa});
+			}else{
+				action = await doAction(`/rest/v1/game/town/core/building${building.i}`, "PATCH", { "ap": currentPAs});
+			}
+			if(action.error){
+				continue;
+			}else{
+				if(building.pa < currentPAs){
+					currentPAs = currentPAs - building.pa;
+					if(currentPAs > 0){
+						continue;
+					}else{
+						break;
+					}
+				}else{
+					break;
+				}
+			}
+		}
+	}
 }
