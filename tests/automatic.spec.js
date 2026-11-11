@@ -269,6 +269,10 @@ async function main(){
 	}
 	// se determinan acciones a realizar según la situación actual del jugador
 	try{
+		gestHorderData = await getGestHordes();
+		if(gestHorderData?.data?.general?.ville?.map_id != lastDataSaved?.idTown) {
+			return;
+		}
 		await evaluateWebSite();
 	}catch(exception){
 		console.log(exception);
@@ -1673,7 +1677,7 @@ async function getRoute(PAs, tGroupControl = 3){
 		zone.opt = 
 				((zone.dried) ? 0 : 2) // agotada
 			+	((zone.bat_id != null && !zone.empty)? 2 : 0) // con ruina sin agotar
-			+	(zone.items.forEach(item => totalPeso += items.ruteValue[item.item_id] || 0) || 0) // objetos que vale la pena recoger
+			//+	(zone.items.forEach(item => totalPeso += items.ruteValue[item.item_id] || 0) || 0) // objetos que vale la pena recoger
 		;
 		//console.log(`${zone.opt} ${((zone.dried) ? 0 : 2)} ${((zone.bat_id != null && !zone.empty)? 2 : 0)} ${(zone.items.forEach(item => totalPeso += items.ruteValue[item.item_id] || 0) || 0)}`);
 		map[y][x] = zone;
@@ -1732,7 +1736,7 @@ async function getRoute(PAs, tGroupControl = 3){
 					}
 					// TODO: no ejecutarse si aun esta disponible el golpe
         			if(zonePrev != undefined && zone.zombie_estim == null){
-                        if(zonePrev.zombie_estim != null && zonePrev.zombie_estim > 0){
+                        if(zonePrev.zombie_estim != null && zonePrev.zombie_estim >= (tGroupControl - 1)){
 							return { tOpt: -1, ruta: {}};
                         }
                     }
@@ -1762,13 +1766,19 @@ async function getRoute(PAs, tGroupControl = 3){
 	// 3. agrega cuenta e información de zonas agotadas para determinar segun el día actual si vale la pena hacer o no la ruta
 	//console.log(rutaOpt);
 	rutaOpt.tNotDried = -2;
+	rutaOpt.tOpt = 0;
 	for (let p of rutaOpt.way) {
-		p.dried = map[p.y + village.y][p.x + village.x].dried;
-		if(!map[p.y + village.y][p.x + village.x].dried){
-			rutaOpt.tNotDried++;
-		}
+		const zone = map[p.y + village.y][p.x + village.x];
+		p.dried = zone.dried;
+		p.opt = 
+				((zone.dried) ? 0 : 2) // agotada
+			+	((zone.bat_id != null && !zone.empty)? 2 : 0) // con ruina sin agotar
+		rutaOpt.tOpt += p.opt;
 		if(p.dried == null){
 			p.dried = false;
+		}
+		if(!map[p.y + village.y][p.x + village.x].dried){
+			rutaOpt.tNotDried++;
 		}
 	}
 	rutaOpt.currentPoss = 0;
