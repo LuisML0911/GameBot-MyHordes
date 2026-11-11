@@ -480,6 +480,7 @@ async function betweenSafeDays(currentDay){
 			// si logró crear ruta proceder a ir al desierto, sinó ejecutar defaultPlayTown
 			if(dataSaved[`day${currentDay}`].route != undefined && dataSaved[`day${currentDay}`].route.way.length != 0 
 			   && dataSaved[`day${currentDay}`].route.way.length - 1 < dataSaved[`day${currentDay}`].route.currentPoss){
+				dataSaved[`day${currentDay}`].referenceStep = dataSaved[`day${currentDay}`].currentStep;
 				// Explora el Orizonte
 				if (Math.random() < 0.8) {
 					await doAction("/api/town/watchtower/est", "POST", {});
