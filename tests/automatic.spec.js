@@ -32,6 +32,8 @@ const actionsPlayTown = {
 	3: betweenSafeDays,
 	4: betweenSafeDays,
 	5: betweenSafeDays,
+	6: betweenSafeDays,
+	7: betweenSafeDays,
 }
 let idPlayerInv = undefined;
 const constFile = path.join(".", "tests", "constants");
@@ -374,6 +376,33 @@ async function startPlayTown(currentDay){
 			return true;
 		},
 		async () => { // jugar en la ciudad
+			// valida si tiene PA's, si tiene intenta aportar en contruccion
+			let currentPAs = parseInt(await pag.locator('b[data-incidental-target="ap"]').getAttribute('data-value'), 10) - 1;
+			if(currentPAs > 0){
+				const buildings = getBuildingsWithDifferentA(await doAction("/rest/v1/game/town/core/building/list?completed=1", "GET", {}));
+				for (const building of buildings) {
+					let action;
+					if(building.pa < currentPAs){
+						action = await doAction(`/rest/v1/game/town/core/building${building.i}`, "PATCH", { "ap": building.pa});
+					}else{
+						action = await doAction(`/rest/v1/game/town/core/building${building.i}`, "PATCH", { "ap": currentPAs});
+					}
+					if(action.error){
+						continue;
+					}else{
+						if(building.pa < currentPAs){
+							currentPAs = currentPAs - building.pa;
+							if(currentPAs > 0){
+								continue;
+							}else{
+								break;
+							}
+						}else{
+							break;
+						}
+					}
+				}
+			}
 			// valida que la puerta este
 			console.log("Inicia paso de validación de puerta");
 			const attackTime = (await pag.locator('.attack-time').textContent())?.trim() || '';
@@ -477,6 +506,33 @@ async function betweenSafeDays(currentDay){
 			return false;
 		},
 		async () => { // jugar en la ciudad
+			// valida si tiene PA's, si tiene intenta aportar en contruccion
+			let currentPAs = parseInt(await pag.locator('b[data-incidental-target="ap"]').getAttribute('data-value'), 10) - 1;
+			if(currentPAs > 0){
+				const buildings = getBuildingsWithDifferentA(await doAction("/rest/v1/game/town/core/building/list?completed=1", "GET", {}));
+				for (const building of buildings) {
+					let action;
+					if(building.pa < currentPAs){
+						action = await doAction(`/rest/v1/game/town/core/building${building.i}`, "PATCH", { "ap": building.pa});
+					}else{
+						action = await doAction(`/rest/v1/game/town/core/building${building.i}`, "PATCH", { "ap": currentPAs});
+					}
+					if(action.error){
+						continue;
+					}else{
+						if(building.pa < currentPAs){
+							currentPAs = currentPAs - building.pa;
+							if(currentPAs > 0){
+								continue;
+							}else{
+								break;
+							}
+						}else{
+							break;
+						}
+					}
+				}
+			}
 			// valida que la puerta este
 			console.log("Inicia paso de validación de puerta");
 			const attackTime = (await pag.locator('.attack-time').textContent())?.trim() || '';
