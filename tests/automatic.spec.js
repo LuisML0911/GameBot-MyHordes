@@ -370,7 +370,7 @@ async function startPlayTown(currentDay){
 					await doAction("/api/town/watchtower/est", "POST", {});
 				}
 				// Crea Expedición
-				await doAction("/api/town/planner/submit", "POST", {"data": dataSaved[`day${currentDay}`].route.way.map(({ x, y }) => [x, y]);, "name": `[Mí Ruta Día ${currentDay}] :S`});
+				await doAction("/api/town/planner/submit", "POST", {"data": dataSaved[`day${currentDay}`].route.way.map(({ x, y }) => [x, y]), "name": `[Mí Ruta Día ${currentDay}] :S`});
 				// salir del pueblo
 				await doAction("/rest/v1/game/town/core/door/exit", "POST", {});
 				// refrescar
@@ -482,7 +482,7 @@ async function betweenSafeDays(currentDay){
 					await doAction("/api/town/watchtower/est", "POST", {});
 				}
 				// Crea Expedición
-				await doAction("/api/town/planner/submit", "POST", {"data": dataSaved[`day${currentDay}`].route.way.map(({ x, y }) => [x, y]);, "name": `[Mí Ruta Día ${currentDay}] :S`});
+				await doAction("/api/town/planner/submit", "POST", {"data": dataSaved[`day${currentDay}`].route.way.map(({ x, y }) => [x, y]), "name": `[Mí Ruta Día ${currentDay}] :S`});
 				// salir del pueblo
 				await doAction("/rest/v1/game/town/core/door/exit", "POST", {});
 				// refrescar
