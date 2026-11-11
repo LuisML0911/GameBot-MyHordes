@@ -62,10 +62,12 @@ test('resetLogs', async ({ page }) => {
 		dataSaved = readJSON(nameFile_dataSaved);
 	}
 	dataSaved.log = {}
-	await sendTelegramMessage("Mensaje Enviado");
+	//await sendTelegramMessage("Mensaje Enviado");
 
 	writeJSON(nameFile_dataSaved, dataSaved);
-	createRoutes(20);
+	await getRoute(12);
+	
+	//createRoutes(20);
 });
 test('UpdateWeaponData', async ({ page }) => {
 	// Navegar para que el navegador obtenga la cookie de Cloudflare
