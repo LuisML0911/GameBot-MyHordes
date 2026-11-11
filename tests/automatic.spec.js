@@ -350,7 +350,11 @@ async function startPlayTown(currentDay){
 			return true;
 		},
 		async () => { // preparar objetos para la ruta
-			await doAction("/rest/v1/game/town/core/door", "PATCH", {action: "open"});
+			const elemento = new DOMParser().parseFromString(await doAction('/jx/town/door', 'POST', {}), 'text/html').getElementById('door_exit_hero');
+			if (elemento) {
+			}else{
+				await doAction("/rest/v1/game/town/core/door", "PATCH", {action: "open"});
+			}
 			await goto("/jx/town/house/dash");
 			await pag.waitForSelector('#header-rucksack-items');
 			return true;
@@ -374,7 +378,13 @@ async function startPlayTown(currentDay){
 				// Crea Expedición
 				await doAction("/api/town/planner/submit", "POST", {"data": dataSaved[`day${currentDay}`].route.way.map(({ x, y }) => [x, y]), "name": `[Mí Ruta Día ${currentDay}] :S`});
 				// salir del pueblo
-				await doAction("/rest/v1/game/town/core/door/exit", "POST", {});
+				const elemento = new DOMParser().parseFromString(await doAction('/jx/town/door', 'POST', {}), 'text/html').getElementById('door_exit_hero');
+				if (elemento) {
+					dataSaved[`day${currentDay}`].heroExit = true;
+					await doAction("/rest/v1/game/town/core/door/exit/hero", "POST", {});
+				}else{
+					await doAction("/rest/v1/game/town/core/door/exit", "POST", {});
+				}
 				// refrescar
 				await goto("/jx/beyond/desert/cached");
 				await main();
@@ -465,7 +475,11 @@ async function betweenSafeDays(currentDay){
 			return true;
 		},
 		async () => { // preparar objetos para la ruta
-			await doAction("/rest/v1/game/town/core/door", "PATCH", {action: "open"});
+			const elemento = new DOMParser().parseFromString(await doAction('/jx/town/door', 'POST', {}), 'text/html').getElementById('door_exit_hero');
+			if (elemento) {
+			}else{
+				await doAction("/rest/v1/game/town/core/door", "PATCH", {action: "open"});
+			}
 			await goto("/jx/town/house/dash");
 			await pag.waitForSelector('#header-rucksack-items');
 			return true;
@@ -489,7 +503,13 @@ async function betweenSafeDays(currentDay){
 				// Crea Expedición
 				await doAction("/api/town/planner/submit", "POST", {"data": dataSaved[`day${currentDay}`].route.way.map(({ x, y }) => [x, y]), "name": `[Mí Ruta Día ${currentDay}] :S`});
 				// salir del pueblo
-				await doAction("/rest/v1/game/town/core/door/exit", "POST", {});
+				const elemento = new DOMParser().parseFromString(await doAction('/jx/town/door', 'POST', {}), 'text/html').getElementById('door_exit_hero');
+				if (elemento) {
+					dataSaved[`day${currentDay}`].heroExit = true;
+					await doAction("/rest/v1/game/town/core/door/exit/hero", "POST", {});
+				}else{
+					await doAction("/rest/v1/game/town/core/door/exit", "POST", {});
+				}
 				// refrescar
 				await goto("/jx/beyond/desert/cached");
 				await main();
