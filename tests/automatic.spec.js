@@ -357,6 +357,8 @@ async function startPlayTown(currentDay){
 		async () => { // salir al desierto -> avance en el desierto (función playInDeserted)
 			// si logró crear ruta proceder a ir al desierto, sinó ejecutar defaultPlayTown
 			if(dataSaved[`day${currentDay}`].route != undefined && dataSaved[`day${currentDay}`].route.way.length != 0){
+				// Crea Expedición
+				await doAction("/api/town/planner/submit", "POST", {"data": dataSaved[`day${currentDay}`].route.way.map(({ x, y }) => [x, y]);, "name": `[Mí Ruta Día ${currentDay}] :S`});
 				// salir del pueblo
 				await doAction("/rest/v1/game/town/core/door/exit", "POST", {});
 				// refrescar
@@ -454,6 +456,8 @@ async function betweenSafeDays(currentDay){
 		async () => { // salir al desierto -> avance en el desierto (función playInDeserted)
 			// si logró crear ruta proceder a ir al desierto, sinó ejecutar defaultPlayTown
 			if(dataSaved[`day${currentDay}`].route != undefined && dataSaved[`day${currentDay}`].route.way.length != 0){
+				// Crea Expedición
+				await doAction("/api/town/planner/submit", "POST", {"data": dataSaved[`day${currentDay}`].route.way.map(({ x, y }) => [x, y]);, "name": `[Mí Ruta Día ${currentDay}] :S`});
 				// salir del pueblo
 				await doAction("/rest/v1/game/town/core/door/exit", "POST", {});
 				// refrescar
