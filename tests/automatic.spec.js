@@ -668,6 +668,9 @@ async function playInDeserted(){
 			let getActionIdFromHtmlObj = getActionIdFromHtml(doActionObj, outfit);
 			//console.log(`getActionIdFromHtmlObj: ${getActionIdFromHtmlObj}`);
 			dataSaved.test[currentDate].getActionIdFromHtmlObj = getActionIdFromHtmlObj;
+			if(getActionIdFromHtmlObj != undefined && getActionIdFromHtmlObj != null){
+				dataSaved[`day${currentDay}`].currentStep = dataSaved[`day${currentDay}`].referenceStep + 1;
+			}
 			
 			await doAction("/api/town/house/action", "POST", {item: outfit, action: getActionIdFromHtmlObj});
 		}else{
