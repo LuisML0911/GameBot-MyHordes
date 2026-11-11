@@ -668,7 +668,10 @@ async function playInDeserted(){
 			dataSaved.test[currentDate] = {};
 			
 			// salir del desierto
-			await doAction("/api/beyond/desert/exit", "POST", {});
+			let goTown = await doAction("/api/beyond/desert/exit", "POST", {});
+			if(goTown.error){
+				await doAction("/api/beyond/desert/exit/hero", "POST", {});
+			}
 			await new Promise(r => setTimeout(r, 1000));
 			try{
 				await goto('/jx/town/bank');
