@@ -386,6 +386,7 @@ async function startPlayTown(currentDay){
 		async () => { // jugar en la ciudad
 			let currentPAs = parseInt(await pag.locator('b[data-incidental-target="ap"]').getAttribute('data-value'), 10);
 			// intenta mejorar su casa:
+			// TODO: Añadir capacidad de construir mas allá del nivel 1
 			if(currentPAs > 2){
 				await doAction("/api/town/house/upgrade", "POST", {});
 			}
@@ -500,6 +501,7 @@ async function betweenSafeDays(currentDay){
 		async () => { // jugar en la ciudad
 			let currentPAs = parseInt(await pag.locator('b[data-incidental-target="ap"]').getAttribute('data-value'), 10);
 			// intenta mejorar su casa:
+			// TODO: Añadir capacidad de construir mas allá del nivel 1
 			if(currentPAs > 2){
 				await doAction("/api/town/house/upgrade", "POST", {});
 			}
