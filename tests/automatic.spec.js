@@ -382,6 +382,10 @@ async function startPlayTown(currentDay){
 			return false;
 		},
 		async () => { // jugar en la ciudad
+			// intenta mejorar su casa:
+			if(currentPAs > 2){
+				await doAction("/api/town/house/upgrade", "POST", {});
+			}
 			// valida si tiene PA's, si tiene intenta aportar en contruccion
 			let currentPAs = parseInt(await pag.locator('b[data-incidental-target="ap"]').getAttribute('data-value'), 10) - 1;
 			if(currentPAs > 0){
@@ -512,6 +516,10 @@ async function betweenSafeDays(currentDay){
 			return false;
 		},
 		async () => { // jugar en la ciudad
+			// intenta mejorar su casa:
+			if(currentPAs > 2){
+				await doAction("/api/town/house/upgrade", "POST", {});
+			}
 			// valida si tiene PA's, si tiene intenta aportar en contruccion
 			let currentPAs = parseInt(await pag.locator('b[data-incidental-target="ap"]').getAttribute('data-value'), 10) - 1;
 			if(currentPAs > 0){
