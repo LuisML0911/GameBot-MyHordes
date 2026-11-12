@@ -1641,12 +1641,18 @@ async function updateGestHordes(){
 					}, 4000);
 				});
 			});
+			try{
+				await pag.waitForSelector('#synchronize_external_tools', { state: 'visible', timeout: 8000 });
+				await pag.check('#synchronize_external_tools');
+			}catch(exception){
+				console.log("No se logró activar #synchronize_external_tools");
+			}
 			await pag.check('#synchronize_external_tools_input', {timeout: 10000});
 			externalTools = true;
 		}
 	}catch(exception){
 		//throw new Error("Error updateGestHordes: " + exception);
-		console.log(exception);
+		console.log("No se reconoce activo las ExternalTools" + exception);
 	}
 	if(externalTools){
 		try{
@@ -1663,6 +1669,8 @@ async function updateGestHordes(){
 		}catch(exception){
 			console.log("No se logró actualizar GestHordes: " + exception);
 		}
+	}else{
+		console.log("No fue posible actualizar GestHordes");
 	}
 }
 // crea una ruta basada en GestHordes
