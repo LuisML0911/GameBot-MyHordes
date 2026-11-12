@@ -1773,9 +1773,9 @@ async function getRoute(PAs, tGroupControl = 3){
 		if(!map[village.y - p.y][p.x + village.x].dried){
 			rutaOpt.tNotDried++;
 		}
-		//console.log(`PAs: [${tPAs}], local: [${p.x},${p.y}], map: [${p.x + village.x},${village.y - p.y}], opt: [${p.opt}]`);
+		console.log(`PAs: [${tPAs}], local: [${p.x},${p.y}], map: [${p.x + village.x},${village.y - p.y}], opt: [${p.opt}]`);
 	}
-	//console.log(`PAs: [${tPAs}], tOpt: [${rutaOpt.tOpt}]`);
+	console.log(`PAs: [${tPAs}], tOpt: [${rutaOpt.tOpt}]`);
 	rutaOpt.currentPoss = 0;
 	let lessPAs = {};
 	if(tPAs > 2){
