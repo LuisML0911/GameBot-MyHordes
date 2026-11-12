@@ -7831,6 +7831,59 @@
           "y": 1
         }
       }
+    },
+    "20261112_013506_916": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8064418",
+        "method": "PATCH",
+        "body": {
+          "d": "down-all",
+          "mod": null,
+          "to": "8063483"
+        }
+      }
+    },
+    "20261112_013507_118": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8063483/29649636",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": 8064418
+        }
+      }
+    },
+    "20261112_013507_308": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8063483/29649633",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": 8064418
+        }
+      }
+    },
+    "20261112_013508_122": {
+      "request": {
+        "url": "/api/beyond/desert/action",
+        "method": "POST",
+        "body": {
+          "item": "29548933",
+          "action": null
+        }
+      }
+    },
+    "20261112_013520_272": {
+      "request": {
+        "url": "/api/beyond/desert/move",
+        "method": "POST",
+        "body": {
+          "x": -4,
+          "y": 1
+        }
+      }
     }
   },
   "day1": {
@@ -14005,7 +14058,7 @@
       ],
       "tNotDried": 14,
       "tOpt": 32,
-      "currentPoss": 4
+      "currentPoss": 5
     },
     "referenceStep": 5,
     "heroExit": true
