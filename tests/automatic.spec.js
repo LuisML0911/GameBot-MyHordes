@@ -350,7 +350,7 @@ async function startPlayTown(currentDay){
 			return true;
 		},
 		async () => { // preparar objetos para la ruta
-			const elemento = new DOMParser().parseFromString(await doAction('/jx/town/door', 'POST', {}), 'text/html').getElementById('door_exit_hero');
+			const elemento = new DOMParser().parseFromString(await doAction('/jx/town/door', 'GET', {}), 'text/html').getElementById('door_exit_hero');
 			if (elemento) {
 			}else{
 				await doAction("/rest/v1/game/town/core/door", "PATCH", {action: "open"});
@@ -378,7 +378,7 @@ async function startPlayTown(currentDay){
 				// Crea Expedición
 				await doAction("/api/town/planner/submit", "POST", {"data": dataSaved[`day${currentDay}`].route.way.map(({ x, y }) => [x, y]), "name": `[Mí Ruta Día ${currentDay}] :S`});
 				// salir del pueblo
-				const elemento = new DOMParser().parseFromString(await doAction('/jx/town/door', 'POST', {}), 'text/html').getElementById('door_exit_hero');
+				const elemento = new DOMParser().parseFromString(await doAction('/jx/town/door', 'GET', {}), 'text/html').getElementById('door_exit_hero');
 				if (elemento) {
 					dataSaved[`day${currentDay}`].heroExit = true;
 					await doAction("/rest/v1/game/town/core/door/exit/hero", "POST", {});
@@ -406,7 +406,7 @@ async function startPlayTown(currentDay){
 			console.log("Inicia paso de validación de puerta");
 			const attackTime = (await pag.locator('.attack-time').textContent())?.trim() || '';
 			if (/^~0:[0-2]\d$/.test(attackTime)) {
-				const elemento = new DOMParser().parseFromString(await doAction('/jx/town/door', 'POST', {}), 'text/html').querySelector('span.warning');
+				const elemento = new DOMParser().parseFromString(await doAction('/jx/town/door', 'GET', {}), 'text/html').querySelector('span.warning');
 				if (elemento) {
 					if (elemento.textContent.trim() === 'Portal abierto') {
 						// cerrar portal
@@ -475,7 +475,7 @@ async function betweenSafeDays(currentDay){
 			return true;
 		},
 		async () => { // preparar objetos para la ruta
-			const elemento = new DOMParser().parseFromString(await doAction('/jx/town/door', 'POST', {}), 'text/html').getElementById('door_exit_hero');
+			const elemento = new DOMParser().parseFromString(await doAction('/jx/town/door', 'GET', {}), 'text/html').includes('door_exit_hero');
 			if (elemento) {
 			}else{
 				await doAction("/rest/v1/game/town/core/door", "PATCH", {action: "open"});
@@ -503,7 +503,7 @@ async function betweenSafeDays(currentDay){
 				// Crea Expedición
 				await doAction("/api/town/planner/submit", "POST", {"data": dataSaved[`day${currentDay}`].route.way.map(({ x, y }) => [x, y]), "name": `[Mí Ruta Día ${currentDay}] :S`});
 				// salir del pueblo
-				const elemento = new DOMParser().parseFromString(await doAction('/jx/town/door', 'POST', {}), 'text/html').getElementById('door_exit_hero');
+				const elemento = new DOMParser().parseFromString(await doAction('/jx/town/door', 'GET', {}), 'text/html').getElementById('door_exit_hero');
 				if (elemento) {
 					dataSaved[`day${currentDay}`].heroExit = true;
 					await doAction("/rest/v1/game/town/core/door/exit/hero", "POST", {});
@@ -531,7 +531,7 @@ async function betweenSafeDays(currentDay){
 			console.log("Inicia paso de validación de puerta");
 			const attackTime = (await pag.locator('.attack-time').textContent())?.trim() || '';
 			if (/^~0:[0-2]\d$/.test(attackTime)) {
-				const elemento = new DOMParser().parseFromString(await doAction('/jx/town/door', 'POST', {}), 'text/html').querySelector('span.warning');
+				const elemento = new DOMParser().parseFromString(await doAction('/jx/town/door', 'GET', {}), 'text/html').querySelector('span.warning');
 				if (elemento) {
 					if (elemento.textContent.trim() === 'Portal abierto') {
 						// cerrar portal
