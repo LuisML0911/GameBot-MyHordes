@@ -1643,8 +1643,12 @@ async function updateGestHordes(){
 				});
 			});
 			try{
-				await pag.waitForSelector('#synchronize_external_tools', { state: 'visible', timeout: 8000 });
-				await pag.check('#synchronize_external_tools');
+				let syncExtTools = await asegurarCheckedLi('#synchronize_external_tools');
+				if(syncExtTools){
+					console.log("Se logró activar #synchronize_external_tools");
+				}else{
+					console.log("No se logró activar #synchronize_external_tools");
+				}
 			}catch(exception){
 				console.log("No se logró activar #synchronize_external_tools: " + exception);
 			}
@@ -2202,4 +2206,35 @@ async function goBuild(currentPAs){
 			}
 		}
 	}
+}
+async function asegurarCheckedLi(selector, { timeout = 7000 } = {}) {
+  const li = pag.locator(selector).first();
+  await li.waitFor({ state: 'visible', timeout });
+
+  const leerEstado = () => li.evaluate(el => {
+    // 1) ¿hay un input real dentro?
+    const input = el.querySelector('input[type="checkbox"], input[type="radio"]');
+    if (input) return input.checked;
+    // 2) ¿estado por ARIA (en el li o en un hijo)?
+    const aria = el.getAttribute('aria-checked')
+      ?? el.querySelector('[aria-checked]')?.getAttribute('aria-checked');
+    if (aria != null) return aria === 'true';
+    // 3) ¿estado por clase CSS?
+    return ['checked', 'is-checked', 'active', 'selected', 'complete', 'completed']
+      .some(c => el.classList.contains(c));
+  });
+
+  if (await leerEstado()) return true; // ya estaba check → no se toca ✔
+
+  await li.click(); // estaba descheck → marcar
+
+  // Esperar a que el estado cambie de verdad (la UI puede tardar)
+  const inicio = Date.now();
+  while (!(await leerEstado())) {
+    if (Date.now() - inicio > timeout) {
+      throw new Error(`El li no quedó marcado tras el clic: ${selector}`);
+    }
+    await pag.waitForTimeout(100);
+  }
+  return true;
 }
