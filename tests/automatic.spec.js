@@ -177,7 +177,7 @@ test('myhordes', async () => {
 		// inicia ejecución
 		await main();
 	} catch(exception){
-		log(exception);
+		console.log(exception);
 		await sendTelegramMessage(exception);
 	} finally {
 		if(browserPlay){
