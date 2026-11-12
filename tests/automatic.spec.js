@@ -1786,7 +1786,7 @@ async function getRoute(PAs, tGroupControl = 3){
 	if(Object.keys(lessPAs).length !== 0 && lessPAs.tOpt > (Math.sqrt(tPAs - 2) + 1) && lessPAs.tOpt >= rutaOpt.tOpt - 1){
 		rutaOpt = lessPAs;
 	}
-	if(rutaOpt.tOpt > (Math.sqrt(tPAs) + 1)){
+	if(rutaOpt.tOpt > (((Math.sqrt(tPAs) / tPAs) * (tPAs - 2)) * 2 )){
 		return rutaOpt;
 	}else{
 		return {};
