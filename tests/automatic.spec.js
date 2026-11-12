@@ -1761,7 +1761,6 @@ async function getRoute(PAs, tGroupControl = 3){
 	rutaOpt.tNotDried = -2;
 	rutaOpt.tOpt = 0;
 	for (let p of rutaOpt.way) {
-		console.log(`PAs (${tPAs}) local: [${p.x},${p.y}], map: [${p.x + village.x},${village.y - p.y}]`);
 		const zone = map[village.y - p.y][p.x + village.x];
 		p.dried = zone.dried;
 		p.opt = 
@@ -1774,7 +1773,9 @@ async function getRoute(PAs, tGroupControl = 3){
 		if(!map[village.y - p.y][p.x + village.x].dried){
 			rutaOpt.tNotDried++;
 		}
+		console.log(`PAs: [${tPAs}], local: [${p.x},${p.y}], map: [${p.x + village.x},${village.y - p.y}], opt: [${p.opt}]`);
 	}
+	console.log(`PAs: [${tPAs}], tOpt: [${p.tOpt}]`);
 	rutaOpt.currentPoss = 0;
 	let lessPAs;
 	if(tPAs > 2){
