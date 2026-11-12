@@ -1646,7 +1646,7 @@ async function updateGestHordes(){
 				await pag.waitForSelector('#synchronize_external_tools', { state: 'visible', timeout: 8000 });
 				await pag.check('#synchronize_external_tools');
 			}catch(exception){
-				console.log("No se logró activar #synchronize_external_tools");
+				console.log("No se logró activar #synchronize_external_tools: " + exception);
 			}
 			await pag.check('#synchronize_external_tools_input', {timeout: 10000});
 			externalTools = true;
