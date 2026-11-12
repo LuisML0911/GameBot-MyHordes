@@ -1669,7 +1669,7 @@ async function getRoute(PAs, tGroupControl = 3){
 		let totalPeso = 0;
 		zone.opt = 
 				((zone.dried) ? 0 : 2) // agotada
-			+	((zone.bat_id != null && !zone.empty)? 2 : 0) // con ruina sin agotar
+			+	((zone.bat_id != null && !zone.empty)? 1 : 0) // con ruina sin agotar
 			//+	(zone.items.forEach(item => totalPeso += items.ruteValue[item.item_id] || 0) || 0) // objetos que vale la pena recoger
 		;
 		//console.log(`${zone.opt} ${((zone.dried) ? 0 : 2)} ${((zone.bat_id != null && !zone.empty)? 2 : 0)} ${(zone.items.forEach(item => totalPeso += items.ruteValue[item.item_id] || 0) || 0)}`);
@@ -1761,12 +1761,12 @@ async function getRoute(PAs, tGroupControl = 3){
 	rutaOpt.tNotDried = -2;
 	rutaOpt.tOpt = 0;
 	for (let p of rutaOpt.way) {
-		console.log(`local: [${p.x},${p.y}], map: [${p.x + village.x},${village.y - p.y}]`);
+		//console.log(`local: [${p.x},${p.y}], map: [${p.x + village.x},${village.y - p.y}]`);
 		const zone = map[village.y - p.y][p.x + village.x];
 		p.dried = zone.dried;
 		p.opt = 
 				((zone.dried) ? 0 : 2) // agotada
-			+	((zone.bat_id != null && !zone.empty)? 2 : 0) // con ruina sin agotar
+			+	((zone.bat_id != null && !zone.empty)? 1 : 0) // con ruina sin agotar
 		rutaOpt.tOpt += p.opt;
 		if(p.dried == null){
 			p.dried = false;
