@@ -475,6 +475,9 @@ async function betweenSafeDays(currentDay){
 			return true;
 		},
 		async () => { // preparar objetos para la ruta
+			console.log(typeof window);
+			console.log(typeof document);
+			console.log(typeof DOMParser);
 			const elemento = new DOMParser().parseFromString(await doAction('/jx/town/door', 'GET', {}), 'text/html').includes('door_exit_hero');
 			if (elemento) {
 			}else{
