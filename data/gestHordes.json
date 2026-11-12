@@ -1034,7 +1034,7 @@
             "x": 1,
             "y": 6,
             "vue": 1,
-            "camped": false,
+            "camped": true,
             "distance": 18,
             "couleur": "bleu"
           },
@@ -1051,7 +1051,7 @@
         ],
         "ruines": [],
         "nb_camped_jaune": 0,
-        "nb_camped_bleu": 4,
+        "nb_camped_bleu": 5,
         "list_ruine": []
       },
       "items": {
@@ -16819,7 +16819,7 @@
           "tag": null,
           "day": 4,
           "vue": 1,
-          "camped": false,
+          "camped": true,
           "empty": false,
           "excavated": false,
           "excavated_maj_day": null,
