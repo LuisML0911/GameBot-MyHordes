@@ -171,6 +171,92 @@
           "y": 3
         }
       }
+    },
+    "20261112_202304_528": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8064418",
+        "method": "PATCH",
+        "body": {
+          "d": "down-all",
+          "mod": null,
+          "to": "8063485"
+        }
+      }
+    },
+    "20261112_202304_763": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8063485/29649633",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": 8064418
+        }
+      }
+    },
+    "20261112_202305_602": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8063485/29600203",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": 8064418
+        }
+      }
+    },
+    "20261112_202306_022": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8063485/29540928",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": 8064418
+        }
+      }
+    },
+    "20261112_202306_463": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8063485/29552054",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": 8064418
+        }
+      }
+    },
+    "20261112_202306_899": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8063485/29566496",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": 8064418
+        }
+      }
+    },
+    "20261112_202307_504": {
+      "request": {
+        "url": "/api/beyond/desert/action",
+        "method": "POST",
+        "body": {
+          "item": "29548933",
+          "action": null
+        }
+      }
+    },
+    "20261112_202325_512": {
+      "request": {
+        "url": "/api/beyond/desert/move",
+        "method": "POST",
+        "body": {
+          "x": -3,
+          "y": 4
+        }
+      }
     }
   },
   "day1": {
@@ -6350,7 +6436,7 @@
       ],
       "tNotDried": 14,
       "tOpt": 32,
-      "currentPoss": 10
+      "currentPoss": 11
     },
     "referenceStep": 5,
     "heroExit": true
