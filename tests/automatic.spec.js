@@ -1776,7 +1776,18 @@ async function getRoute(PAs, tGroupControl = 3){
 		}
 	}
 	rutaOpt.currentPoss = 0;
-	return rutaOpt;
+	let lessPAs;
+	if(tPAs > 0){
+		lessPAs = await getRoute(tPAs - 2, tGroupControl)
+	}
+	if(Object.keys(lessPAs).length !== 0 && lessPAs.tOpt > (Math.sqrt(tPAs - 2) + 1) && lessPAs.tOpt >= rutaOpt.tOpt - 1){
+		rutaOpt = lessPAs;
+	}
+	if(rutaOpt.tOpt > (Math.sqrt(tPAs) + 1)){
+		return rutaOpt;
+	}else{
+		return {};
+	}
 }
 
 /*
