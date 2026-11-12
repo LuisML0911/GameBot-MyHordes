@@ -350,7 +350,7 @@ async function startPlayTown(currentDay){
 			return true;
 		},
 		async () => { // preparar objetos para la ruta
-			const elemento = (await doAction('/jx/town/door', 'GET', {}).includes('door_exit_hero');
+			const elemento = (await doAction('/jx/town/door', 'GET', {})).includes('door_exit_hero');
 			if (elemento) {
 			}else{
 				await doAction("/rest/v1/game/town/core/door", "PATCH", {action: "open"});
@@ -378,7 +378,7 @@ async function startPlayTown(currentDay){
 				// Crea Expedición
 				await doAction("/api/town/planner/submit", "POST", {"data": dataSaved[`day${currentDay}`].route.way.map(({ x, y }) => [x, y]), "name": `[Mí Ruta Día ${currentDay}] :S`});
 				// salir del pueblo
-				const elemento = (await doAction('/jx/town/door', 'GET', {}).includes('door_exit_hero');
+				const elemento = (await doAction('/jx/town/door', 'GET', {})).includes('door_exit_hero');
 				if (elemento) {
 					dataSaved[`day${currentDay}`].heroExit = true;
 					await doAction("/rest/v1/game/town/core/door/exit/hero", "POST", {});
@@ -478,7 +478,7 @@ async function betweenSafeDays(currentDay){
 			console.log(typeof window);
 			console.log(typeof document);
 			console.log(typeof DOMParser);
-			const elemento = (await doAction('/jx/town/door', 'GET', {}).includes('door_exit_hero');
+			const elemento = (await doAction('/jx/town/door', 'GET', {})).includes('door_exit_hero');
 			if (elemento) {
 			}else{
 				await doAction("/rest/v1/game/town/core/door", "PATCH", {action: "open"});
@@ -506,7 +506,7 @@ async function betweenSafeDays(currentDay){
 				// Crea Expedición
 				await doAction("/api/town/planner/submit", "POST", {"data": dataSaved[`day${currentDay}`].route.way.map(({ x, y }) => [x, y]), "name": `[Mí Ruta Día ${currentDay}] :S`});
 				// salir del pueblo
-				const elemento = (await doAction('/jx/town/door', 'GET', {}).includes('door_exit_hero');
+				const elemento = (await doAction('/jx/town/door', 'GET', {})).includes('door_exit_hero');
 				if (elemento) {
 					dataSaved[`day${currentDay}`].heroExit = true;
 					await doAction("/rest/v1/game/town/core/door/exit/hero", "POST", {});
