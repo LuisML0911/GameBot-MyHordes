@@ -14057,7 +14057,8 @@
           "x": -4,
           "y": 2,
           "dried": false,
-          "opt": 2
+          "opt": 2,
+          "digged": true
         },
         {
           "x": -3,
