@@ -1721,7 +1721,7 @@ async function getRoute(PAs, tGroupControl = 3){
         	let zonePrev = undefined;
 			for (let p of ruta) {
 				try {
-					const zone = map[p[1] + village.y][p[0] + village.x];
+					const zone = map[village.y - p[1]][p[0] + village.x];
 					tOpt += zone.opt;
 					// Usa la estimación para el primer limpiado, si no hay estimación deja la ruta, hasta el momento se descartan todas las completamente inseguras
 					if(zone.zombie_estim != null && zone.zombie_estim > tGroupControl){
@@ -1761,8 +1761,8 @@ async function getRoute(PAs, tGroupControl = 3){
 	rutaOpt.tNotDried = -2;
 	rutaOpt.tOpt = 0;
 	for (let p of rutaOpt.way) {
-		console.log(`local: [${p.x},${p.y}], map: [${p.x + village.x},${p.y + village.y}]`);
-		const zone = map[p.y + village.y][p.x + village.x];
+		console.log(`local: [${p.x},${p.y}], map: [${p.x + village.x},${village.y - p.y}]`);
+		const zone = map[village.y - p.y][p.x + village.x];
 		p.dried = zone.dried;
 		p.opt = 
 				((zone.dried) ? 0 : 2) // agotada
@@ -1771,7 +1771,7 @@ async function getRoute(PAs, tGroupControl = 3){
 		if(p.dried == null){
 			p.dried = false;
 		}
-		if(!map[p.y + village.y][p.x + village.x].dried){
+		if(!map[village.y - p.y][p.x + village.x].dried){
 			rutaOpt.tNotDried++;
 		}
 	}
