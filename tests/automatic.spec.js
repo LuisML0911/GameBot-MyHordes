@@ -1761,6 +1761,7 @@ async function getRoute(PAs, tGroupControl = 3){
 	rutaOpt.tNotDried = -2;
 	rutaOpt.tOpt = 0;
 	for (let p of rutaOpt.way) {
+		console.log(`local: [${p.x},${p.y}], map: [${p.x + village.x},${p.y + village.y}]`);
 		const zone = map[p.y + village.y][p.x + village.x];
 		p.dried = zone.dried;
 		p.opt = 
