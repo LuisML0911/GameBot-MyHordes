@@ -1649,9 +1649,20 @@ async function updateGestHordes(){
 		console.log(exception);
 	}
 	if(externalTools){
-		await pag.waitForSelector('#mh-update-external-tools', { state: 'visible', timeout: 7000 });
-		await pag.click('#mh-update-external-tools');
-		await new Promise(r => setTimeout(r, 7000));
+		try{
+			await pag.waitForSelector('.log-complete-link', { state: 'visible', timeout: 12000 });
+			await pag.click('.log-complete-link >> nth=0');
+			await new Promise(r => setTimeout(r, 100));
+		}catch(exception){
+			console.log("No se logró abrir el log completo del desierto: " + exception);
+		}
+		try{
+			await pag.waitForSelector('#mh-update-external-tools', { state: 'visible', timeout: 12000 });
+			await pag.click('#mh-update-external-tools');
+			await new Promise(r => setTimeout(r, 12000));
+		}catch(exception){
+			console.log("No se logró actualizar GestHordes: " + exception);
+		}
 	}
 }
 // crea una ruta basada en GestHordes
