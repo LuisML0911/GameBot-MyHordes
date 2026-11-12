@@ -65,7 +65,7 @@ test('resetLogs', async ({ page }) => {
 	//await sendTelegramMessage("Mensaje Enviado");
 
 	writeJSON(nameFile_dataSaved, dataSaved);
-	await getRoute(12);
+	await getRoute(18);
 	
 	//createRoutes(20);
 });
@@ -1761,7 +1761,7 @@ async function getRoute(PAs, tGroupControl = 3){
 	rutaOpt.tNotDried = -2;
 	rutaOpt.tOpt = 0;
 	for (let p of rutaOpt.way) {
-		//console.log(`local: [${p.x},${p.y}], map: [${p.x + village.x},${village.y - p.y}]`);
+		console.log(`PAs (${tPAs}) local: [${p.x},${p.y}], map: [${p.x + village.x},${village.y - p.y}]`);
 		const zone = map[village.y - p.y][p.x + village.x];
 		p.dried = zone.dried;
 		p.opt = 
