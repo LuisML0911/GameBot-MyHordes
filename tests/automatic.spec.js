@@ -1692,7 +1692,8 @@ async function getRoute(PAs, tGroupControl = 3){
 		}
 		let totalPeso = 0;
 		zone.opt = 
-				((zone.dried) ? 0 : 2) // agotada
+			//	((zone.dried) ? 0 : 2) // agotada
+				((zone.fouille_lvl != null) ? zone.fouille_lvl : ((zone.dried) ? 0 : 2))
 			+	((zone.bat_id != null && !zone.empty)? 1 : 0) // con ruina sin agotar
 			//+	(zone.items.forEach(item => totalPeso += items.ruteValue[item.item_id] || 0) || 0) // objetos que vale la pena recoger
 		;
@@ -1788,7 +1789,8 @@ async function getRoute(PAs, tGroupControl = 3){
 		const zone = map[village.y - p.y][p.x + village.x];
 		p.dried = zone.dried;
 		p.opt = 
-				((zone.dried) ? 0 : 2) // agotada
+			//	((zone.dried) ? 0 : 2) // agotada
+				((zone.fouille_lvl != null) ? zone.fouille_lvl : ((zone.dried) ? 0 : 2))
 			+	((zone.bat_id != null && !zone.empty)? 1 : 0) // con ruina sin agotar
 		rutaOpt.tOpt += p.opt;
 		if(p.dried == null){
