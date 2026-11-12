@@ -13604,13 +13604,134 @@
     }
   },
   "day5": {
-    "currentStep": 3,
+    "currentStep": 5,
     "purge": false,
     "startItems": {
       "idFood": 122,
       "idWater": 1,
       "idInvFood": "29649636",
       "idInvWater": "29649633"
+    },
+    "route": {
+      "way": [
+        {
+          "x": 0,
+          "y": 0,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": -1,
+          "y": 0,
+          "dried": true,
+          "opt": 0
+        },
+        {
+          "x": -2,
+          "y": 0,
+          "dried": true,
+          "opt": 0
+        },
+        {
+          "x": -2,
+          "y": 1,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": -3,
+          "y": 1,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": -4,
+          "y": 1,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": -4,
+          "y": 2,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": -3,
+          "y": 2,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": -2,
+          "y": 2,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": -2,
+          "y": 3,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": -3,
+          "y": 3,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": -3,
+          "y": 4,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": -2,
+          "y": 4,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": -1,
+          "y": 4,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": -1,
+          "y": 3,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": -1,
+          "y": 2,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": -1,
+          "y": 1,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": 0,
+          "y": 1,
+          "dried": true,
+          "opt": 0
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "dried": false,
+          "opt": 2
+        }
+      ],
+      "tNotDried": 14,
+      "tOpt": 32,
+      "currentPoss": 0
     }
   }
 }
