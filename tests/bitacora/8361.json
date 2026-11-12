@@ -6520,7 +6520,8 @@
           "x": -1,
           "y": 4,
           "dried": false,
-          "opt": 2
+          "opt": 2,
+          "digged": true
         },
         {
           "x": -1,
@@ -6555,7 +6556,7 @@
       ],
       "tNotDried": 14,
       "tOpt": 32,
-      "currentPoss": 12
+      "currentPoss": 13
     },
     "referenceStep": 5,
     "heroExit": true
