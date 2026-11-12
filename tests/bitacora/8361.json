@@ -13735,7 +13735,8 @@
           "x": -1,
           "y": 0,
           "dried": true,
-          "opt": 0
+          "opt": 0,
+          "digged": true
         },
         {
           "x": -2,
