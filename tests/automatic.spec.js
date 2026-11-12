@@ -579,6 +579,7 @@ async function defaultPlayTown(currentDay){
 async function playInDeserted(){
 	console.log("Inicia playInDeserted()");
 	await pag.waitForSelector('#header-rucksack-items');
+	await updateGestHordes();
 	try{
 		// se busca el día actual y se ejecuta el proceso correspondiente
 		let currentDay = parseInt((await pag.locator('span.day-number').innerText()).replace(/\D/g, ''), 15);
