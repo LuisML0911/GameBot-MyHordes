@@ -1717,7 +1717,7 @@ async function getRoute(PAs, tGroupControl = 3){
 	for await (const chunk of loadRoutesInChunks(path.join(constFile, `routes_${tPAs}.json`), 32)) {
 		// Procesar rutas en paralelo dentro del chunk
 		const resultados = await Promise.all(chunk.map(async (ruta) => {
-			let tOpt = -4;
+			let tOpt = 0;
         	let zonePrev = undefined;
 			for (let p of ruta) {
 				try {
@@ -1780,6 +1780,8 @@ async function getRoute(PAs, tGroupControl = 3){
 	let lessPAs;
 	if(tPAs > 2){
 		lessPAs = await getRoute(tPAs - 2, tGroupControl)
+	}else{
+		return rutaOpt;
 	}
 	if(Object.keys(lessPAs).length !== 0 && lessPAs.tOpt > (Math.sqrt(tPAs - 2) + 1) && lessPAs.tOpt >= rutaOpt.tOpt - 1){
 		rutaOpt = lessPAs;
