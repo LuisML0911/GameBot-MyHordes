@@ -1777,7 +1777,7 @@ async function getRoute(PAs, tGroupControl = 3){
 	}
 	console.log(`PAs: [${tPAs}], tOpt: [${rutaOpt.tOpt}]`);
 	rutaOpt.currentPoss = 0;
-	let lessPAs;
+	let lessPAs = {};
 	if(tPAs > 2){
 		lessPAs = await getRoute(tPAs - 2, tGroupControl)
 	}else{
