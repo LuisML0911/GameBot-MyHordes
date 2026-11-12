@@ -1717,7 +1717,7 @@ async function getRoute(PAs, tGroupControl = 3){
 	for await (const chunk of loadRoutesInChunks(path.join(constFile, `routes_${tPAs}.json`), 32)) {
 		// Procesar rutas en paralelo dentro del chunk
 		const resultados = await Promise.all(chunk.map(async (ruta) => {
-			let tOpt = 0;
+			let tOpt = -4;
         	let zonePrev = undefined;
 			for (let p of ruta) {
 				try {
@@ -1759,7 +1759,7 @@ async function getRoute(PAs, tGroupControl = 3){
 	// 3. agrega cuenta e información de zonas agotadas para determinar segun el día actual si vale la pena hacer o no la ruta
 	//console.log(rutaOpt);
 	rutaOpt.tNotDried = -2;
-	rutaOpt.tOpt = 0;
+	rutaOpt.tOpt = -4;
 	for (let p of rutaOpt.way) {
 		const zone = map[village.y - p.y][p.x + village.x];
 		p.dried = zone.dried;
@@ -1775,7 +1775,7 @@ async function getRoute(PAs, tGroupControl = 3){
 		}
 		console.log(`PAs: [${tPAs}], local: [${p.x},${p.y}], map: [${p.x + village.x},${village.y - p.y}], opt: [${p.opt}]`);
 	}
-	console.log(`PAs: [${tPAs}], tOpt: [${p.tOpt}]`);
+	console.log(`PAs: [${tPAs}], tOpt: [${rutaOpt.tOpt}]`);
 	rutaOpt.currentPoss = 0;
 	let lessPAs;
 	if(tPAs > 2){
