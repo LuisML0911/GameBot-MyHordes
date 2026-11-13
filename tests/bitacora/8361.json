@@ -1827,6 +1827,13 @@
           "action": "163"
         }
       }
+    },
+    "20261113_221154_401": {
+      "request": {
+        "url": "/api/town/house/upgrade",
+        "method": "POST",
+        "body": {}
+      }
     }
   },
   "day1": {
