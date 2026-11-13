@@ -659,9 +659,13 @@ async function playInDeserted(){
 				return await main();
 			}
 		}
-		
+		let tempCurrentPoss = {currentPoss};
+    	const currentCoodinates = await getCurrentCoodinates();
+		if(currentCoodinates != undefined){
+			tempCurrentPoss = currentCoodinates;
+		}
 		// 5. Si se encuentra al final de la ruta en [0,0] entrar al pueblo, TODO: sino intentar acampar
-		if(currentSaved.route.currentPoss != 0 && currentPoss.x == 0 && currentPoss.y == 0){
+		if(currentSaved.route.currentPoss != 0 && tempCurrentPoss.x == 0 && tempCurrentPoss.y == 0){
 			const currentDate = getFormattedDate();
 			if(dataSaved.test == undefined){
 				dataSaved.test = {};
@@ -2145,18 +2149,28 @@ async function takeSurvivalFood(currentSaved, inv){
 	}
 }
 
-async function tryFixCurrentCoordinates(currentSaved) {
+async function getCurrentCoodinates(){
     const text = await pag.locator('.current-location').textContent();
     if (!text) {
-        return;
+        return undefined;
     }
 	console.log(".current-location: " + text);
     const match = text.match(/(-?\d+)\s*\/\s*(-?\d+)/);
     if (!match) {
-        return;
+        return undefined;
     }
     const x = Number(match[1]);
     const y = Number(match[2]);
+	return {x, y}
+}
+
+async function tryFixCurrentCoordinates(currentSaved) {
+    const currentCoodinates = await getCurrentCoodinates();
+	if(currentCoodinates === undefined){
+		return;
+	}
+    const x = currentCoodinates.x;
+    const y = currentCoodinates.y;
     for (let i = 0; i < currentSaved.route.way.length; i++) {
         const step = currentSaved.route.way[i];
         if (
