@@ -810,6 +810,7 @@ async function playInDeserted(){
 									if((await doAction("/api/beyond/desert/heroic", "POST", {action: "1"})).error){}else{
 										currentSaved.usedHeroicAction = true;
 										canUseHeroicAction = true;
+										dataSaved[`day${currentDay}`].currentStep = dataSaved[`day${currentDay}`].referenceStep + 1;
 									}
 									dataSaved.heroicAction.retorno = false;
 								}else{
@@ -870,6 +871,7 @@ async function playInDeserted(){
 							if((await doAction("/api/beyond/desert/heroic", "POST", {action: "1"})).error){}else{
 								currentSaved.usedHeroicAction = true;
 								canUseHeroicAction = true;
+								dataSaved[`day${currentDay}`].currentStep = dataSaved[`day${currentDay}`].referenceStep + 1;
 							}
 							dataSaved.heroicAction.retorno = false;
 						}else{ // ya no tengo retorno
