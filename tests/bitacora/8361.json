@@ -1862,6 +1862,13 @@
         "method": "POST",
         "body": {}
       }
+    },
+    "20261113_223941_446": {
+      "request": {
+        "url": "/api/town/house/upgrade",
+        "method": "POST",
+        "body": {}
+      }
     }
   },
   "day1": {
