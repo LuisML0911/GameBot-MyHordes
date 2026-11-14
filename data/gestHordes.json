@@ -141,41 +141,6 @@
             "position_maj_heure": null
           },
           {
-            "id": 244977,
-            "citoyen": {
-              "id": 29198,
-              "id_my_hordes": 39322,
-              "pseudo": "Caegnox",
-              "tem_arma": false,
-              "nb_charge_camaraderie": 0
-            },
-            "mort": false,
-            "dehors": true,
-            "ban": false,
-            "corps_sain": true,
-            "charge_apag": 3,
-            "job_id": 4,
-            "pef": true,
-            "rdh": true,
-            "sauvetage": true,
-            "second_souffle": true,
-            "trouvaille": true,
-            "uppercut": true,
-            "vlm": true,
-            "don_jh": true,
-            "x": -7,
-            "y": -1,
-            "en_ville": false,
-            "pos_x": 8,
-            "pos_y": 19,
-            "nb_camping": 0,
-            "nb_camping_pro_noob": 6,
-            "chance_camping_max": 90,
-            "position_source": null,
-            "position_maj_jour": null,
-            "position_maj_heure": null
-          },
-          {
             "id": 244961,
             "citoyen": {
               "id": 4286,
@@ -238,41 +203,6 @@
             "en_ville": false,
             "pos_x": 15,
             "pos_y": 19,
-            "nb_camping": 0,
-            "nb_camping_pro_noob": 6,
-            "chance_camping_max": 90,
-            "position_source": null,
-            "position_maj_jour": null,
-            "position_maj_heure": null
-          },
-          {
-            "id": 244909,
-            "citoyen": {
-              "id": 27487,
-              "id_my_hordes": 37406,
-              "pseudo": "Draco",
-              "tem_arma": false,
-              "nb_charge_camaraderie": 0
-            },
-            "mort": false,
-            "dehors": true,
-            "ban": false,
-            "corps_sain": true,
-            "charge_apag": 3,
-            "job_id": 8,
-            "pef": true,
-            "rdh": true,
-            "sauvetage": true,
-            "second_souffle": true,
-            "trouvaille": true,
-            "uppercut": true,
-            "vlm": true,
-            "don_jh": true,
-            "x": -2,
-            "y": 1,
-            "en_ville": false,
-            "pos_x": 13,
-            "pos_y": 17,
             "nb_camping": 0,
             "nb_camping_pro_noob": 6,
             "chance_camping_max": 90,
@@ -808,6 +738,41 @@
             "position_maj_heure": null
           },
           {
+            "id": 244977,
+            "citoyen": {
+              "id": 29198,
+              "id_my_hordes": 39322,
+              "pseudo": "Caegnox",
+              "tem_arma": false,
+              "nb_charge_camaraderie": 0
+            },
+            "mort": false,
+            "dehors": false,
+            "ban": false,
+            "corps_sain": true,
+            "charge_apag": 3,
+            "job_id": 4,
+            "pef": true,
+            "rdh": true,
+            "sauvetage": true,
+            "second_souffle": true,
+            "trouvaille": true,
+            "uppercut": true,
+            "vlm": true,
+            "don_jh": true,
+            "x": 0,
+            "y": 0,
+            "en_ville": true,
+            "pos_x": 15,
+            "pos_y": 18,
+            "nb_camping": 0,
+            "nb_camping_pro_noob": 6,
+            "chance_camping_max": 90,
+            "position_source": null,
+            "position_maj_jour": null,
+            "position_maj_heure": null
+          },
+          {
             "id": 244957,
             "citoyen": {
               "id": 24064,
@@ -892,6 +857,41 @@
             "corps_sain": true,
             "charge_apag": 3,
             "job_id": 7,
+            "pef": true,
+            "rdh": true,
+            "sauvetage": true,
+            "second_souffle": true,
+            "trouvaille": true,
+            "uppercut": true,
+            "vlm": true,
+            "don_jh": true,
+            "x": 0,
+            "y": 0,
+            "en_ville": true,
+            "pos_x": 15,
+            "pos_y": 18,
+            "nb_camping": 0,
+            "nb_camping_pro_noob": 6,
+            "chance_camping_max": 90,
+            "position_source": null,
+            "position_maj_jour": null,
+            "position_maj_heure": null
+          },
+          {
+            "id": 244909,
+            "citoyen": {
+              "id": 27487,
+              "id_my_hordes": 37406,
+              "pseudo": "Draco",
+              "tem_arma": false,
+              "nb_charge_camaraderie": 0
+            },
+            "mort": false,
+            "dehors": false,
+            "ban": false,
+            "corps_sain": true,
+            "charge_apag": 3,
+            "job_id": 8,
             "pef": true,
             "rdh": true,
             "sauvetage": true,
@@ -1524,7 +1524,7 @@
                 "id": 49,
                 "id_mh": 49,
                 "category_objet_id": 1,
-                "nbr_item_bank": 15,
+                "nbr_item_bank": 17,
                 "nbr_item_bank_casse": 0
               },
               "50": {
@@ -1533,7 +1533,7 @@
                 "id": 50,
                 "id_mh": 50,
                 "category_objet_id": 1,
-                "nbr_item_bank": 6,
+                "nbr_item_bank": 8,
                 "nbr_item_bank_casse": 0
               },
               "65": {
@@ -1560,7 +1560,7 @@
                 "id": 139,
                 "id_mh": 139,
                 "category_objet_id": 1,
-                "nbr_item_bank": 4,
+                "nbr_item_bank": 5,
                 "nbr_item_bank_casse": 0
               },
               "296": {
@@ -1569,7 +1569,7 @@
                 "id": 296,
                 "id_mh": 296,
                 "category_objet_id": 1,
-                "nbr_item_bank": 3,
+                "nbr_item_bank": 4,
                 "nbr_item_bank_casse": 0
               }
             },
@@ -1589,13 +1589,22 @@
                 "nbr_item_bank": 0,
                 "nbr_item_bank_casse": 0
               },
+              "30": {
+                "nbr_item": 1,
+                "nbr_item_casse": 0,
+                "id": 30,
+                "id_mh": 30,
+                "category_objet_id": 2,
+                "nbr_item_bank": 0,
+                "nbr_item_bank_casse": 0
+              },
               "109": {
                 "nbr_item": 1,
                 "nbr_item_casse": 0,
                 "id": 109,
                 "id_mh": 109,
                 "category_objet_id": 2,
-                "nbr_item_bank": 1,
+                "nbr_item_bank": 0,
                 "nbr_item_bank_casse": 0
               },
               "161": {
@@ -1604,7 +1613,7 @@
                 "id": 161,
                 "id_mh": 161,
                 "category_objet_id": 2,
-                "nbr_item_bank": 1,
+                "nbr_item_bank": 0,
                 "nbr_item_bank_casse": 0
               },
               "282": {
@@ -1713,7 +1722,7 @@
                 "id": 22,
                 "id_mh": 22,
                 "category_objet_id": 8,
-                "nbr_item_bank": 7,
+                "nbr_item_bank": 8,
                 "nbr_item_bank_casse": 0
               },
               "38": {
@@ -1855,13 +1864,13 @@
           "20": 4,
           "160": 1,
           "200": 1,
-          "220": 7,
+          "220": 8,
           "240": 1,
           "270": 1,
           "350": 1,
           "380": 1,
-          "490": 15,
-          "500": 6,
+          "490": 17,
+          "500": 8,
           "600": 4,
           "650": 1,
           "670": 2,
@@ -1873,24 +1882,20 @@
           "880": 1,
           "920": 3,
           "980": 1,
-          "1090": 1,
-          "1100": 1,
-          "1120": 1,
+          "1120": 2,
           "1150": 1,
           "1160": 2,
-          "1180": 9,
+          "1180": 10,
           "1210": 2,
           "1360": 1,
           "1370": 1,
           "1380": 3,
-          "1390": 4,
+          "1390": 5,
           "1420": 1,
           "1430": 1,
           "1450": 1,
           "1500": 1,
-          "1550": 1,
           "1590": 2,
-          "1610": 1,
           "1620": 1,
           "2210": 1,
           "2310": 1,
@@ -1899,7 +1904,7 @@
           "2770": 1,
           "2790": 2,
           "2800": 1,
-          "2960": 3,
+          "2960": 4,
           "3010": 1
         }
       },
@@ -2081,7 +2086,7 @@
         "estim_day": 1,
         "estimation": {
           "min_jour": 28,
-          "max_jour": 35,
+          "max_jour": 34,
           "maxed_jour": false,
           "min_planif": 0,
           "max_planif": 0,
@@ -2146,7 +2151,7 @@
           }
         ]
       },
-      "date_dern_maj": "Dernière mise à jour le 14/11/2026 à 15:14 par Magnum",
+      "date_dern_maj": "Dernière mise à jour le 14/11/2026 à 16:04 par MylHordez",
       "is_lead": false,
       "my_ville": false,
       "ville": {
@@ -42836,7 +42841,7 @@
           "zombie_min": null,
           "zombie_max": null,
           "zombie_kill": null,
-          "pdc": 9,
+          "pdc": 3,
           "dried": null,
           "danger": 0,
           "tag": null,
@@ -47101,7 +47106,7 @@
           "zombie_min": null,
           "zombie_max": null,
           "zombie_kill": null,
-          "pdc": 3,
+          "pdc": 0,
           "dried": null,
           "danger": 0,
           "tag": null,
@@ -47989,7 +47994,7 @@
           "excavated_maj_by_id": null,
           "fouille_lvl": 2,
           "fouille_maj_day": 1,
-          "fouille_maj_heure": "14:58:26",
+          "fouille_maj_heure": "16:04:10",
           "fouille_maj_by_id": 27997,
           "fouille_restante_min": null,
           "fouille_restante_max": null,
@@ -47997,7 +48002,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": null,
-          "heure_maj": "14:58:26",
+          "heure_maj": "16:04:10",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -48059,6 +48064,12 @@
             {
               "id": 6142332,
               "item_id": 76,
+              "nombre": 1,
+              "broken": false
+            },
+            {
+              "id": 6142940,
+              "item_id": 30,
               "nombre": 1,
               "broken": false
             }
@@ -65192,13 +65203,13 @@
         "devast": false,
         "water": 112,
         "saison": 19,
-        "date_time": "2026-11-14T15:14:20+01:00",
+        "date_time": "2026-11-14T16:04:10+01:00",
         "chaman": null,
         "guide": null,
         "update_by": {
-          "id": 8310,
-          "id_my_hordes": 15668,
-          "pseudo": "Magnum"
+          "id": 27997,
+          "id_my_hordes": 37978,
+          "pseudo": "MylHordez"
         },
         "lang": "es",
         "map_id": 8383,
@@ -65206,7 +65217,7 @@
         "nb_heros": 37,
         "nb_vivants": 40,
         "nombre_point_saison": 40,
-        "plans_chantier_date_maj": "2026-11-14T09:11:45+01:00",
+        "plans_chantier_date_maj": "2026-11-14T16:04:10+01:00",
         "plans_chantier_update_by": {
           "id": 27997,
           "id_my_hordes": 37978,
