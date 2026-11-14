@@ -1684,7 +1684,7 @@
           }
         },
         "ressources_specifiques": {
-          "water": 3,
+          "water": 4,
           "potion": 0,
           "b6": 2,
           "b7": 0,
@@ -1771,11 +1771,9 @@
           "1590": 2,
           "1610": 1,
           "1620": 1,
-          "2200": 1,
+          "2210": 1,
           "2310": 1,
           "2370": 3,
-          "2390": 1,
-          "2400": 1,
           "2770": 1,
           "2790": 2,
           "2800": 1,
@@ -2026,7 +2024,7 @@
           }
         ]
       },
-      "date_dern_maj": "Dernière mise à jour le 14/11/2026 à 08:41 par MylHordez",
+      "date_dern_maj": "Dernière mise à jour le 14/11/2026 à 09:11 par MylHordez",
       "is_lead": false,
       "my_ville": false,
       "ville": {
@@ -45586,7 +45584,7 @@
           "excavated_maj_by_id": null,
           "fouille_lvl": 2,
           "fouille_maj_day": 1,
-          "fouille_maj_heure": "08:41:52",
+          "fouille_maj_heure": "09:11:46",
           "fouille_maj_by_id": 27997,
           "fouille_restante_min": null,
           "fouille_restante_max": null,
@@ -45594,7 +45592,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": null,
-          "heure_maj": "08:41:52",
+          "heure_maj": "09:11:46",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -64959,7 +64957,7 @@
         "devast": false,
         "water": 112,
         "saison": 19,
-        "date_time": "2026-11-14T08:41:52+01:00",
+        "date_time": "2026-11-14T09:11:45+01:00",
         "chaman": null,
         "guide": null,
         "update_by": {
@@ -64973,11 +64971,11 @@
         "nb_heros": 37,
         "nb_vivants": 40,
         "nombre_point_saison": 40,
-        "plans_chantier_date_maj": "2026-11-14T02:01:54+01:00",
+        "plans_chantier_date_maj": "2026-11-14T09:11:45+01:00",
         "plans_chantier_update_by": {
-          "id": 8310,
-          "id_my_hordes": 15668,
-          "pseudo": "Magnum"
+          "id": 27997,
+          "id_my_hordes": 37978,
+          "pseudo": "MylHordez"
         },
         "pos_x": 15,
         "pos_y": 18
