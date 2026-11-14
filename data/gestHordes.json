@@ -15,10 +15,10 @@
         },
         "lvl_t_d_g": 0,
         "defense_data": {
-          "total": 92,
+          "total": 93,
           "buildings": 10,
           "upgrades": 0,
-          "objet": 1,
+          "objet": 2,
           "bonus_od": 10,
           "maison_citoyen": 36,
           "gardiens": 35,
@@ -29,7 +29,7 @@
           "day": 1,
           "bonus_sd": 0,
           "bonus_sd_pct": 0,
-          "def_h_s_d": 92,
+          "def_h_s_d": 93,
           "def_s_d": 0
         }
       },
@@ -316,41 +316,6 @@
             "position_maj_heure": null
           },
           {
-            "id": 244999,
-            "citoyen": {
-              "id": 27402,
-              "id_my_hordes": 37322,
-              "pseudo": "genitalencio",
-              "tem_arma": false,
-              "nb_charge_camaraderie": 0
-            },
-            "mort": false,
-            "dehors": true,
-            "ban": false,
-            "corps_sain": true,
-            "charge_apag": 3,
-            "job_id": 8,
-            "pef": true,
-            "rdh": true,
-            "sauvetage": true,
-            "second_souffle": true,
-            "trouvaille": true,
-            "uppercut": true,
-            "vlm": true,
-            "don_jh": true,
-            "x": -1,
-            "y": -2,
-            "en_ville": false,
-            "pos_x": 14,
-            "pos_y": 20,
-            "nb_camping": 0,
-            "nb_camping_pro_noob": 6,
-            "chance_camping_max": 90,
-            "position_source": null,
-            "position_maj_jour": null,
-            "position_maj_heure": null
-          },
-          {
             "id": 244981,
             "citoyen": {
               "id": 24110,
@@ -378,41 +343,6 @@
             "en_ville": false,
             "pos_x": 25,
             "pos_y": 11,
-            "nb_camping": 0,
-            "nb_camping_pro_noob": 6,
-            "chance_camping_max": 90,
-            "position_source": null,
-            "position_maj_jour": null,
-            "position_maj_heure": null
-          },
-          {
-            "id": 245009,
-            "citoyen": {
-              "id": 8310,
-              "id_my_hordes": 15668,
-              "pseudo": "Magnum",
-              "tem_arma": false,
-              "nb_charge_camaraderie": 1
-            },
-            "mort": false,
-            "dehors": true,
-            "ban": false,
-            "corps_sain": true,
-            "charge_apag": 3,
-            "job_id": 3,
-            "pef": true,
-            "rdh": true,
-            "sauvetage": true,
-            "second_souffle": true,
-            "trouvaille": true,
-            "uppercut": true,
-            "vlm": true,
-            "don_jh": true,
-            "x": 3,
-            "y": -2,
-            "en_ville": false,
-            "pos_x": 18,
-            "pos_y": 20,
             "nb_camping": 0,
             "nb_camping_pro_noob": 6,
             "chance_camping_max": 90,
@@ -948,6 +878,41 @@
             "position_maj_heure": null
           },
           {
+            "id": 244999,
+            "citoyen": {
+              "id": 27402,
+              "id_my_hordes": 37322,
+              "pseudo": "genitalencio",
+              "tem_arma": false,
+              "nb_charge_camaraderie": 0
+            },
+            "mort": false,
+            "dehors": false,
+            "ban": false,
+            "corps_sain": true,
+            "charge_apag": 3,
+            "job_id": 8,
+            "pef": true,
+            "rdh": true,
+            "sauvetage": true,
+            "second_souffle": true,
+            "trouvaille": true,
+            "uppercut": true,
+            "vlm": true,
+            "don_jh": true,
+            "x": 0,
+            "y": 0,
+            "en_ville": true,
+            "pos_x": 15,
+            "pos_y": 18,
+            "nb_camping": 0,
+            "nb_camping_pro_noob": 6,
+            "chance_camping_max": 90,
+            "position_source": null,
+            "position_maj_jour": null,
+            "position_maj_heure": null
+          },
+          {
             "id": 244904,
             "citoyen": {
               "id": 29568,
@@ -1207,6 +1172,41 @@
             "corps_sain": true,
             "charge_apag": 3,
             "job_id": 7,
+            "pef": true,
+            "rdh": true,
+            "sauvetage": true,
+            "second_souffle": true,
+            "trouvaille": true,
+            "uppercut": true,
+            "vlm": true,
+            "don_jh": true,
+            "x": 0,
+            "y": 0,
+            "en_ville": true,
+            "pos_x": 15,
+            "pos_y": 18,
+            "nb_camping": 0,
+            "nb_camping_pro_noob": 6,
+            "chance_camping_max": 90,
+            "position_source": null,
+            "position_maj_jour": null,
+            "position_maj_heure": null
+          },
+          {
+            "id": 245009,
+            "citoyen": {
+              "id": 8310,
+              "id_my_hordes": 15668,
+              "pseudo": "Magnum",
+              "tem_arma": false,
+              "nb_charge_camaraderie": 1
+            },
+            "mort": false,
+            "dehors": false,
+            "ban": false,
+            "corps_sain": true,
+            "charge_apag": 3,
+            "job_id": 3,
             "pef": true,
             "rdh": true,
             "sauvetage": true,
@@ -1524,7 +1524,7 @@
                 "id": 49,
                 "id_mh": 49,
                 "category_objet_id": 1,
-                "nbr_item_bank": 17,
+                "nbr_item_bank": 18,
                 "nbr_item_bank_casse": 0
               },
               "50": {
@@ -1533,7 +1533,7 @@
                 "id": 50,
                 "id_mh": 50,
                 "category_objet_id": 1,
-                "nbr_item_bank": 8,
+                "nbr_item_bank": 9,
                 "nbr_item_bank_casse": 0
               },
               "65": {
@@ -1569,7 +1569,7 @@
                 "id": 145,
                 "id_mh": 145,
                 "category_objet_id": 1,
-                "nbr_item_bank": 1,
+                "nbr_item_bank": 2,
                 "nbr_item_bank_casse": 0
               },
               "296": {
@@ -1631,7 +1631,7 @@
                 "id": 282,
                 "id_mh": 282,
                 "category_objet_id": 2,
-                "nbr_item_bank": 0,
+                "nbr_item_bank": 1,
                 "nbr_item_bank_casse": 0
               }
             },
@@ -1684,7 +1684,17 @@
             }
           },
           "5": {
-            "objet_sol": [],
+            "objet_sol": {
+              "26": {
+                "nbr_item": 1,
+                "nbr_item_casse": 0,
+                "id": 26,
+                "id_mh": 26,
+                "category_objet_id": 5,
+                "nbr_item_bank": 0,
+                "nbr_item_bank_casse": 0
+              }
+            },
             "category": {
               "id": 5,
               "nom": "Défense"
@@ -1698,7 +1708,7 @@
                 "id": 76,
                 "id_mh": 76,
                 "category_objet_id": 6,
-                "nbr_item_bank": 9,
+                "nbr_item_bank": 11,
                 "nbr_item_bank_casse": 0
               },
               "295": {
@@ -1845,7 +1855,7 @@
           "b6": 3,
           "b7": 0,
           "alcool": 0,
-          "drogue": 12,
+          "drogue": 14,
           "drogue_pa": 0
         },
         "max_alter": {
@@ -1863,7 +1873,7 @@
           "114": 0,
           "116": 1,
           "117": 0,
-          "118": 0
+          "118": 1
         },
         "max_alter_encombrant_all": 1,
         "max_scrut": 0,
@@ -1897,12 +1907,12 @@
           "270": 1,
           "350": 1,
           "380": 1,
-          "490": 17,
-          "500": 8,
+          "490": 18,
+          "500": 9,
           "600": 4,
           "650": 1,
           "670": 2,
-          "760": 9,
+          "760": 11,
           "770": 1,
           "820": 2,
           "840": 2,
@@ -1911,6 +1921,7 @@
           "920": 3,
           "980": 1,
           "1120": 2,
+          "1130": 1,
           "1150": 1,
           "1160": 2,
           "1180": 10,
@@ -1921,7 +1932,7 @@
           "1390": 5,
           "1420": 1,
           "1430": 1,
-          "1450": 1,
+          "1450": 2,
           "1500": 1,
           "1590": 3,
           "1620": 1,
@@ -1929,9 +1940,11 @@
           "2310": 1,
           "2320": 1,
           "2370": 4,
+          "2520": 1,
+          "2540": 1,
           "2770": 1,
           "2790": 2,
-          "2800": 1,
+          "2820": 1,
           "2960": 4
         }
       },
@@ -2112,7 +2125,7 @@
         "max_pa": 33,
         "estim_day": 1,
         "estimation": {
-          "min_jour": 28,
+          "min_jour": 29,
           "max_jour": 34,
           "maxed_jour": false,
           "min_planif": 0,
@@ -2178,7 +2191,7 @@
           }
         ]
       },
-      "date_dern_maj": "Dernière mise à jour le 14/11/2026 à 19:04 par Magnum",
+      "date_dern_maj": "Dernière mise à jour le 14/11/2026 à 19:36 par MylHordez",
       "is_lead": false,
       "my_ville": false,
       "ville": {
@@ -2193,7 +2206,7 @@
         "hard": false,
         "chaos": false,
         "devast": false,
-        "water": 112,
+        "water": 111,
         "saison": 19,
         "origin": 2,
         "map_id": 8383,
@@ -48019,9 +48032,9 @@
           "excavated_maj_day": null,
           "excavated_maj_heure": null,
           "excavated_maj_by_id": null,
-          "fouille_lvl": 2,
+          "fouille_lvl": 1,
           "fouille_maj_day": 1,
-          "fouille_maj_heure": "18:13:05",
+          "fouille_maj_heure": "19:36:47",
           "fouille_maj_by_id": 27997,
           "fouille_restante_min": null,
           "fouille_restante_max": null,
@@ -48029,7 +48042,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": null,
-          "heure_maj": "18:13:05",
+          "heure_maj": "19:36:47",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -48070,7 +48083,7 @@
             "114": 0,
             "116": 0,
             "117": 0,
-            "118": 0
+            "118": 1
           },
           "carte_scrut": null,
           "marqueur_only": false,
@@ -48103,6 +48116,12 @@
             {
               "id": 6143219,
               "item_id": 49,
+              "nombre": 1,
+              "broken": false
+            },
+            {
+              "id": 6144379,
+              "item_id": 26,
               "nombre": 1,
               "broken": false
             }
@@ -50023,7 +50042,7 @@
           "zombie_min": null,
           "zombie_max": null,
           "zombie_kill": null,
-          "pdc": 4,
+          "pdc": 0,
           "dried": null,
           "danger": 0,
           "tag": null,
@@ -50289,10 +50308,10 @@
           "vue": 1,
           "camped": false,
           "empty": false,
-          "excavated": false,
-          "excavated_maj_day": null,
-          "excavated_maj_heure": null,
-          "excavated_maj_by_id": null,
+          "excavated": true,
+          "excavated_maj_day": 1,
+          "excavated_maj_heure": "19:36:47",
+          "excavated_maj_by_id": 27997,
           "fouille_lvl": null,
           "fouille_maj_day": null,
           "fouille_maj_heure": null,
@@ -50367,7 +50386,7 @@
           "zombie_min": null,
           "zombie_max": null,
           "zombie_kill": null,
-          "pdc": 4,
+          "pdc": 0,
           "dried": false,
           "danger": 1,
           "tag": null,
@@ -52471,7 +52490,7 @@
           "pdc": 0,
           "dried": null,
           "danger": 0,
-          "tag": 5,
+          "tag": null,
           "day": null,
           "vue": 1,
           "camped": false,
@@ -65282,15 +65301,15 @@
         "hard": false,
         "chaos": false,
         "devast": false,
-        "water": 112,
+        "water": 111,
         "saison": 19,
-        "date_time": "2026-11-14T19:04:06+01:00",
+        "date_time": "2026-11-14T19:36:47+01:00",
         "chaman": null,
         "guide": null,
         "update_by": {
-          "id": 8310,
-          "id_my_hordes": 15668,
-          "pseudo": "Magnum"
+          "id": 27997,
+          "id_my_hordes": 37978,
+          "pseudo": "MylHordez"
         },
         "lang": "es",
         "map_id": 8383,
@@ -65298,7 +65317,7 @@
         "nb_heros": 37,
         "nb_vivants": 40,
         "nombre_point_saison": 40,
-        "plans_chantier_date_maj": "2026-11-14T16:04:10+01:00",
+        "plans_chantier_date_maj": "2026-11-14T19:36:47+01:00",
         "plans_chantier_update_by": {
           "id": 27997,
           "id_my_hordes": 37978,
