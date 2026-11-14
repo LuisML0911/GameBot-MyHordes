@@ -1519,7 +1519,7 @@
                 "nbr_item_bank_casse": 0
               },
               "49": {
-                "nbr_item": 4,
+                "nbr_item": 5,
                 "nbr_item_casse": 0,
                 "id": 49,
                 "id_mh": 49,
@@ -1900,7 +1900,7 @@
           "2210": 1,
           "2310": 1,
           "2320": 1,
-          "2370": 3,
+          "2370": 4,
           "2770": 1,
           "2790": 2,
           "2800": 1,
@@ -2151,7 +2151,7 @@
           }
         ]
       },
-      "date_dern_maj": "Dernière mise à jour le 14/11/2026 à 16:43 par MylHordez",
+      "date_dern_maj": "Dernière mise à jour le 14/11/2026 à 17:07 par MylHordez",
       "is_lead": false,
       "my_ville": false,
       "ville": {
@@ -47994,7 +47994,7 @@
           "excavated_maj_by_id": null,
           "fouille_lvl": 2,
           "fouille_maj_day": 1,
-          "fouille_maj_heure": "16:43:12",
+          "fouille_maj_heure": "17:07:35",
           "fouille_maj_by_id": 27997,
           "fouille_restante_min": null,
           "fouille_restante_max": null,
@@ -48002,7 +48002,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": null,
-          "heure_maj": "16:43:12",
+          "heure_maj": "17:07:35",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -48030,7 +48030,7 @@
           "diff_jours": 0,
           "zombie_estim": 0,
           "carte_alter": {
-            "112": 0,
+            "112": 1,
             "113": 0,
             "114": 1,
             "116": 0,
@@ -48070,6 +48070,12 @@
             {
               "id": 6142940,
               "item_id": 30,
+              "nombre": 1,
+              "broken": false
+            },
+            {
+              "id": 6143219,
+              "item_id": 49,
               "nombre": 1,
               "broken": false
             }
@@ -65203,7 +65209,7 @@
         "devast": false,
         "water": 112,
         "saison": 19,
-        "date_time": "2026-11-14T16:43:11+01:00",
+        "date_time": "2026-11-14T17:07:35+01:00",
         "chaman": null,
         "guide": null,
         "update_by": {
