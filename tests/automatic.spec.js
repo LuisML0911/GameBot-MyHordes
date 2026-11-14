@@ -93,7 +93,7 @@ test('UpdateWeaponData', async ({ page }) => {
 	writeJSON('test/bitacora/weapons.json', data);
 });
 test('GetGestHordes', async ({page}) => {
-	const gestHordesPromise = getGestHordes();
+	const gestHordesPromise = updateGestHordesPromise();
 	
 	lastDataSaved = readJSON(nameFile_lastDataSaved);
 	const idTown = lastDataSaved.idTown;
@@ -2260,7 +2260,7 @@ async function asegurarCheckedLi(selector, { timeout = 7000 } = {}) {
   return true;
 }
 
-async function getGestHordes() {
+async function updateGestHordesPromise() {
 	const browser = await chromium.launch({
 		headless: true
 	});
