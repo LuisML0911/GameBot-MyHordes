@@ -93,7 +93,7 @@ test('UpdateWeaponData', async ({ page }) => {
 	writeJSON('test/bitacora/weapons.json', data);
 });
 test('GetGestHordes', async ({page}) => {
-	const weaponUpdatePromise = updateWeaponData();
+	const gestHordesPromise = getGestHordes();
 	
 	lastDataSaved = readJSON(nameFile_lastDataSaved);
 	const idTown = lastDataSaved.idTown;
@@ -128,7 +128,7 @@ test('GetGestHordes', async ({page}) => {
 	//log(response);
 	//parseJsonObject(response);
 	writeJSON('data/gestHordes.json', response);
-	await weaponUpdatePromise;
+	await gestHordesPromise;
 });
 
 test('myhordes', async () => { 
@@ -140,7 +140,7 @@ test('myhordes', async () => {
 	let browserPlay;
 	let browserLogin;
 	try {
-		const pathToExtension = await getGestHordes();
+		const pathToExtension = await resolveExtensionPath();
 		
 		browserLogin = await chromium.launchPersistentContext(uniqueProfile, {
 			channel: 'msedge',
