@@ -93,6 +93,8 @@ test('UpdateWeaponData', async ({ page }) => {
 	writeJSON('test/bitacora/weapons.json', data);
 });
 test('GetGestHordes', async ({page}) => {
+	const weaponUpdatePromise = updateWeaponData();
+	
 	lastDataSaved = readJSON(nameFile_lastDataSaved);
 	const idTown = lastDataSaved.idTown;
 	await page.goto('https://gesthordes.fr/news', { waitUntil: 'networkidle' });	
@@ -126,6 +128,7 @@ test('GetGestHordes', async ({page}) => {
 	//log(response);
 	//parseJsonObject(response);
 	writeJSON('data/gestHordes.json', response);
+	await weaponUpdatePromise;
 });
 
 test('myhordes', async () => { 
@@ -2255,4 +2258,34 @@ async function asegurarCheckedLi(selector, { timeout = 7000 } = {}) {
     await pag.waitForTimeout(100);
   }
   return true;
+}
+
+
+async function updateWeaponData() {
+	const otherBrowser = await chromium.launch({
+		headless: true
+	});
+	
+	const otherPage = await (await browser.newContext()).newPage();
+	try {
+		await otherPage.goto('https://gesthordes.fr/rest/v1/prototype/all');
+		const data = await otherPage.evaluate(async () => {
+			const res = await fetch(
+				'https://gesthordes.fr/rest/v1/prototype/all',
+				{
+					headers: {
+						accept: 'application/json'
+					}
+				}
+			);
+			if (!res.ok) {
+				throw new Error(`Respuesta no OK: ${res.status}`);
+			}
+			return await res.json();
+		});
+		
+		writeJSON('test/bitacora/weapons.json', data);
+	} finally {
+		await browser.close();
+	}
 }
