@@ -140,7 +140,7 @@ test('myhordes', async () => {
 	let browserPlay;
 	let browserLogin;
 	try {
-		const pathToExtension = await resolveExtensionPath();
+		const pathToExtension = await getGestHordes();
 		
 		browserLogin = await chromium.launchPersistentContext(uniqueProfile, {
 			channel: 'msedge',
@@ -2260,31 +2260,41 @@ async function asegurarCheckedLi(selector, { timeout = 7000 } = {}) {
   return true;
 }
 
-
-async function updateWeaponData() {
-	const otherBrowser = await chromium.launch({
+async function getGestHordes() {
+	const browser = await chromium.launch({
 		headless: true
 	});
-	
-	const otherPage = await (await browser.newContext()).newPage();
+
+	const context = await browser.newContext();
+	const page = await context.newPage();
+
 	try {
-		await otherPage.goto('https://gesthordes.fr/rest/v1/prototype/all');
-		const data = await otherPage.evaluate(async () => {
+		lastDataSaved = readJSON(nameFile_lastDataSaved);
+		const idTown = lastDataSaved.idTown;
+
+		await page.goto('https://gesthordes.fr/news', {
+			waitUntil: 'networkidle'
+		});
+
+		const response = await page.evaluate(async (idTown) => {
 			const res = await fetch(
-				'https://gesthordes.fr/rest/v1/prototype/all',
+				`https://gesthordes.fr/rest/v1/carte/${idTown}`,
 				{
 					headers: {
-						accept: 'application/json'
+						accept: 'application/json',
+						'gh-mapid': parseInt(idTown, 10)
 					}
 				}
 			);
+
 			if (!res.ok) {
 				throw new Error(`Respuesta no OK: ${res.status}`);
 			}
+
 			return await res.json();
-		});
-		
-		writeJSON('test/bitacora/weapons.json', data);
+		}, idTown);
+
+		writeJSON('data/gestHordes.json', response);
 	} finally {
 		await browser.close();
 	}
