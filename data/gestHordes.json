@@ -1634,7 +1634,7 @@
                 "nbr_item_bank_casse": 0
               },
               "38": {
-                "nbr_item": 1,
+                "nbr_item": 2,
                 "nbr_item_casse": 0,
                 "id": 38,
                 "id_mh": 38,
@@ -2026,7 +2026,7 @@
           }
         ]
       },
-      "date_dern_maj": "Dernière mise à jour le 14/11/2026 à 07:06 par MylHordez",
+      "date_dern_maj": "Dernière mise à jour le 14/11/2026 à 08:41 par MylHordez",
       "is_lead": false,
       "my_ville": false,
       "ville": {
@@ -45586,7 +45586,7 @@
           "excavated_maj_by_id": null,
           "fouille_lvl": 2,
           "fouille_maj_day": 1,
-          "fouille_maj_heure": "07:06:06",
+          "fouille_maj_heure": "08:41:52",
           "fouille_maj_by_id": 27997,
           "fouille_restante_min": null,
           "fouille_restante_max": null,
@@ -45594,7 +45594,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": null,
-          "heure_maj": "07:06:06",
+          "heure_maj": "08:41:52",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -45624,7 +45624,7 @@
           "carte_alter": {
             "112": 1,
             "113": 0,
-            "114": 0,
+            "114": 1,
             "116": 0,
             "117": 0,
             "118": 0
@@ -45650,6 +45650,12 @@
             {
               "id": 6140434,
               "item_id": 49,
+              "nombre": 1,
+              "broken": false
+            },
+            {
+              "id": 6140733,
+              "item_id": 38,
               "nombre": 1,
               "broken": false
             }
@@ -64953,7 +64959,7 @@
         "devast": false,
         "water": 112,
         "saison": 19,
-        "date_time": "2026-11-14T07:06:06+01:00",
+        "date_time": "2026-11-14T08:41:52+01:00",
         "chaman": null,
         "guide": null,
         "update_by": {
