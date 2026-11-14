@@ -98,13 +98,134 @@
     }
   },
   "day1": {
-    "currentStep": 4,
+    "currentStep": 5,
     "purge": false,
     "startItems": {
       "idFood": 123,
       "idWater": 1,
       "idInvFood": "29671694",
       "idInvWater": "29689083"
+    },
+    "route": {
+      "way": [
+        {
+          "x": 0,
+          "y": 0,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": 1,
+          "y": 0,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": 2,
+          "y": 0,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": 3,
+          "y": 0,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": 4,
+          "y": 0,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": 4,
+          "y": -1,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": 3,
+          "y": -1,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": 2,
+          "y": -1,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": 1,
+          "y": -1,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": 1,
+          "y": -2,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": 1,
+          "y": -3,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": 1,
+          "y": -4,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": 1,
+          "y": -5,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": 0,
+          "y": -5,
+          "dried": false,
+          "opt": 3
+        },
+        {
+          "x": 0,
+          "y": -4,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": 0,
+          "y": -3,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": 0,
+          "y": -2,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": 0,
+          "y": -1,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "dried": false,
+          "opt": 2
+        }
+      ],
+      "tNotDried": 17,
+      "tOpt": 35,
+      "currentPoss": 0
     }
   },
   "hasUsedDrugs": false,
