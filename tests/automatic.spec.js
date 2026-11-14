@@ -1658,7 +1658,7 @@ async function updateGestHordes(){
 			}catch(exception){
 				console.log("No se logró activar #synchronize_external_tools: " + exception);
 			}
-			await pag.check('#synchronize_external_tools_input', {timeout: 10000});
+			await pag.check('#synchronize_external_tools_input', {timeout: 5000});
 			externalTools = true;
 		}
 	}catch(exception){
@@ -1667,7 +1667,7 @@ async function updateGestHordes(){
 	}
 	if(externalTools){
 		try{
-			await pag.waitForSelector('.log-complete-link', { state: 'visible', timeout: 12000 });
+			await pag.waitForSelector('.log-complete-link', { state: 'visible', timeout: 4000 });
 			await pag.click('.log-complete-link >> nth=0');
 			await new Promise(r => setTimeout(r, 100));
 		}catch(exception){
