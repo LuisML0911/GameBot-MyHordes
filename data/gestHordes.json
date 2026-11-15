@@ -833,7 +833,17 @@
             }
           },
           "2": {
-            "objet_sol": [],
+            "objet_sol": {
+              "108": {
+                "nbr_item": 1,
+                "nbr_item_casse": 0,
+                "id": 108,
+                "id_mh": 108,
+                "category_objet_id": 2,
+                "nbr_item_bank": 0,
+                "nbr_item_bank_casse": 0
+              }
+            },
             "category": {
               "id": 2,
               "nom": "Aménagements"
@@ -930,11 +940,11 @@
           "112": 0,
           "113": 0,
           "114": 0,
-          "116": 0,
+          "116": 1,
           "117": 0,
           "118": 0
         },
-        "max_alter_encombrant_all": 0,
+        "max_alter_encombrant_all": 1,
         "max_scrut": 0,
         "list_decharge": [
           {
@@ -1234,7 +1244,7 @@
           }
         ]
       },
-      "date_dern_maj": "Dernière mise à jour le 15/11/2026 à 12:10 par MylHordez",
+      "date_dern_maj": "Dernière mise à jour le 15/11/2026 à 13:32 par MylHordez",
       "is_lead": false,
       "my_ville": false,
       "ville": {
@@ -36801,7 +36811,7 @@
           "excavated_maj_by_id": null,
           "fouille_lvl": 1,
           "fouille_maj_day": 1,
-          "fouille_maj_heure": "12:10:01",
+          "fouille_maj_heure": "13:32:57",
           "fouille_maj_by_id": 27997,
           "fouille_restante_min": null,
           "fouille_restante_max": null,
@@ -36809,7 +36819,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": null,
-          "heure_maj": "12:10:01",
+          "heure_maj": "13:32:57",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -36848,7 +36858,7 @@
             "112": 0,
             "113": 0,
             "114": 0,
-            "116": 0,
+            "116": 1,
             "117": 0,
             "118": 0
           },
@@ -36865,6 +36875,12 @@
             {
               "id": 6146560,
               "item_id": 22,
+              "nombre": 1,
+              "broken": false
+            },
+            {
+              "id": 6148353,
+              "item_id": 108,
               "nombre": 1,
               "broken": false
             }
@@ -55104,7 +55120,7 @@
         "devast": false,
         "water": 106,
         "saison": 19,
-        "date_time": "2026-11-15T12:10:00+01:00",
+        "date_time": "2026-11-15T13:32:57+01:00",
         "chaman": null,
         "guide": null,
         "update_by": {
