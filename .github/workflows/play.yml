@@ -44,9 +44,7 @@ jobs:
         key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-playwright-
-
     - name: Install Playwright Browsers
-      run: PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npx playwright install #--with-deps
-
+      run: PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npx playwright install
     - name: Run Playwright tests
       run: npx playwright test --reporter=list --grep "myhordes"
