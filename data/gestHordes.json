@@ -2063,7 +2063,7 @@
           }
         ]
       },
-      "date_dern_maj": "Dernière mise à jour le 16/11/2026 à 11:30 par SofiTag28",
+      "date_dern_maj": "Dernière mise à jour le 16/11/2026 à 11:33 par SofiTag28",
       "is_lead": false,
       "my_ville": false,
       "ville": {
@@ -36434,7 +36434,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": null,
-          "heure_maj": "11:30:27",
+          "heure_maj": "11:33:09",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -55986,7 +55986,7 @@
         "devast": false,
         "water": 92,
         "saison": 19,
-        "date_time": "2026-11-16T11:30:27+01:00",
+        "date_time": "2026-11-16T11:33:09+01:00",
         "chaman": null,
         "guide": null,
         "update_by": {
