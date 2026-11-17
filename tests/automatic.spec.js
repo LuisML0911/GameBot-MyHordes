@@ -2316,6 +2316,8 @@ async function updateGestHordesPromise() {
 			waitUntil: 'networkidle'
 		});
 
+		await page.goto(`https://gesthordes.fr/carte/${idTown}`);
+
 		const response = await page.evaluate(async (idTown) => {
 			const res = await fetch(
 				`https://gesthordes.fr/rest/v1/carte/${idTown}`,
@@ -2333,6 +2335,7 @@ async function updateGestHordesPromise() {
 
 			return await res.json();
 		}, idTown);
+		await page.goto(`https://gesthordes.fr/carte/${idTown}`);
 		console.log("GestHordes: " + response);
 		writeJSON('data/gestHordes.json', response);
 	} catch(exception){
