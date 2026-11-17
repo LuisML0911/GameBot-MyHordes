@@ -51,6 +51,7 @@ let countMainInvocation = 0;
 let uniqueProfile;
 let weaponListData = {};
 let items = {};
+let browsergest;
 const botToken = "8571353822:AAH1avvfeURxxlx0ow2E5dpBorv0aq9mqrk"
 const chatId  = "1975024455"
 test('resetLogs', async ({ page }) => {
@@ -193,6 +194,9 @@ test('myhordes', async () => {
 		//fs.rmSync(uniqueProfile, { recursive: true, force: true });
 		await screenshotPromise;
 		await gestHordesPromise;
+		if(browsergest){
+			browsergest.close();
+		}
 	}
 });
 async function main(){
@@ -2295,11 +2299,11 @@ async function asegurarCheckedLi(selector, { timeout = 7000 } = {}) {
 }
 
 async function updateGestHordesPromise() {
-	const browser = await chromium.launch({
+	browsergest = await chromium.launch({
 		headless: true
 	});
 
-	const context = await browser.newContext();
+	const context = await browsergest.newContext();
 	const page = await context.newPage();
 
 	try {
@@ -2329,10 +2333,12 @@ async function updateGestHordesPromise() {
 		}, idTown);
 
 		writeJSON('data/gestHordes.json', response);
-	} finally {
-		browser.close();
-	}
-	return browser;
+	} catch(exception){
+		
+	}//finally {
+		//browsergest.close();
+	//}
+	//return browsergest;
 }
 async function sendDebugPhoto(){
 	await pag.screenshot({
