@@ -1187,6 +1187,11 @@ async function joinToTown(){
 			  item.language === "es" &&
 			  item.coalitions < item.population
 	);
+	const noInteresado = pag.getByText('No interesado');
+	
+	if (await noInteresado.isVisible().catch(() => false)) {
+		await noInteresado.click();
+	}
 	console.log(townsAvailable);
 	await sendDebugPhoto();
 	await pag.locator('span.link.bold', { hasText: townsAvailable[0].name }).click();
