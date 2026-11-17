@@ -597,6 +597,7 @@ async function playInDeserted(){
 	try{
 		// se busca el día actual y se ejecuta el proceso correspondiente
 		let currentDay = parseInt((await pag.locator('span.day-number').innerText()).replace(/\D/g, ''), 15);
+		console.log(currentDay);
 		if(dataSaved[`day${currentDay}`]?.camping){
 			return;
 		}
