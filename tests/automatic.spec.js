@@ -1153,10 +1153,12 @@ async function login(){
 		await pag.waitForNavigation({ waitUntil: 'domcontentloaded' });
 		await pag.type('input[name="login"]', el0, { delay: 150 });
 		await pag.type('input[name="password"]', el1, { delay: 150 });
+		console.error("Credenciales asignadas");
 		await pag.evaluate(() => {
 			const btn = document.querySelector('input[name="sign_in"]');
 			if (btn) btn.removeAttribute('disabled');
 		});
+		console.error("Se dió click a sing in");
 		await pag.click('input[name="sign_in"]', {timeout: 4000});
 		await pag.waitForSelector('hordes-header-ui', {state: 'attached',timeout: 7000});
 		console.error("Login Terminado: " + pag.url());
