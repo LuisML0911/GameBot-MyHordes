@@ -2302,6 +2302,8 @@ async function updateGestHordesPromise() {
 		}, idTown);
 
 		writeJSON('data/gestHordes.json', response);
+	} catch (exception){
+		
 	}
 	return browser;
 }
