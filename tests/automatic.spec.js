@@ -297,6 +297,15 @@ async function main(){
 
 // segun el path del sitio actual realiza las asignaciones correspondientes
 async function evaluateWebSite(){
+	try{
+		const noInteresado = pag.getByText('No interesado');
+		
+		if (await noInteresado.isVisible().catch(() => false)) {
+			await noInteresado.click();
+		}
+	}catch(exception){
+		
+	}
 	currentPath = new URL(pag.url()).pathname;
 	if (actions[currentPath]) {
 		await actions[currentPath]();
