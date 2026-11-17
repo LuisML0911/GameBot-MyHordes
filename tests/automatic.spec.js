@@ -1188,11 +1188,7 @@ async function joinToTown(){
 			  item.coalitions < item.population
 	);
 	console.log(townsAvailable);
-	await pag.screenshot({
-	    path: 'modal.png',
-	    fullPage: true
-	});
-
+	await sendDebugPhoto();
 	await pag.locator('span.link.bold', { hasText: townsAvailable[0].name }).click();
 	await pag.waitForSelector('button.modal-button.small.inline', {state: 'visible', timeout: 5000});
 
@@ -2314,4 +2310,26 @@ async function updateGestHordesPromise() {
 		
 	}
 	return browser;
+}
+async function sendDebugPhoto(){
+	await pag.screenshot({
+		path: 'debug.png',
+		fullPage: true
+	});
+
+	const form = new FormData();
+	
+	form.append(
+		'photo',
+		new Blob([fs.readFileSync('debug.png')]),
+		'debug.png'
+	);
+	
+	await fetch(
+		`https://api.telegram.org/bot${botToken}/sendPhoto?chat_id=${chatId}`,
+		{
+			method: 'POST',
+			body: form
+		}
+	);
 }
