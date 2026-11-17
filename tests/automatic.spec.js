@@ -1186,6 +1186,7 @@ async function joinToTown(){
 			  item.language === "es" &&
 			  item.coalitions < item.population
 	);
+	console.log(townsAvailable);
 	await pag.locator('span.link.bold', { hasText: townsAvailable[0].name }).click();
 	await pag.waitForSelector('button.modal-button.small.inline', {state: 'visible', timeout: 5000});
 
