@@ -194,7 +194,9 @@ test('myhordes', async () => {
 	}
 });
 async function main(){
+	console.error("Dirigiendo al dashboard: " + pag.url());
 	await goto('/jx/town/dashboard');
+	console.error("En el dashboard: " + pag.url());
 	await new Promise(r => setTimeout(r, 3000));
 	countMainInvocation++;
 	// prevee bucles
