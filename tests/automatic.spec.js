@@ -133,7 +133,7 @@ test('GetGestHordes', async ({page}) => {
 
 test('myhordes', async () => { 
 	test.setTimeout(250000);
-	const gestHordesPromise = updateGestHordesPromise();
+	let gestHordesPromise;
 	//fs.rmSync(path.join(process.env.LOCALAPPDATA, 'playwright-profiles'), { recursive: true, force: true });
 	const baseDir = process.env.LOCALAPPDATA || process.env.HOME;
 	uniqueProfile = path.join(baseDir, 'playwright-profiles', randomUUID());
@@ -154,6 +154,7 @@ test('myhordes', async () => {
 		}
 		await new Promise(r => setTimeout(r, 12000));
 		await browserLogin.close();
+		gestHordesPromise = updateGestHordesPromise();
 		browserPlay = await chromium.launchPersistentContext(uniqueProfile, {
 			channel: 'msedge',
 			headless: true,
@@ -193,7 +194,9 @@ test('myhordes', async () => {
 		await new Promise(r => setTimeout(r, 1000));
 		//fs.rmSync(uniqueProfile, { recursive: true, force: true });
 		await screenshotPromise;
-		await gestHordesPromise;
+		if(gestHordesPromise != undefined){
+			await gestHordesPromise;
+		}
 		if(browsergest){
 			browsergest.close();
 		}
@@ -2310,7 +2313,7 @@ async function updateGestHordesPromise() {
 		lastDataSaved = readJSON(nameFile_lastDataSaved);
 		const idTown = lastDataSaved.idTown;
 
-		await page.goto('https://gesthordes.fr/news', {
+		await page.goto(`${basePath}/news`, {
 			waitUntil: 'networkidle'
 		});
 
