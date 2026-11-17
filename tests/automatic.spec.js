@@ -1149,7 +1149,11 @@ async function login(){
 	await goto('/jx/public/login');
 	console.error("Haciendo Login: " + pag.url());
 	try{
-		await pag.click('#et_login_button', {timeout: 3000});
+		try{
+			await pag.click('#et_login_button', {timeout: 3000});
+		}catch(exception){
+			console.error("No se encontró et_login_button:", exception);
+		}
 		await pag.waitForNavigation({ waitUntil: 'domcontentloaded' });
 		await pag.type('input[name="login"]', el0, { delay: 150 });
 		await pag.type('input[name="password"]', el1, { delay: 150 });
