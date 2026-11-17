@@ -2334,7 +2334,7 @@ async function updateGestHordesPromise() {
 
 		writeJSON('data/gestHordes.json', response);
 	} catch(exception){
-		
+		console.log("No se logró actualizar GestHordes");
 	}//finally {
 		//browsergest.close();
 	//}
