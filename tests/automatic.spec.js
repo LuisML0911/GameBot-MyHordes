@@ -1418,6 +1418,7 @@ async function getInventory(idInv){
 	if(idInv == undefined){
 		return undefined;
 	}
+	console.log("idInv: " + idInv);
 	let temp = await doAction("/rest/v1/game/inventory/" + idInv, "GET", {});
 	//console.log("TEMP: " + temp);
 	return await getListItems(temp);
