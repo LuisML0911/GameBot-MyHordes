@@ -2333,7 +2333,7 @@ async function updateGestHordesPromise() {
 
 			return await res.json();
 		}, idTown);
-
+		console.log("GestHordes: " + response);
 		writeJSON('data/gestHordes.json', response);
 	} catch(exception){
 		console.log("No se logró actualizar GestHordes");
