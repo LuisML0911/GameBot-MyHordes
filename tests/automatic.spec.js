@@ -2312,8 +2312,7 @@ async function updateGestHordesPromise() {
 	try {
 		lastDataSaved = readJSON(nameFile_lastDataSaved);
 		const idTown = lastDataSaved.idTown;
-
-		await page.goto(`${basePath}/news`, {
+		await page.goto('https://gesthordes.fr/news', {
 			waitUntil: 'networkidle'
 		});
 
