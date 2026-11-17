@@ -1188,6 +1188,11 @@ async function joinToTown(){
 			  item.coalitions < item.population
 	);
 	console.log(townsAvailable);
+	await pag.screenshot({
+	    path: 'modal.png',
+	    fullPage: true
+	});
+
 	await pag.locator('span.link.bold', { hasText: townsAvailable[0].name }).click();
 	await pag.waitForSelector('button.modal-button.small.inline', {state: 'visible', timeout: 5000});
 
