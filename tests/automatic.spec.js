@@ -1110,6 +1110,16 @@ async function acceptDead(){
 	
 	const latestDay = Object.keys(dataSaved).sort((a, b) => parseInt(a.slice(3)) - parseInt(b.slice(3))).pop();
 	await sendTelegramMessage(`Juego Terminado: ${latestDay} en el paso: ${dataSaved[latestDay].currentStep}`);
+
+	execSync(`convert -delay 250 -loop 0 debug/*.png debug/${lastDataSaved?.idTown}.gif`);
+	await sendGif(`debug/${lastDataSaved?.idTown}.gif`);
+	await fs.rm('./debug', {
+	    recursive: true,
+	    force: true
+	});
+	await fs.mkdir('./debug', {
+	    recursive: true
+	});
 	
 	dataSaved = {};
 	lastDataSaved.inv = undefined;
@@ -2058,6 +2068,11 @@ function logTrace(url, method, body = undefined, status = undefined, result = un
 			*/
 		};
 		console.log(dataSaved.log[currentDate]);
+		
+		await pag.screenshot({
+			path: `debug/${currentDate}.png`,
+			fullPage: true
+		});
 	}
 	//console.log(dataSaved.log[currentDate]);
 	//writeJSON(nameFile_dataSaved, dataSaved);
@@ -2337,4 +2352,22 @@ async function sendDebugPhoto(){
 			body: form
 		}
 	);
+}
+async function sendGif(path) {
+
+    const form = new FormData();
+
+    form.append(
+        'animation',
+        new Blob([fs.readFileSync(path)]),
+        'history.gif'
+    );
+
+    await fetch(
+        `https://api.telegram.org/bot${botToken}/sendAnimation?chat_id=${chatId}`,
+        {
+            method: 'POST',
+            body: form
+        }
+    );
 }
