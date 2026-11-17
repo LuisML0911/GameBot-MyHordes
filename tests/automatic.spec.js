@@ -150,7 +150,7 @@ test('myhordes', async () => {
 		if(!(await login())){
     		throw new Error("No se logró iniciar sesión");
 		}
-		await new Promise(r => setTimeout(r, 5000));
+		await new Promise(r => setTimeout(r, 12000));
 		await browserLogin.close();
 		browserPlay = await chromium.launchPersistentContext(uniqueProfile, {
 			channel: 'msedge',
