@@ -182,6 +182,7 @@ test('myhordes', async () => {
 		console.log(exception);
 		await sendTelegramMessage(exception);
 	} finally {
+		await browser.close();
 		if(browserPlay){
 			browserPlay.close();
 		}
@@ -2301,7 +2302,6 @@ async function updateGestHordesPromise() {
 		}, idTown);
 
 		writeJSON('data/gestHordes.json', response);
-	} finally {
-		await browser.close();
 	}
+	return browser;
 }
