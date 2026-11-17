@@ -1181,6 +1181,7 @@ async function login(){
 
 //flujo para ingresar a un pueblo
 async function joinToTown(){
+	console.error("Uniendose a un pueblo: " + pag.url());
 	let townsAvailable = (await doAction("/rest/v1/game/lobby/list", "GET", {})).towns.filter(
 	  item => item.type === 2 &&
 			  item.language === "es" &&
