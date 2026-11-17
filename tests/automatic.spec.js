@@ -16,6 +16,7 @@ const readFile = util.promisify(fs.readFile);
 let pag = undefined;
 let basePath = "";
 let currentPath = "";
+let screenshotPromise = Promise.resolve();
 const el0 = "mylhordes";
 //myhordes0
 const el1 = "f6e1a8350911";
@@ -190,6 +191,7 @@ test('myhordes', async () => {
 		}
 		await new Promise(r => setTimeout(r, 1000));
 		//fs.rmSync(uniqueProfile, { recursive: true, force: true });
+		await screenshotPromise;
 		await gestHordesPromise;
 	}
 });
@@ -2073,10 +2075,7 @@ function logTrace(url, method, body = undefined, status = undefined, result = un
 		};
 		console.log(dataSaved.log[currentDate]);
 		
-		await pag.screenshot({
-			path: `debug/${currentDate}.png`,
-			fullPage: true
-		});
+		takeScreenshot(`debug/${currentDate}.png`);
 	}
 	//console.log(dataSaved.log[currentDate]);
 	//writeJSON(nameFile_dataSaved, dataSaved);
@@ -2375,3 +2374,12 @@ async function sendGif(path) {
         }
     );
 }
+function takeScreenshot(file) {
+    screenshotPromise = screenshotPromise.then(() =>
+        pag.screenshot({
+            path: file,
+            fullPage: true
+        })
+    ).catch(console.error);
+}
+
