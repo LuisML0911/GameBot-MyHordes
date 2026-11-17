@@ -131,7 +131,7 @@ test('GetGestHordes', async ({page}) => {
 
 test('myhordes', async () => { 
 	test.setTimeout(250000);
-	//const gestHordesPromise = updateGestHordesPromise();
+	const gestHordesPromise = updateGestHordesPromise();
 	//fs.rmSync(path.join(process.env.LOCALAPPDATA, 'playwright-profiles'), { recursive: true, force: true });
 	const baseDir = process.env.LOCALAPPDATA || process.env.HOME;
 	uniqueProfile = path.join(baseDir, 'playwright-profiles', randomUUID());
@@ -190,7 +190,7 @@ test('myhordes', async () => {
 		}
 		await new Promise(r => setTimeout(r, 1000));
 		//fs.rmSync(uniqueProfile, { recursive: true, force: true });
-		//await gestHordesPromise;
+		await gestHordesPromise;
 	}
 });
 async function main(){
@@ -2326,8 +2326,8 @@ async function updateGestHordesPromise() {
 		}, idTown);
 
 		writeJSON('data/gestHordes.json', response);
-	} catch (exception){
-		
+	} finally {
+		browser.close();
 	}
 	return browser;
 }
