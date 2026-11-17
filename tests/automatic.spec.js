@@ -1151,7 +1151,7 @@ async function login(){
 	console.error("Haciendo Login: " + pag.url());
 	try{
 		try{
-			await pag.click('#et_login_button', {timeout: 3000});
+			await pag.click('#et_login_button', {timeout: 7000});
 		}catch(exception){
 			console.error("No se encontró et_login_button:", exception);
 		}
