@@ -1699,7 +1699,7 @@ async function updateGestHordes(){
 						}
 						resolve();
 					}, 4000);
-				});
+				});f
 			});
 			try{
 				let syncExtTools = await asegurarCheckedLi('#synchronize_external_tools');
@@ -2403,5 +2403,11 @@ function takeScreenshot(file) {
             fullPage: true
         })
     ).catch(console.error);
+		try{
+		retryPush(file, 4);
+		console.log(`Archivo ${filePath} actualizado`);
+	} catch(error){
+		//console.error(`Error al guardar cambios para archivo ${filePath} en GitHub: `, error.message);
+	}
 }
 
