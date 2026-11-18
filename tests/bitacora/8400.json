@@ -687,7 +687,8 @@
           "x": 0,
           "y": 4,
           "dried": false,
-          "opt": 2
+          "opt": 2,
+          "digged": true
         },
         {
           "x": 0,
