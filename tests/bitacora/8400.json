@@ -1771,6 +1771,149 @@
           "action": "163"
         }
       }
+    },
+    "20261118_233310_958": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8115956",
+        "method": "PATCH",
+        "body": {
+          "d": "down-all",
+          "mod": null,
+          "to": "8110545"
+        }
+      }
+    },
+    "20261118_233312_035": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8115956",
+        "method": "PATCH",
+        "body": {
+          "d": "down-all",
+          "mod": null,
+          "to": "8110545"
+        }
+      }
+    },
+    "20261118_233312_829": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8110545/29745333",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": "8115956"
+        }
+      }
+    },
+    "20261118_233314_432": {
+      "request": {
+        "url": "/rest/v1/game/town/core/door",
+        "method": "PATCH",
+        "body": {
+          "action": "open"
+        }
+      }
+    },
+    "20261118_233317_774": {
+      "request": {
+        "url": "/api/town/watchtower/est",
+        "method": "POST",
+        "body": {}
+      }
+    },
+    "20261118_233318_083": {
+      "request": {
+        "url": "/api/town/planner/submit",
+        "method": "POST",
+        "body": {
+          "data": [
+            [
+              0,
+              0
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -2,
+              0
+            ],
+            [
+              -3,
+              0
+            ],
+            [
+              -4,
+              0
+            ],
+            [
+              -5,
+              0
+            ],
+            [
+              -6,
+              0
+            ],
+            [
+              -6,
+              -1
+            ],
+            [
+              -5,
+              -1
+            ],
+            [
+              -4,
+              -1
+            ],
+            [
+              -3,
+              -1
+            ],
+            [
+              -2,
+              -1
+            ],
+            [
+              -2,
+              -2
+            ],
+            [
+              -2,
+              -3
+            ],
+            [
+              -1,
+              -3
+            ],
+            [
+              0,
+              -3
+            ],
+            [
+              0,
+              -2
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "name": "[Mí Ruta Día 2] :S"
+        }
+      }
+    },
+    "20261118_233319_240": {
+      "request": {
+        "url": "/rest/v1/game/town/core/door/exit",
+        "method": "POST",
+        "body": {}
+      }
     }
   },
   "day1": {
@@ -2532,6 +2675,991 @@
     "20261118_203042_479": {
       "outfit": "29748615",
       "getActionIdFromHtmlObj": "163"
+    },
+    "20261118_233311_700": {
+      "actInv0": {
+        "success": true,
+        "errors": [],
+        "reload": false,
+        "incidentals": {
+          "towndef": 108,
+          "towndef_items": 2,
+          "towndef_item_count": 2
+        },
+        "messages": "Has recibido tu ración diaria: <span class='tool'><img alt='' src='/build/images/item/item_water.85230dbb.gif' /> Ración de agua</span><hr/>Acabas de tomar <span class='tool'><img alt='' src='/build/images/item/item_food_bar1.0d0b8ce2.gif' /> Bolsa de papas fritas rancias</span> del Almacén. <strong>No intentes pasarte de listo</strong>, los demás habitantes podrían castigarte.",
+        "source": {
+          "bank": true,
+          "rsc": false,
+          "mods": {
+            "has_drunk": false,
+            "cata": null
+          },
+          "categories": [
+            {
+              "id": 9,
+              "items": [
+                {
+                  "i": 29763104,
+                  "p": 1,
+                  "c": 1,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -1,
+                    1,
+                    0
+                  ]
+                },
+                {
+                  "i": 29765021,
+                  "p": 3,
+                  "c": 4,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -3,
+                    4,
+                    7
+                  ]
+                },
+                {
+                  "i": 29748617,
+                  "p": 118,
+                  "c": 6,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -118,
+                    6,
+                    0
+                  ]
+                },
+                {
+                  "i": 29767356,
+                  "p": 123,
+                  "c": 1,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -123,
+                    1,
+                    4
+                  ]
+                },
+                {
+                  "i": 29756572,
+                  "p": 125,
+                  "c": 1,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -125,
+                    1,
+                    8
+                  ]
+                },
+                {
+                  "i": 29756569,
+                  "p": 129,
+                  "c": 1,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -129,
+                    1,
+                    1
+                  ]
+                },
+                {
+                  "i": 29783716,
+                  "p": 134,
+                  "c": 1,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": "0 pts ataque",
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -134,
+                    1,
+                    7
+                  ]
+                }
+              ]
+            },
+            {
+              "id": 8,
+              "items": [
+                {
+                  "i": 29765995,
+                  "p": 2,
+                  "c": 8,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -2,
+                    8,
+                    2
+                  ]
+                },
+                {
+                  "i": 29744816,
+                  "p": 49,
+                  "c": 7,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -49,
+                    7,
+                    3
+                  ]
+                },
+                {
+                  "i": 29744811,
+                  "p": 50,
+                  "c": 13,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -50,
+                    13,
+                    1
+                  ]
+                },
+                {
+                  "i": 29757077,
+                  "p": 65,
+                  "c": 4,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -65,
+                    4,
+                    7
+                  ]
+                },
+                {
+                  "i": 29767521,
+                  "p": 111,
+                  "c": 3,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -111,
+                    3,
+                    9
+                  ]
+                },
+                {
+                  "i": 29767416,
+                  "p": 138,
+                  "c": 1,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -138,
+                    1,
+                    8
+                  ]
+                },
+                {
+                  "i": 29767418,
+                  "p": 139,
+                  "c": 2,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -139,
+                    2,
+                    7
+                  ]
+                },
+                {
+                  "i": 29745371,
+                  "p": 142,
+                  "c": 2,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -142,
+                    2,
+                    9
+                  ]
+                },
+                {
+                  "i": 29766869,
+                  "p": 279,
+                  "c": 1,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -279,
+                    1,
+                    5
+                  ]
+                },
+                {
+                  "i": 29766991,
+                  "p": 280,
+                  "c": 1,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -280,
+                    1,
+                    0
+                  ]
+                },
+                {
+                  "i": 29756573,
+                  "p": 296,
+                  "c": 2,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -296,
+                    2,
+                    0
+                  ]
+                }
+              ]
+            },
+            {
+              "id": 20,
+              "items": [
+                {
+                  "i": 29770818,
+                  "p": 13,
+                  "c": 1,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": "0 pts ataque",
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -13,
+                    1,
+                    7
+                  ]
+                },
+                {
+                  "i": 29752392,
+                  "p": 60,
+                  "c": 4,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -60,
+                    4,
+                    6
+                  ]
+                },
+                {
+                  "i": 29744631,
+                  "p": 98,
+                  "c": 3,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -98,
+                    3,
+                    2
+                  ]
+                },
+                {
+                  "i": 29768018,
+                  "p": 181,
+                  "c": 1,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": "0 pts ataque",
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -181,
+                    1,
+                    3
+                  ]
+                }
+              ]
+            },
+            {
+              "id": 25,
+              "items": [
+                {
+                  "i": 29756578,
+                  "p": 22,
+                  "c": 7,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -22,
+                    7,
+                    1
+                  ]
+                },
+                {
+                  "i": 29760488,
+                  "p": 37,
+                  "c": 1,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": "0 pts ataque",
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -37,
+                    1,
+                    4
+                  ]
+                },
+                {
+                  "i": 29764084,
+                  "p": 85,
+                  "c": 2,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -85,
+                    2,
+                    0
+                  ]
+                },
+                {
+                  "i": 29771979,
+                  "p": 91,
+                  "c": 1,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -91,
+                    1,
+                    8
+                  ]
+                },
+                {
+                  "i": 29752394,
+                  "p": 105,
+                  "c": 1,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -105,
+                    1,
+                    5
+                  ]
+                },
+                {
+                  "i": 29768202,
+                  "p": 112,
+                  "c": 2,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -112,
+                    2,
+                    9
+                  ]
+                },
+                {
+                  "i": 29756577,
+                  "p": 159,
+                  "c": 3,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -159,
+                    3,
+                    4
+                  ]
+                },
+                {
+                  "i": 29766860,
+                  "p": 188,
+                  "c": 1,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -188,
+                    1,
+                    3
+                  ]
+                },
+                {
+                  "i": 29727830,
+                  "p": 237,
+                  "c": 6,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -237,
+                    6,
+                    9
+                  ]
+                }
+              ]
+            },
+            {
+              "id": 15,
+              "items": [
+                {
+                  "i": 29765842,
+                  "p": 23,
+                  "c": 1,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -23,
+                    1,
+                    5
+                  ]
+                },
+                {
+                  "i": 29744633,
+                  "p": 76,
+                  "c": 2,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -76,
+                    2,
+                    1
+                  ]
+                },
+                {
+                  "i": 29727825,
+                  "p": 84,
+                  "c": 2,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -84,
+                    2,
+                    3
+                  ]
+                },
+                {
+                  "i": 29767415,
+                  "p": 114,
+                  "c": 1,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -114,
+                    1,
+                    7
+                  ]
+                },
+                {
+                  "i": 29744624,
+                  "p": 115,
+                  "c": 2,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -115,
+                    2,
+                    5
+                  ]
+                },
+                {
+                  "i": 29746630,
+                  "p": 148,
+                  "c": 2,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -148,
+                    2,
+                    3
+                  ]
+                }
+              ]
+            },
+            {
+              "id": 19,
+              "items": [
+                {
+                  "i": 29743826,
+                  "p": 88,
+                  "c": 1,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": "0 pts ataque",
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -88,
+                    1,
+                    6
+                  ]
+                },
+                {
+                  "i": 29735950,
+                  "p": 146,
+                  "c": 1,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": "0 pts ataque",
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -146,
+                    1,
+                    4
+                  ]
+                }
+              ]
+            },
+            {
+              "id": 24,
+              "items": [
+                {
+                  "i": 29765848,
+                  "p": 155,
+                  "c": 1,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": null,
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -155,
+                    1,
+                    6
+                  ]
+                },
+                {
+                  "i": 29762544,
+                  "p": 163,
+                  "c": 1,
+                  "b": false,
+                  "h": false,
+                  "e": false,
+                  "w": "0 pts ataque",
+                  "s": [
+                    0,
+                    0,
+                    0,
+                    -163,
+                    1,
+                    3
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "target": {
+          "bank": false,
+          "rsc": false,
+          "size": 7,
+          "heavy": 1,
+          "mods": {
+            "has_drunk": false,
+            "cata": null
+          },
+          "items": [
+            {
+              "i": 29748615,
+              "p": 315,
+              "c": 1,
+              "b": false,
+              "h": false,
+              "e": true,
+              "w": null,
+              "s": [
+                1,
+                0,
+                100,
+                -315,
+                1,
+                7
+              ]
+            },
+            {
+              "i": 29748638,
+              "p": 319,
+              "c": 1,
+              "b": false,
+              "h": false,
+              "e": true,
+              "w": null,
+              "s": [
+                1,
+                0,
+                80,
+                -319,
+                1,
+                9
+              ]
+            },
+            {
+              "i": 29784545,
+              "p": 1,
+              "c": 1,
+              "b": false,
+              "h": false,
+              "e": false,
+              "w": null,
+              "s": [
+                0,
+                0,
+                0,
+                -1,
+                1,
+                8
+              ]
+            },
+            {
+              "i": 29745333,
+              "p": 119,
+              "c": 1,
+              "b": false,
+              "h": false,
+              "e": false,
+              "w": null,
+              "s": [
+                0,
+                0,
+                0,
+                -119,
+                1,
+                7
+              ]
+            }
+          ]
+        }
+      },
+      "hasDoggyBag2_inv": {
+        "29745333": {
+          "c": 1,
+          "p": 119
+        },
+        "29748615": {
+          "c": 1,
+          "p": 315
+        },
+        "29748638": {
+          "c": 1,
+          "p": 319
+        },
+        "29784545": {
+          "c": 1,
+          "p": 1
+        }
+      }
     }
+  },
+  "day2": {
+    "currentStep": 5,
+    "purge": false,
+    "startItems": {
+      "idFood": 119,
+      "idWater": 1,
+      "idInvFood": "29745333",
+      "idInvWater": "29784545"
+    },
+    "route": {
+      "way": [
+        {
+          "x": 0,
+          "y": 0,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": -1,
+          "y": 0,
+          "dried": true,
+          "opt": 0
+        },
+        {
+          "x": -2,
+          "y": 0,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": -3,
+          "y": 0,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": -4,
+          "y": 0,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": -5,
+          "y": 0,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": -6,
+          "y": 0,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": -6,
+          "y": -1,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": -5,
+          "y": -1,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": -4,
+          "y": -1,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": -3,
+          "y": -1,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": -2,
+          "y": -1,
+          "dried": false,
+          "opt": 3
+        },
+        {
+          "x": -2,
+          "y": -2,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": -2,
+          "y": -3,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": -1,
+          "y": -3,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": 0,
+          "y": -3,
+          "dried": false,
+          "opt": 2
+        },
+        {
+          "x": 0,
+          "y": -2,
+          "dried": true,
+          "opt": 1
+        },
+        {
+          "x": 0,
+          "y": -1,
+          "dried": false,
+          "opt": 1
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "dried": false,
+          "opt": 2
+        }
+      ],
+      "tNotDried": 15,
+      "tOpt": 31,
+      "currentPoss": 0
+    },
+    "referenceStep": 5
   }
 }
