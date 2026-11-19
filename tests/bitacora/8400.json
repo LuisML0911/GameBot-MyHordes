@@ -4490,7 +4490,8 @@
           "y": -1,
           "dried": false,
           "opt": 3,
-          "diggedRuin": true
+          "diggedRuin": true,
+          "digged": true
         },
         {
           "x": -2,
