@@ -1,9 +1,3 @@
 {
-  "idTown": "8400",
-  "inv": {
-    "IdInvPer": "8115956",
-    "IdInvSto": "8110545",
-    "IdInvBau": "8115957"
-  },
-  "invSize": 7
+  "idTown": "8400"
 }
