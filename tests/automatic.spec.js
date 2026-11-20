@@ -1129,16 +1129,24 @@ async function acceptDead(){
 	
 	const latestDay = Object.keys(dataSaved).sort((a, b) => parseInt(a.slice(3)) - parseInt(b.slice(3))).pop();
 	await sendTelegramMessage(`Juego Terminado: ${latestDay} en el paso: ${dataSaved[latestDay].currentStep}`);
-
-	execSync(`convert -delay 250 -loop 0 debug/*.png debug/${lastDataSaved?.idTown}.gif`);
-	await sendGif(`debug/${lastDataSaved?.idTown}.gif`);
-	await fs.rm('./debug', {
-	    recursive: true,
-	    force: true
-	});
-	await fs.mkdir('./debug', {
-	    recursive: true
-	});
+	try{
+		execSync(`convert -delay 250 -loop 0 debug/*.png debug/${lastDataSaved?.idTown}.gif`);
+		await sendGif(`./debug/${lastDataSaved?.idTown}.gif`);
+	} catch(exception){
+		
+	}
+	try{
+		await fs.rm('./debug', {
+		    recursive: true,
+		    force: true
+		});
+		await fs.mkdir('./debug', {
+		    recursive: true
+		});
+		
+	} catch(exception){
+		
+	}
 	
 	dataSaved = {};
 	lastDataSaved.inv = undefined;
@@ -2093,7 +2101,7 @@ function logTrace(url, method, body = undefined, status = undefined, result = un
 		};
 		console.log(dataSaved.log[currentDate]);
 		
-		takeScreenshot(`debug/${currentDate}.png`);
+		takeScreenshot(`./debug/${currentDate}.png`);
 	}
 	//console.log(dataSaved.log[currentDate]);
 	//writeJSON(nameFile_dataSaved, dataSaved);
@@ -2397,16 +2405,22 @@ async function sendGif(path) {
     );
 }
 function takeScreenshot(file) {
+	try {
+    	await fs.access('./debug');
+	} catch {
+	    await fs.mkdir('./debug', { recursive: true });
+	}
     screenshotPromise = screenshotPromise.then(() =>
         pag.screenshot({
             path: file,
             fullPage: true
         })
     ).catch(console.error);
-		try{
+	try{
 		retryPush(file, 4);
-		console.log(`Archivo ${filePath} actualizado`);
+		console.log(`Archivo ${file}.`);
 	} catch(error){
+		console.log(`No se logró guardar ${file}`);
 		//console.error(`Error al guardar cambios para archivo ${filePath} en GitHub: `, error.message);
 	}
 }
