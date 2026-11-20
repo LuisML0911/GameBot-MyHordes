@@ -144,7 +144,7 @@ test('myhordes', async () => {
 		const pathToExtension = await resolveExtensionPath();
 		
 		browserLogin = await chromium.launchPersistentContext(uniqueProfile, {
-			channel: 'msedge',
+			//channel: 'msedge',
 			headless: true
 		});
 		pag = await browserLogin.newPage();
