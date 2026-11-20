@@ -90,7 +90,7 @@ test('UpdateWeaponData', async ({ page }) => {
 		return; // salir sin hacer commit
 	}
 
-	writeJSON('test/bitacora/weapons.json', data);
+	writeJSON('./data/weapons.json', data);
 });
 test('GetGestHordes', async ({page}) => {
 	
