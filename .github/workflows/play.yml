@@ -30,13 +30,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install ImageMagick if needed
-        run: |
-          command -v convert || (
-            sudo apt-get update &&
-            sudo apt-get install -y imagemagick
-          )
-
       - uses: actions/cache@v5
         id: playwright-cache
         with:
