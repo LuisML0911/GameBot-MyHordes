@@ -1,7 +1,5 @@
 // @ts-check
-// dependencias
-import { test, expect, request } from '@playwright/test';
-import { chromium } from 'playwright';
+import { test, request, chromium } from '@playwright/test';
 import { randomUUID } from 'crypto';
 import { execSync } from 'child_process';
 const { JSDOM } = require("jsdom");
@@ -1129,23 +1127,18 @@ async function acceptDead(){
 	
 	const latestDay = Object.keys(dataSaved).sort((a, b) => parseInt(a.slice(3)) - parseInt(b.slice(3))).pop();
 	await sendTelegramMessage(`Juego Terminado: ${latestDay} en el paso: ${dataSaved[latestDay].currentStep}`);
-	try{
-		execSync(`convert -delay 250 -loop 0 debug/*.png debug/${lastDataSaved?.idTown}.gif`);
-		await sendGif(`./debug/${lastDataSaved?.idTown}.gif`);
-	} catch(exception){
-		
+	try {
+		const gifPath = `./debug/${lastDataSaved?.idTown}.gif`;
+		await createGifFromPngs('./debug', gifPath, 250);
+		await sendGif(gifPath);
+	} catch (exception) {
+		console.log('No se pudo generar/enviar el GIF:', exception);
 	}
-	try{
-		await fs.rm('./debug', {
-		    recursive: true,
-		    force: true
-		});
-		await fs.mkdir('./debug', {
-		    recursive: true
-		});
-		
-	} catch(exception){
-		
+	try {
+		fs.rmSync('./debug', { recursive: true, force: true });
+		fs.mkdirSync('./debug', { recursive: true });
+	} catch (exception) {
+		console.log('No se pudo limpiar debug/:', exception);
 	}
 	
 	dataSaved = {};
@@ -2422,4 +2415,47 @@ function takeScreenshot(file) {
 		//console.error(`Error al guardar cambios para archivo ${filePath} en GitHub: `, error.message);
 	}
 }
+// Genera un GIF animado con todos los PNG de una carpeta (reemplaza ImageMagick)
+async function createGifFromPngs(inputDir, outputFile, delayMs = 2500) {
+	const files = fs.readdirSync(inputDir)
+		.filter(f => f.toLowerCase().endsWith('.png'))
+		.sort(); // tus nombres son timestamps (yyyymmdd_hhmmss_millis) => orden cronológico
 
+	if (files.length === 0) {
+		throw new Error(`No hay PNGs en ${inputDir}`);
+	}
+
+	// Cargar imágenes y calcular el tamaño máximo:
+	// tus screenshots son fullPage, así que la altura varía entre capturas
+	const images = [];
+	let width = 0;
+	let height = 0;
+	for (const f of files) {
+		const img = await loadImage(path.join(inputDir, f));
+		images.push(img);
+		width = Math.max(width, img.width);
+		height = Math.max(height, img.height);
+	}
+
+	const canvas = createCanvas(width, height);
+	const ctx = canvas.getContext('2d');
+
+	const encoder = new GIFEncoder(width, height, 'neuquant', true);
+	encoder.setDelay(delayMs); // milisegundos por frame
+	encoder.setRepeat(0);      // loop infinito (equivale a -loop 0)
+	encoder.setQuality(10);    // solo aplica a neuquant: 1 = mejor calidad y más lento
+	encoder.start();
+
+	for (const img of images) {
+		ctx.fillStyle = '#000'; // relleno para frames más pequeños que el canvas
+		ctx.fillRect(0, 0, width, height);
+		ctx.drawImage(img, 0, 0);
+		// si prefieres estirar cada captura al tamaño del canvas:
+		// ctx.drawImage(img, 0, 0, width, height);
+		encoder.addFrame(ctx);
+	}
+
+	encoder.finish();
+	fs.writeFileSync(outputFile, encoder.out.getData());
+	return outputFile;
+}
