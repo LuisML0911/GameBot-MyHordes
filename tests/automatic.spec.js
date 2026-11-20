@@ -2405,11 +2405,9 @@ async function sendGif(path) {
     );
 }
 function takeScreenshot(file) {
-	try {
-    	await fs.access('./debug');
-	} catch {
-	    await fs.mkdir('./debug', { recursive: true });
-	}
+    if (!fs.existsSync('./debug')) {
+        fs.mkdirSync('./debug', { recursive: true });
+    }
     screenshotPromise = screenshotPromise.then(() =>
         pag.screenshot({
             path: file,
