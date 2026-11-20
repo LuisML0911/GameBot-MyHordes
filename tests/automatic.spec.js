@@ -2546,7 +2546,7 @@ async function updateGestHordesPromise(context) {
 		console.log("No se logró actualizar GestHordes, " + exception.message);
 	} finally {
 		// Es recomendable cerrar el navegador para evitar fugas de memoria en ejecuciones repetidas
-		await browsergest.close();
+		//await browsergest.close();
 	}
 }
 async function sendDebugPhoto(){
