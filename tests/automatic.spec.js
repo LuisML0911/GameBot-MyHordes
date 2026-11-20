@@ -67,18 +67,29 @@ test('resetLogs', async ({ page }) => {
 	//await sendTelegramMessage("Mensaje Enviado");
 
 	createRoutes(2);
+	await getRoute(2);
 	createRoutes(4);
+	await getRoute(4);
 	createRoutes(6);
+	await getRoute(6);
 	createRoutes(8);
+	await getRoute(8);
 	createRoutes(10);
+	await getRoute(10);
 	createRoutes(12);
+	await getRoute(12);
 	createRoutes(14);
+	await getRoute(14);
 	createRoutes(16);
+	await getRoute(16);
 	createRoutes(18);
-	createRoutes(20);
-	createRoutes(22);
+	await getRoute(18);
+	//createRoutes(20);
+	//await getRoute(20);
+	//createRoutes(22);
+	//await getRoute(22);
 	writeJSON(nameFile_dataSaved, dataSaved);
-	//await getRoute(18);
+	//await getRoute(2);
 	
 });
 test('UpdateWeaponData', async ({ page }) => {
