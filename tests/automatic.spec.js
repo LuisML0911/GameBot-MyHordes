@@ -66,11 +66,11 @@ test('resetLogs', async ({ page }) => {
 	dataSaved.log = {}
 	//await sendTelegramMessage("Mensaje Enviado");
 
-	createRoutes(14);
+	await createRoutes(14);
 	await getRoute(14);
-	createRoutes(16);
+	await createRoutes(16);
 	await getRoute(16);
-	createRoutes(18);
+	await createRoutes(18);
 	await getRoute(18);
 	//createRoutes(20);
 	//await getRoute(20);
@@ -1803,7 +1803,7 @@ async function getRoute(PAs, tGroupControl = 3){
 	
 	// Pasos:
 	// 1. se generan todas las rutas posibles en cada dirección con los PAs indicados usando (Reglas para genera rutas completas)
-	createRoutes(tPAs);
+	await createRoutes(tPAs);
 	
 	// 2. se ponderan las rutas y se recupera la mas alta
 	const village = getVillageInfo();
@@ -2003,41 +2003,58 @@ class RouteToBinaryStream extends Transform {
 async function createRoutes(PAs, Ox = 0, Oy = 0) {
     const filePath = path.join(process.cwd(), 'tests/constants', `routes_${PAs}.bin.br`);
 
+    // Si ya existe, no hacemos nada
     if (fs.existsSync(filePath)) {
         return {};
-    } else {
-        fs.mkdirSync(path.dirname(filePath), { recursive: true });
+    }
 
+    fs.mkdirSync(path.dirname(filePath), { recursive: true });
+
+    // Retornamos una Promesa que solo se resuelve cuando el archivo está 100% listo
+    return new Promise((resolve, reject) => {
         const fileStream = fs.createWriteStream(filePath);
+        
+        // NOTA: Bajé la calidad a 9. El nivel 11 a veces causa picos de memoria 
+        // que rompen los streams en entornos CI como GitHub Actions.
         const brotliStream = zlib.createBrotliCompress({
             params: {
-                [zlib.constants.BROTLI_PARAM_QUALITY]: 11
+                [zlib.constants.BROTLI_PARAM_QUALITY]: 9
             }
         });
+        
         const binaryStream = new RouteToBinaryStream();
 
         // Conectar la tubería
         binaryStream.pipe(brotliStream).pipe(fileStream);
 
+        // Manejo de errores: si algo falla en cualquier punto, rechazamos la promesa
+        fileStream.on('error', reject);
+        brotliStream.on('error', reject);
+        binaryStream.on('error', reject);
+
         let count = 0;
 
-        // Alimentar el stream
-        for (let ruta of generateRoutesGen(PAs, Ox, Oy)) {
-            binaryStream.write(ruta);
-            count++;
+        try {
+            // Alimentar el stream con las rutas generadas
+            for (let ruta of generateRoutesGen(PAs, Ox, Oy)) {
+                binaryStream.write(ruta);
+                count++;
+            }
+            // Indicar que no hay más datos por escribir
+            binaryStream.end();
+        } catch (err) {
+            reject(err);
+            return;
         }
 
-        // 1. Indicar que no hay más datos por escribir
-        binaryStream.end();
-
-        // 2. ESCUCHAR EL EVENTO 'finish' DEL STREAM DE ESCRITURA FINAL
+        // ESCUCHAR EL EVENTO 'finish' DEL STREAM DE ESCRITURA FINAL
         fileStream.on('finish', () => {
             console.log(`✅ Se guardaron y comprimieron ${count} rutas en ${filePath}`);
             
-            // 3. Verificación de seguridad: asegurar que el archivo tiene tamaño > 0
+            // Verificación de seguridad final
             const stats = fs.statSync(filePath);
             if (stats.size === 0) {
-                console.error(`❌ CRÍTICO: El archivo ${filePath} se generó con 0 bytes. No se hará push.`);
+                reject(new Error(`El archivo ${filePath} se generó con 0 bytes.`));
                 return;
             }
 
@@ -2047,19 +2064,11 @@ async function createRoutes(PAs, Ox = 0, Oy = 0) {
             } catch (error) {
                 console.error(`❌ Error al guardar cambios para archivo ${filePath}:`, error.message);
             }
+            
+            // ¡Ahora sí resolvemos la promesa! El archivo está listo para ser leído.
+            resolve({});
         });
-
-        // 4. Manejo robusto de errores en CUALQUIER punto de la tubería
-        fileStream.on('error', (err) => {
-            console.error(`❌ Error de escritura en disco:`, err.message);
-            // Opcional: fs.unlinkSync(filePath) para borrar el archivo corrupto
-        });
-        
-        brotliStream.on('error', (err) => console.error(`❌ Error de compresión Brotli:`, err.message));
-        binaryStream.on('error', (err) => console.error(`❌ Error de codificación binaria:`, err.message));
-        
-        return {};
-    }
+    });
 }
 
 async function* loadRoutesInChunks(filename, chunkSize = 100) {
