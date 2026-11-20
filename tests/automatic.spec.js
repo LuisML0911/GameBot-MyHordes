@@ -1732,7 +1732,7 @@ async function updateGestHordes(){
 			await pag.click('#mh-update-external-tools');
 			await new Promise(r => setTimeout(r, 12000));
 		}catch(exception){
-			console.log("No se logró actualizar GestHordes: " + exception);
+			console.log("Hordes: " + exception);
 		}
 	}else{
 		console.log("No fue posible actualizar GestHordes");
@@ -2324,34 +2324,39 @@ async function updateGestHordesPromise() {
 	try {
 		lastDataSaved = readJSON(nameFile_lastDataSaved);
 		const idTown = lastDataSaved.idTown;
-		await page.goto('https://gesthordes.fr/news', {
-			waitUntil: 'networkidle'
-		});
-
-		await page.goto(`https://gesthordes.fr/carte/${idTown}`);
-
-		const response = await page.evaluate(async (idTown) => {
-			const res = await fetch(
-				`https://gesthordes.fr/rest/v1/carte/${idTown}`,
-				{
-					headers: {
-						accept: 'application/json',
-						'gh-mapid': parseInt(idTown, 10)
+		await page.goto('https://gesthordes.fr/news', {waitUntil: 'networkidle'});
+		let response;
+		const maxIntentos = 4;
+		for (let intento = 1; intento <= maxIntentos; intento++) {
+			try {
+				await page.goto(`https://gesthordes.fr/carte/${idTown}`, {waitUntil: 'networkidle'});
+				response = await page.evaluate(async (idTown) => {
+					const res = await fetch(`https://gesthordes.fr/rest/v1/carte/${idTown}`,
+						{
+							headers: {
+								accept: 'application/json',
+								'gh-mapid': parseInt(idTown, 10)
+							}
+						}
+					);
+					if (!res.ok) {
+						throw new Error(`Respuesta no OK: ${res.status}`);
 					}
+					return await res.json();
+				}, idTown);
+				//page.goto(`https://gesthordes.fr/carte/${idTown}`);
+				break; 
+			} catch (error) {
+				if (intento === maxIntentos) {
+					throw new Error(`Se agotaron los ${maxIntentos} intentos para ${idTown}. Último error: ${error.message}`);
 				}
-			);
-
-			if (!res.ok) {
-				throw new Error(`Respuesta no OK: ${res.status}`);
+				await new Promise(resolve => setTimeout(resolve, 1000 * intento));
 			}
-
-			return await res.json();
-		}, idTown);
-		await page.goto(`https://gesthordes.fr/carte/${idTown}`);
+		}
 		console.log("GestHordes: " + response);
 		writeJSON('data/gestHordes.json', response);
 	} catch(exception){
-		console.log("No se logró actualizar GestHordes");
+		console.log("No se logró actualizar GestHordes, " + exception.message);
 	}//finally {
 		//browsergest.close();
 	//}
