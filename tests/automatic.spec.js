@@ -66,7 +66,15 @@ test('resetLogs', async ({ page }) => {
 	dataSaved.log = {}
 	//await sendTelegramMessage("Mensaje Enviado");
 
+	createRoutes(2);
+	createRoutes(4);
+	createRoutes(6);
 	createRoutes(8);
+	createRoutes(10);
+	createRoutes(12);
+	createRoutes(14);
+	createRoutes(16);
+	createRoutes(18);
 	writeJSON(nameFile_dataSaved, dataSaved);
 	await getRoute(18);
 	
@@ -1801,7 +1809,7 @@ async function getRoute(PAs, tGroupControl = 3){
 	//console.log(village);
 	let rutaOpt = {way:[]};
 	let tFOpt = -1;
-	for await (const chunk of loadRoutesInChunks(path.join(constFile, `routes_${tPAs}.json`), 32)) {
+	for await (const chunk of loadRoutesInChunks(path.join(constFile, `routes_${tPAs}.bin.br`), 32)) {
 		// Procesar rutas en paralelo dentro del chunk
 		const resultados = await Promise.all(chunk.map(async (ruta) => {
 			let tOpt = 0;
@@ -2042,25 +2050,102 @@ function createRoutes(PAs, Ox = 0, Oy = 0) {
         return {};
     }
 }
-async function* loadRoutesInChunks(filename, chunkSize = 100) {
-    const fileStream = fs.createReadStream(filename);
-    const rl = readline.createInterface({
-        input: fileStream,
-        crlfDelay: Infinity
-    });
 
-    let buffer = [];
-    for await (const line of rl) {
-        if (line.trim().length === 0) continue; // saltar líneas vacías
-        buffer.push(JSON.parse(line));
-        if (buffer.length === chunkSize) {
-            yield buffer;
-            buffer = [];
+async function* loadRoutesInChunks(filename, chunkSize = 100) {
+    const ext = path.extname(filename);
+	console.log (filename);
+
+    if (ext === '.json') {
+        const fileStream = fs.createReadStream(filename);
+        const rl = readline.createInterface({
+            input: fileStream,
+            crlfDelay: Infinity
+        });
+
+        let buffer = [];
+        for await (const line of rl) {
+            if (line.trim().length === 0) continue;
+            buffer.push(JSON.parse(line));
+            if (buffer.length === chunkSize) {
+                yield buffer;
+                buffer = [];
+            }
         }
+        if (buffer.length > 0) yield buffer;
+        return;
     }
-    if (buffer.length > 0) {
-        yield buffer; // último bloque
+    if (ext === '.br' || filename.includes('.bin.br')) {
+        // Verificar que el archivo no esté vacío o corrupto antes de leer
+        const stats = fs.statSync(filename);
+        if (stats.size === 0) {
+            throw new Error(`El archivo ${filename} está vacío. Regenera el archivo .bin.br`);
+        }
+
+        const fileStream = fs.createReadStream(filename);
+        const brotliStream = zlib.createBrotliDecompress();
+        
+        fileStream.pipe(brotliStream);
+
+        let pendingBuffer = Buffer.alloc(0);
+        let currentChunk = [];
+
+        try {
+            for await (const chunk of brotliStream) {
+                pendingBuffer = Buffer.concat([pendingBuffer, chunk]);
+                let offset = 0;
+                
+                while (offset + 2 <= pendingBuffer.length) {
+                    const routeLength = pendingBuffer.readUInt16LE(offset);
+                    const routeSizeBytes = 2 + 4 + (routeLength - 1) * 2;
+                    
+                    if (offset + routeSizeBytes > pendingBuffer.length) {
+                        break; // Esperar más datos
+                    }
+                    
+                    // Decodificar ruta
+                    const route = [];
+                    let x = pendingBuffer.readInt16LE(offset + 2);
+                    let y = pendingBuffer.readInt16LE(offset + 4);
+                    route.push([x, y]);
+                    
+                    let currentOffset = offset + 6;
+                    for (let i = 1; i < routeLength; i++) {
+                        x += pendingBuffer.readInt8(currentOffset);
+                        y += pendingBuffer.readInt8(currentOffset + 1);
+                        route.push([x, y]);
+                        currentOffset += 2;
+                    }
+                    
+                    currentChunk.push(route);
+                    offset += routeSizeBytes;
+                    
+                    if (currentChunk.length === chunkSize) {
+                        yield currentChunk;
+                        currentChunk = [];
+                    }
+                }
+                
+                if (offset > 0) {
+                    pendingBuffer = pendingBuffer.subarray(offset);
+                }
+            }
+            
+            if (currentChunk.length > 0) {
+                yield currentChunk;
+            }
+        } catch (err) {
+            if (err.code === 'Z_BUF_ERROR' || err.code === 'Z_DATA_ERROR') {
+                throw new Error(
+                    `El archivo ${filename} está corrupto o incompleto (no es un stream Brotli válido). ` +
+                    `Verifica que se haya generado correctamente con la función createRoutes.`
+                );
+            }
+            throw err;
+        }
+        return;
     }
+
+    throw new Error(`Extensión de archivo no soportada: ${ext}. Usa .json o .bin.br`);
 }
 // Recupera información de la villa
 function getVillageInfo(){
