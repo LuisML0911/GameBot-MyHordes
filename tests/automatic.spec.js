@@ -152,7 +152,6 @@ test('myhordes', async () => {
 		}
 		await new Promise(r => setTimeout(r, 12000));
 		await browserLogin.close();
-		gestHordesPromise = updateGestHordesPromise();
 		browserPlay = await chromium.launchPersistentContext(uniqueProfile, {
 			//channel: 'msedge',
 			headless: true,
@@ -161,6 +160,7 @@ test('myhordes', async () => {
 				`--load-extension=${pathToExtension}`
 			] : []
 		});
+		gestHordesPromise = updateGestHordesPromise(browserPlay);
 		pag = await browserPlay.newPage();
 		
 		//error("Llendo a sitio MyHordes para redirigir: " + pag.url());
@@ -2313,12 +2313,13 @@ async function asegurarCheckedLi(selector, { timeout = 7000 } = {}) {
   return true;
 }
 
-async function updateGestHordesPromise() {
+async function updateGestHordesPromise(context) {
+	/*
 	browsergest = await chromium.launch({
 		headless: true
 	});
-
-	const context = await browsergest.newContext();
+*/
+	//const context = await browsergest.newContext();
 	const page = await context.newPage();
 
 	try {
