@@ -64,10 +64,10 @@ test('resetLogs', async ({ page }) => {
 	dataSaved.log = {}
 	//await sendTelegramMessage("Mensaje Enviado");
 
+	createRoutes(8);
 	writeJSON(nameFile_dataSaved, dataSaved);
 	await getRoute(18);
 	
-	//createRoutes(20);
 });
 test('UpdateWeaponData', async ({ page }) => {
 	// Navegar para que el navegador obtenga la cookie de Cloudflare
@@ -1953,31 +1953,90 @@ function* generateRoutesGen(PAs, Ox = 0, Oy = 0, x = 0, y = 0, currentPA = 0, pa
         yield* generateRoutesGen(PAs, Ox, Oy, newX, newY, currentPA+1, newPath, newVisited, seenRoutes);
     }
 }
-// Función envolvente con persistencia
+class RouteToBinaryStream extends Transform {
+    constructor() {
+        super({ objectMode: true }); // Recibe objetos (arrays), emite Buffers
+    }
+
+    _transform(route, encoding, callback) {
+        if (!route || route.length === 0) return callback();
+
+        // Tamaño: 2 (longitud) + 4 (primer punto X,Y) + (longitud - 1) * 2 (deltas dx,dy)
+        const size = 2 + 4 + (route.length - 1) * 2;
+        const buf = Buffer.alloc(size);
+        let offset = 0;
+
+        // 1. Longitud de la ruta
+        buf.writeUInt16LE(route.length, offset);
+        offset += 2;
+
+        // 2. Primer punto (coordenadas absolutas)
+        buf.writeInt16LE(route[0][0], offset);
+        offset += 2;
+        buf.writeInt16LE(route[0][1], offset);
+        offset += 2;
+
+        // 3. Puntos siguientes (deltas: diferencias respecto al anterior)
+        for (let i = 1; i < route.length; i++) {
+            buf.writeInt8(route[i][0] - route[i-1][0], offset); // dx
+            offset += 1;
+            buf.writeInt8(route[i][1] - route[i-1][1], offset); // dy
+            offset += 1;
+        }
+
+        this.push(buf);
+        callback();
+    }
+}
+
 function createRoutes(PAs, Ox = 0, Oy = 0) {
-    //const filePath = path.join(constFile, `routes_${PAs}.json`);
-	const filePath = path.join(process.cwd(), 'tests/constants', `routes_${PAs}.json`);
+    // Cambiamos la extensión para reflejar que es binario + brotli
+    const filePath = path.join(process.cwd(), 'tests/constants', `routes_${PAs}.bin.br`);
 
     if (fs.existsSync(filePath)) {
         return {};
     } else {
-		fs.mkdirSync(path.dirname(filePath), { recursive: true });
-		const stream = fs.createWriteStream(filePath);
-		let count = 0;
-		for (let ruta of generateRoutesGen(PAs, Ox, Oy)) {
-			stream.write(JSON.stringify(ruta) + '\n');
-			count++;
-		}
-		stream.end(() => {
-			console.log(`Se guardaron ${count} rutas en ${filePath}`);
-			try {
-				retryPush(filePath);
-				console.log(`Archivo ${filePath} actualizado en GitHub`);
-			} catch (error) {
-				console.error(`Error al guardar cambios para archivo ${filePath}:`, error.message);
-			}
-		});
-		
+        fs.mkdirSync(path.dirname(filePath), { recursive: true });
+
+        // 1. Stream de escritura hacia el archivo
+        const fileStream = fs.createWriteStream(filePath);
+
+        // 2. Stream de compresión Brotli (Nivel 11 = máxima compresión)
+        const brotliStream = zlib.createBrotliCompress({
+            params: {
+                [zlib.constants.BROTLI_PARAM_QUALITY]: 11
+            }
+        });
+
+        // 3. Stream de codificación binaria
+        const binaryStream = new RouteToBinaryStream();
+
+        // 4. Conectar la tubería: Binario -> Brotli -> Archivo
+        binaryStream.pipe(brotliStream).pipe(fileStream);
+
+        let count = 0;
+
+        // 5. Alimentar el stream con las rutas generadas
+        for (let ruta of generateRoutesGen(PAs, Ox, Oy)) {
+            binaryStream.write(ruta);
+            count++;
+        }
+
+        // 6. Finalizar y manejar el evento de cierre
+        binaryStream.end(() => {
+            console.log(`✅ Se guardaron y comprimieron ${count} rutas en ${filePath}`);
+            try {
+                retryPush(filePath);
+                console.log(`📦 Archivo ${filePath} actualizado en GitHub`);
+            } catch (error) {
+                console.error(`❌ Error al guardar cambios para archivo ${filePath}:`, error.message);
+            }
+        });
+
+        // Manejo básico de errores en los streams
+        fileStream.on('error', (err) => console.error('Error de escritura:', err));
+        brotliStream.on('error', (err) => console.error('Error de compresión:', err));
+        
         return {};
     }
 }
