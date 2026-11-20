@@ -2401,19 +2401,17 @@ function takeScreenshot(file) {
     if (!fs.existsSync('./debug')) {
         fs.mkdirSync('./debug', { recursive: true });
     }
-    screenshotPromise = screenshotPromise.then(() =>
+    screenshotPromise = 
+	screenshotPromise.then(() =>
         pag.screenshot({
             path: file,
             fullPage: true
         })
-    ).catch(console.error);
-	try{
-		retryPush(file, 4);
-		console.log(`Archivo ${file}.`);
-	} catch(error){
-		console.log(`No se logró guardar ${file}`);
-		//console.error(`Error al guardar cambios para archivo ${filePath} en GitHub: `, error.message);
-	}
+    )
+    .then(() => {
+        retryPush(file, 4);
+    })
+	.catch((error) => {console.error(`Error al tomar screenshot de ${file}:`, error);});
 }
 // Genera un GIF animado con todos los PNG de una carpeta (reemplaza ImageMagick)
 async function createGifFromPngs(inputDir, outputFile, delayMs = 2500) {
