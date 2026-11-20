@@ -55,8 +55,10 @@ let browsergest;
 const botToken = "8571353822:AAH1avvfeURxxlx0ow2E5dpBorv0aq9mqrk"
 const chatId  = "1975024455"
 test('resetLogs', async ({ page }) => {
+    test.setTimeout(10 * 60 * 1000); // 5 minutos solo para este test
 	// Navegar para que el navegador obtenga la cookie de Cloudflare
-	await page.goto('https://gesthordes.fr/rest/v1/prototype/all');
+	
+	//await page.goto('https://gesthordes.fr/rest/v1/prototype/all');
 
 	lastDataSaved = readJSON(nameFile_lastDataSaved);
 	nameFile_dataSaved = path.join(baseFiles, lastDataSaved.idTown + ".json");
