@@ -171,7 +171,7 @@ test('myhordes', async () => {
 				`--load-extension=${pathToExtension}`
 			] : []
 		});
-		gestHordesPromise = updateGestHordesPromise(browserPlay);
+		gestHordesPromise = updateGestHordesPromise();
 		pag = await browserPlay.newPage();
 		
 		//error("Llendo a sitio MyHordes para redirigir: " + pag.url());
@@ -2470,13 +2470,13 @@ async function asegurarCheckedLi(selector, { timeout = 7000 } = {}) {
   return true;
 }
 
-async function updateGestHordesPromise(context) {
-	/*
+async function updateGestHordesPromise() {
+	
 	browsergest = await chromium.launch({
 		headless: true
 	});
-*/
-	//const context = await browsergest.newContext();
+
+	const context = await browsergest.newContext();
 	const page = await context.newPage();
 
 	try {
