@@ -66,14 +66,6 @@ test('resetLogs', async ({ page }) => {
 	dataSaved.log = {}
 	//await sendTelegramMessage("Mensaje Enviado");
 
-	createRoutes(2);
-	await getRoute(2);
-	createRoutes(4);
-	await getRoute(4);
-	createRoutes(6);
-	await getRoute(6);
-	createRoutes(8);
-	await getRoute(8);
 	createRoutes(10);
 	await getRoute(10);
 	createRoutes(12);
