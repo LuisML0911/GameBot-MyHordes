@@ -20,7 +20,9 @@ jobs:
     runs-on: ubuntu-24.04
     container:
       image: ghcr.io/luisml0911/gamebot-playwright:latest
-    
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v5
         with:
