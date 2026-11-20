@@ -2490,7 +2490,6 @@ async function asegurarCheckedLi(selector, { timeout = 7000 } = {}) {
 }
 
 async function updateGestHordesPromise() {
-	
 	browsergest = await chromium.launch({
 		headless: true
 	});
@@ -2501,44 +2500,52 @@ async function updateGestHordesPromise() {
 	try {
 		lastDataSaved = readJSON(nameFile_lastDataSaved);
 		const idTown = lastDataSaved.idTown;
+		
 		await page.goto('https://gesthordes.fr/news', {waitUntil: 'networkidle'});
+		
 		let response;
 		const maxIntentos = 4;
+		
 		for (let intento = 1; intento <= maxIntentos; intento++) {
 			try {
-				//page.goto(`https://gesthordes.fr/carte/${idTown}`);
-				response = page.evaluate(async (idTown) => {
-					const res = await fetch(`https://gesthordes.fr/rest/v1/carte/${idTown}`,
-						{
-							headers: {
-								accept: 'application/json',
-								'gh-mapid': parseInt(idTown, 10)
-							}
+				// ✅ CORRECCIÓN: Se agrega 'await' aquí
+				response = await page.evaluate(async (idTown) => {
+					const res = await fetch(`https://gesthordes.fr/rest/v1/carte/${idTown}`, {
+						headers: {
+							accept: 'application/json',
+							'gh-mapid': parseInt(idTown, 10)
 						}
-					);
+					});
 					if (!res.ok) {
 						throw new Error(`Respuesta no OK: ${res.status}`);
 					}
 					return await res.json();
 				}, idTown);
+
+				// Ahora sí, navegamos después de haber obtenido la respuesta
 				await page.goto(`https://gesthordes.fr/carte/${idTown}`, {waitUntil: 'networkidle'});
-				//page.goto(`https://gesthordes.fr/carte/${idTown}`);
-				break; 
+				
+				break; // Salimos del bucle si tuvo éxito
 			} catch (error) {
 				if (intento === maxIntentos) {
 					throw new Error(`Se agotaron los ${maxIntentos} intentos para ${idTown}. Último error: ${error.message}`);
 				}
+				// Espera exponencial antes del siguiente intento
 				await new Promise(resolve => setTimeout(resolve, 1000 * intento));
 			}
 		}
-		console.log("GestHordes: " + response);
+		
+		// 💡 CONSEJO: Usa coma (,) en lugar de concatenación (+) para ver el objeto completo en consola
+		console.log("GestHordes:", response);
+		
 		writeJSON('data/gestHordes.json', response);
-	} catch(exception){
+		
+	} catch(exception) {
 		console.log("No se logró actualizar GestHordes, " + exception.message);
-	}//finally {
-		//browsergest.close();
-	//}
-	//return browsergest;
+	} finally {
+		// Es recomendable cerrar el navegador para evitar fugas de memoria en ejecuciones repetidas
+		await browsergest.close();
+	}
 }
 async function sendDebugPhoto(){
 	await pag.screenshot({
