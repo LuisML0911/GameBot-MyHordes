@@ -1996,58 +1996,71 @@ class RouteToBinaryStream extends Transform {
     }
 }
 
+
 async function createRoutes(PAs, Ox = 0, Oy = 0) {
     const filePath = path.join(process.cwd(), 'tests/constants', `routes_${PAs}.bin.br`);
 
-    // Si ya existe, no hacemos nada
     if (fs.existsSync(filePath)) {
         return {};
     }
 
     fs.mkdirSync(path.dirname(filePath), { recursive: true });
 
-    // Retornamos una Promesa que solo se resuelve cuando el archivo está 100% listo
     return new Promise((resolve, reject) => {
         const fileStream = fs.createWriteStream(filePath);
-        
-        // NOTA: Bajé la calidad a 9. El nivel 11 a veces causa picos de memoria 
-        // que rompen los streams en entornos CI como GitHub Actions.
         const brotliStream = zlib.createBrotliCompress({
-            params: {
-                [zlib.constants.BROTLI_PARAM_QUALITY]: 9
-            }
+            params: { [zlib.constants.BROTLI_PARAM_QUALITY]: 9 } // Nivel 9 es más estable en memoria
         });
-        
         const binaryStream = new RouteToBinaryStream();
 
-        // Conectar la tubería
         binaryStream.pipe(brotliStream).pipe(fileStream);
 
-        // Manejo de errores: si algo falla en cualquier punto, rechazamos la promesa
         fileStream.on('error', reject);
         brotliStream.on('error', reject);
         binaryStream.on('error', reject);
 
         let count = 0;
+        const generator = generateRoutesGen(PAs, Ox, Oy);
 
-        try {
-            // Alimentar el stream con las rutas generadas
-            for (let ruta of generateRoutesGen(PAs, Ox, Oy)) {
-                binaryStream.write(ruta);
-                count++;
-            }
-            // Indicar que no hay más datos por escribir
-            binaryStream.end();
-        } catch (err) {
-            reject(err);
-            return;
-        }
-
-        // ESCUCHAR EL EVENTO 'finish' DEL STREAM DE ESCRITURA FINAL
-        fileStream.on('finish', () => {
-            console.log(`✅ Se guardaron y comprimieron ${count} rutas en ${filePath}`);
+        // Función que maneja la escritura respetando la capacidad del stream
+        const writeNext = () => {
+            let canWrite = true;
             
-            // Verificación de seguridad final
+            while (canWrite) {
+                const result = generator.next();
+                
+                // Si el generador terminó, cerramos el stream
+                if (result.done) {
+                    binaryStream.end();
+                    return;
+                }
+
+                // Escribimos la ruta. write() devuelve false si el buffer interno está lleno
+                canWrite = binaryStream.write(result.value);
+                count++;
+
+                // 📊 Log de progreso cada 50,000 rutas (ajusta según necesites)
+                // Esto es CRUCIAL para saber que el proceso no se colgó en PAs 18
+                if (count % 50000 === 0) {
+                    console.log(`⏳ Generadas ${count.toLocaleString()} rutas... (PAs: ${PAs})`);
+                }
+
+                // ⚠️ MANEJO DE BACKPRESSURE:
+                // Si el buffer está lleno, dejamos de escribir y esperamos al evento 'drain'
+                if (!canWrite) {
+                    binaryStream.once('drain', writeNext);
+                    return;
+                }
+            }
+        };
+
+        // Iniciar el ciclo de escritura
+        writeNext();
+
+        // Cuando todo se haya escrito físicamente en el disco
+        fileStream.on('finish', () => {
+            console.log(`✅ Se guardaron y comprimieron ${count.toLocaleString()} rutas en ${filePath}`);
+            
             const stats = fs.statSync(filePath);
             if (stats.size === 0) {
                 reject(new Error(`El archivo ${filePath} se generó con 0 bytes.`));
@@ -2061,7 +2074,6 @@ async function createRoutes(PAs, Ox = 0, Oy = 0) {
                 console.error(`❌ Error al guardar cambios para archivo ${filePath}:`, error.message);
             }
             
-            // ¡Ahora sí resolvemos la promesa! El archivo está listo para ser leído.
             resolve({});
         });
     });
