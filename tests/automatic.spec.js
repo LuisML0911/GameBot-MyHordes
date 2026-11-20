@@ -76,7 +76,7 @@ test('resetLogs', async ({ page }) => {
 	createRoutes(16);
 	createRoutes(18);
 	writeJSON(nameFile_dataSaved, dataSaved);
-	await getRoute(18);
+	//await getRoute(18);
 	
 });
 test('UpdateWeaponData', async ({ page }) => {
