@@ -75,6 +75,8 @@ test('resetLogs', async ({ page }) => {
 	createRoutes(14);
 	createRoutes(16);
 	createRoutes(18);
+	createRoutes(20);
+	createRoutes(22);
 	writeJSON(nameFile_dataSaved, dataSaved);
 	//await getRoute(18);
 	
