@@ -156,7 +156,7 @@ test('myhordes', async () => {
 		await browserLogin.close();
 		gestHordesPromise = updateGestHordesPromise();
 		browserPlay = await chromium.launchPersistentContext(uniqueProfile, {
-			channel: 'msedge',
+			//channel: 'msedge',
 			headless: true,
 			args: pathToExtension ? [
 				`--disable-extensions-except=${pathToExtension}`,
