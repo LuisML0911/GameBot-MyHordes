@@ -169,7 +169,7 @@ test('myhordes', async () => {
 				`--load-extension=${pathToExtension}`
 			] : []
 		});
-		gestHordesPromise = updateGestHordesPromise();
+		gestHordesPromise = updateGestHordesPromise(browserPlay);
 		pag = await browserPlay.newPage();
 		
 		//error("Llendo a sitio MyHordes para redirigir: " + pag.url());
@@ -2489,12 +2489,14 @@ async function asegurarCheckedLi(selector, { timeout = 7000 } = {}) {
   return true;
 }
 
-async function updateGestHordesPromise() {
+async function updateGestHordesPromise(context) {
+	/*
 	browsergest = await chromium.launch({
 		headless: true
 	});
 
 	const context = await browsergest.newContext();
+	*/
 	const page = await context.newPage();
 
 	try {
@@ -2508,7 +2510,7 @@ async function updateGestHordesPromise() {
 		
 		for (let intento = 1; intento <= maxIntentos; intento++) {
 			try {
-				// ✅ CORRECCIÓN: Se agrega 'await' aquí
+				await page.goto(`https://gesthordes.fr/carte/${idTown}`, {waitUntil: 'networkidle'});
 				response = await page.evaluate(async (idTown) => {
 					const res = await fetch(`https://gesthordes.fr/rest/v1/carte/${idTown}`, {
 						headers: {
@@ -2523,7 +2525,7 @@ async function updateGestHordesPromise() {
 				}, idTown);
 
 				// Ahora sí, navegamos después de haber obtenido la respuesta
-				await page.goto(`https://gesthordes.fr/carte/${idTown}`, {waitUntil: 'networkidle'});
+				await page.goto(`https://gesthordes.fr/carte/${idTown}`);
 				
 				break; // Salimos del bucle si tuvo éxito
 			} catch (error) {
