@@ -8,7 +8,8 @@ on:
   workflow_dispatch:       # también lo puedes lanzar manualmente
   
 permissions:
-  contents: write   # da permiso de escritura al GITHUB_TOKEN
+  contents: write
+  packages: read
   
 concurrency:
   group: ${{ github.workflow }}
