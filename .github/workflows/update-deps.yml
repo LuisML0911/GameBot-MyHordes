@@ -1,0 +1,96 @@
+name: Actualizar dependencias
+
+on:
+  # Se ejecuta cada lunes a las 9:00 AM UTC
+  schedule:
+    - cron: '0 9 * * 1'
+  # También se puede ejecutar manualmente desde la pestaña Actions
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-dependencies:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Clonar repositorio
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🟢 Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 📦 Instalar dependencias actuales
+        run: npm ci
+
+      - name: 🔄 Actualizar package.json a últimas versiones
+        run: npx npm-check-updates -u
+
+      - name: 📥 Instalar nuevas versiones
+        run: npm install
+
+      - name: 🧹 Limpiar dependencias duplicadas
+        run: npm dedupe
+
+      - name: 🧪 Ejecutar tests (opcional pero recomendado)
+        run: npm test || echo "⚠️ Tests fallaron, pero continuando..."
+        continue-on-error: true
+
+      - name: 📝 Verificar si hay cambios
+        id: check_changes
+        run: |
+          if git diff --quiet package.json package-lock.json; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 🌿 Crear rama y hacer commit
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          BRANCH_NAME="deps/update-$(date +%Y-%m-%d)"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b $BRANCH_NAME
+          git add package.json package-lock.json
+          git commit -m "chore: actualizar dependencias $(date +%Y-%m-%d)"
+          git push origin $BRANCH_NAME
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+        id: create_branch
+
+      - name: 🔀 Crear Pull Request
+        if: steps.check_changes.outputs.has_changes == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: actualizar dependencias"
+          title: "🔄 Actualización automática de dependencias - $(date +%Y-%m-%d)"
+          body: |
+            ## 📦 Actualización automática de dependencias
+            
+            Este PR fue generado automáticamente por el workflow de actualización.
+            
+            ### Cambios incluidos:
+            - `package.json` actualizado con las últimas versiones
+            - `package-lock.json` regenerado
+            
+            ### ⚠️ Revisa antes de mergear:
+            - [ ] Ejecutar el proyecto localmente
+            - [ ] Verificar que los tests pasen
+            - [ ] Probar la funcionalidad crítica (screenshots, retryPush, etc.)
+            
+            ---
+            🤖 Generado por [GitHub Actions](../actions)
+          branch: ${{ steps.create_branch.outputs.branch_name }}
+          base: main
+          labels: |
+            dependencies
+            automated
+          # reviewers: tu-usuario  # Descomenta y cambia por tu usuario
