@@ -3,12 +3,14 @@ import { test, request, chromium } from '@playwright/test';
 import { randomUUID } from 'crypto';
 import { execSync } from 'child_process';
 const { JSDOM } = require("jsdom");
+const { Transform } = require('stream');
 const fs = require('fs');
 const readline = require('readline');
 const path = require('path');
 const AdmZip = require('adm-zip');
 const util = require('util');
 const readFile = util.promisify(fs.readFile);
+const zlib = require('zlib');
 
 //constantes
 let pag = undefined;
