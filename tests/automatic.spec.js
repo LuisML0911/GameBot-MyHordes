@@ -172,8 +172,7 @@ test('myhordes', async () => {
 		pag = await browserPlay.newPage();
 		
 		await goto('/jx/town/dashboard');
-		await new Promise(r => setTimeout(r, 8000));
-		await sendDebugPhoto(pag);
+		await new Promise(r => setTimeout(r, 7000));
 		try{
 			const noInteresado = pag.getByText('No interesado');
 			
@@ -184,11 +183,8 @@ test('myhordes', async () => {
 		}catch(exception){
 			
 		}
-		await sendDebugPhoto(pag);
 		await pag.locator('div.header-directory.app-directory.closed').click();
-		await sendDebugPhoto(pag);
 		await pag.locator('li >> span.name:text-is("Gest\'Hordes")').click();
-		await sendDebugPhoto(pag);
 		const [newPage] = await Promise.all([
 			browserPlay.waitForEvent('page'),
 			pag.getByRole('button', {
@@ -198,9 +194,7 @@ test('myhordes', async () => {
 		await newPage.waitForLoadState();
 		await new Promise(r => setTimeout(r, 2000));
 		await sendDebugPhoto(newPage);
-
-		
-		gestHordesPromise = await updateGestHordesPromise(browserPlay);
+		gestHordesPromise = await updateGestHordesPromise(newPage);
 		
 		//error("Llendo a sitio MyHordes para redirigir: " + pag.url());
 		//await goto('/jx/town/dashboard');
@@ -2521,7 +2515,7 @@ async function asegurarCheckedLi(selector, { timeout = 7000 } = {}) {
   return true;
 }
 
-async function updateGestHordesPromise(context) {
+async function updateGestHordesPromise(page) {
 	/*
 	browsergest = await chromium.launch({
 		headless: true
@@ -2529,7 +2523,7 @@ async function updateGestHordesPromise(context) {
 
 	const context = await browsergest.newContext();
 	*/
-	const page = await context.newPage();
+	//const page = await context.newPage();
 
 	try {
 		lastDataSaved = readJSON(nameFile_lastDataSaved);
@@ -2538,10 +2532,8 @@ async function updateGestHordesPromise(context) {
 		await sendDebugPhoto(page);
 		let response;
 		const maxIntentos = 1;
-		console.log("inician intentos");
 		for (let intento = 1; intento <= maxIntentos; intento++) {
 			try {
-				await page.goto('https://gesthordes.fr/news', {waitUntil: 'networkidle'});
 				await sendDebugPhoto(page);
 				response = await page.evaluate(async (idTown) => {
 					const res = await fetch(`/rest/v1/carte/${idTown}`, {
@@ -2556,9 +2548,6 @@ async function updateGestHordesPromise(context) {
 					}
 					return await res.json();
 				}, idTown);
-
-				// Ahora sí, navegamos después de haber obtenido la respuesta
-				await page.goto(`https://gesthordes.fr/carte/${idTown}`);
 				
 				break; // Salimos del bucle si tuvo éxito
 			} catch (error) {
