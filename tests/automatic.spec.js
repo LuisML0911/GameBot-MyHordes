@@ -2506,15 +2506,17 @@ async function updateGestHordesPromise(context) {
 		lastDataSaved = readJSON(nameFile_lastDataSaved);
 		const idTown = lastDataSaved.idTown;
 		
+		console.log("va a sitio");
 		await page.goto('https://gesthordes.fr/news', {waitUntil: 'networkidle'});
 		
+		await sendDebugPhoto(page);
 		let response;
 		const maxIntentos = 1;
-		
+		console.log("inician intentos");
 		for (let intento = 1; intento <= maxIntentos; intento++) {
 			try {
 				await page.goto(`https://gesthordes.fr/carte/${idTown}`, {waitUntil: 'networkidle'});
-				await sendDebugPhoto();
+				await sendDebugPhoto(page);
 				response = await page.evaluate(async (idTown) => {
 					const res = await fetch(`/rest/v1/carte/${idTown}`, {
 						method: 'GET',
@@ -2554,8 +2556,9 @@ async function updateGestHordesPromise(context) {
 		//await browsergest.close();
 	}
 }
-async function sendDebugPhoto(){
-	await pag.screenshot({
+async function sendDebugPhoto(nav){
+	console.log("Enviando Foto");
+	await nav.screenshot({
 		path: 'debug.png',
 		fullPage: true
 	});
@@ -2575,6 +2578,7 @@ async function sendDebugPhoto(){
 			body: form
 		}
 	);
+	console.log("Foto enviada");
 }
 async function sendGif(path) {
 
