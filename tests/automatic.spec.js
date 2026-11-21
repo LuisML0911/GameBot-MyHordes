@@ -159,7 +159,7 @@ test('myhordes', async () => {
 		if(!(await login())){
     		throw new Error("No se logró iniciar sesión");
 		}
-		await new Promise(r => setTimeout(r, 8000));
+		await new Promise(r => setTimeout(r, 7000));
 		await browserLogin.close();
 		browserPlay = await chromium.launchPersistentContext(uniqueProfile, {
 			//channel: 'msedge',
@@ -171,8 +171,8 @@ test('myhordes', async () => {
 		});
 		pag = await browserPlay.newPage();
 		await goto('/jx/town/dashboard');
-		
 		await new Promise(r => setTimeout(r, 8000));
+		await sendDebugPhoto(pag);
 		await pag.locator('li >> span.name:text-is("Gest\'Hordes")').click();
 		await sendDebugPhoto(pag);
 		gestHordesPromise = await updateGestHordesPromise(browserPlay);
