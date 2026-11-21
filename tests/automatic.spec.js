@@ -170,7 +170,7 @@ test('myhordes', async () => {
 			] : []
 		});
 		pag = await browserPlay.newPage();
-		await goto('/jx/town/dashboard');
+		await goto('/jx/town/dashboard', {waitUntil: 'networkidle'});
 		await pag.locator('li >> span.name:text-is("Gest\'Hordes")').click();
 		await sendDebugPhoto(page);
 		gestHordesPromise = await updateGestHordesPromise(browserPlay);
