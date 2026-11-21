@@ -189,8 +189,15 @@ test('myhordes', async () => {
 		await sendDebugPhoto(pag);
 		await pag.locator('li >> span.name:text-is("Gest\'Hordes")').click();
 		await sendDebugPhoto(pag);
-		await pag.locator('form[action="https://gesthordes.fr/login"] button').click();
-		await sendDebugPhoto(pag);
+		const [newPage] = await Promise.all([
+			context.waitForEvent('page'),
+			page.getByRole('button', {
+				name: "Continuar a Gest'Hordes"
+			}).click()
+		]);
+		await newPage.waitForLoadState();
+		await new Promise(r => setTimeout(r, 2000));
+		await sendDebugPhoto(newPage);
 
 		
 		gestHordesPromise = await updateGestHordesPromise(browserPlay);
