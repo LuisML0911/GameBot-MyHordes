@@ -310,6 +310,7 @@ async function evaluateWebSite(){
 		
 		if (await noInteresado.isVisible().catch(() => false)) {
 			await noInteresado.click();
+			await pag.keyboard.press('Enter');
 		}
 	}catch(exception){
 		
@@ -1232,6 +1233,7 @@ async function joinToTown(){
 		
 		if (await noInteresado.isVisible().catch(() => false)) {
 			await noInteresado.click();
+			await pag.keyboard.press('Enter');
 		}
 	}catch(exception){
 		
