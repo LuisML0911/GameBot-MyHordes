@@ -190,7 +190,7 @@ test('myhordes', async () => {
 		await pag.locator('li >> span.name:text-is("Gest\'Hordes")').click();
 		await sendDebugPhoto(pag);
 		const [newPage] = await Promise.all([
-			browserPlay.waitForEvent('pag'),
+			browserPlay.waitForEvent('page'),
 			pag.getByRole('button', {
 				name: "Continuar a Gest'Hordes"
 			}).click()
