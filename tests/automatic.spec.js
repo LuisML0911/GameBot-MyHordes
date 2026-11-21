@@ -171,7 +171,7 @@ test('myhordes', async () => {
 		});
 		pag = await browserPlay.newPage();
 		await goto('/jx/town/dashboard');
-		gestHordesPromise = updateGestHordesPromise(browserPlay);
+		gestHordesPromise = await updateGestHordesPromise(browserPlay);
 		
 		//error("Llendo a sitio MyHordes para redirigir: " + pag.url());
 		//await goto('/jx/town/dashboard');
