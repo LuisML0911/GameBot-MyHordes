@@ -171,6 +171,8 @@ test('myhordes', async () => {
 		});
 		pag = await browserPlay.newPage();
 		await goto('/jx/town/dashboard');
+		await pag.locator('li >> span.name:text-is("Gest\'Hordes")').click();
+		await sendDebugPhoto(page);
 		gestHordesPromise = await updateGestHordesPromise(browserPlay);
 		
 		//error("Llendo a sitio MyHordes para redirigir: " + pag.url());
