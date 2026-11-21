@@ -2533,7 +2533,7 @@ async function updateGestHordesPromise(page) {
 		const maxIntentos = 1;
 		for (let intento = 1; intento <= maxIntentos; intento++) {
 			try {
-				await page.goto(`/carte/${idTown}`);
+				await page.goto(`https://gesthordes.fr/carte/${idTown}`);
 				response = await page.evaluate(async (idTown) => {
 					const res = await fetch(`/rest/v1/carte/${idTown}`, {
 						method: 'GET',
