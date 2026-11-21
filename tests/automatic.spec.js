@@ -170,11 +170,29 @@ test('myhordes', async () => {
 			] : []
 		});
 		pag = await browserPlay.newPage();
+		
 		await goto('/jx/town/dashboard');
 		await new Promise(r => setTimeout(r, 8000));
 		await sendDebugPhoto(pag);
+		try{
+			const noInteresado = pag.getByText('No interesado');
+			
+			if (await noInteresado.isVisible().catch(() => false)) {
+				await noInteresado.click();
+				await pag.keyboard.press('Enter');
+			}
+		}catch(exception){
+			
+		}
+		await sendDebugPhoto(pag);
+		await pag.locator('div.header-directory.app-directory.closed').click();
+		await sendDebugPhoto(pag);
 		await pag.locator('li >> span.name:text-is("Gest\'Hordes")').click();
 		await sendDebugPhoto(pag);
+		await pag.locator('form[action="https://gesthordes.fr/login"] button').click();
+		await sendDebugPhoto(pag);
+
+		
 		gestHordesPromise = await updateGestHordesPromise(browserPlay);
 		
 		//error("Llendo a sitio MyHordes para redirigir: " + pag.url());
