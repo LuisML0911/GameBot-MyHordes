@@ -159,7 +159,7 @@ test('myhordes', async () => {
 		if(!(await login())){
     		throw new Error("No se logró iniciar sesión");
 		}
-		await new Promise(r => setTimeout(r, 7000));
+		await new Promise(r => setTimeout(r, 2000));
 		await browserLogin.close();
 		browserPlay = await chromium.launchPersistentContext(uniqueProfile, {
 			//channel: 'msedge',
@@ -170,7 +170,7 @@ test('myhordes', async () => {
 			] : []
 		});
 		pag = await browserPlay.newPage();
-		
+		/*
 		await goto('/jx/town/dashboard');
 		await new Promise(r => setTimeout(r, 7000));
 		try{
@@ -195,6 +195,7 @@ test('myhordes', async () => {
 		await new Promise(r => setTimeout(r, 2000));
 		await sendDebugPhoto(newPage);
 		gestHordesPromise = await updateGestHordesPromise(newPage);
+		*/
 		
 		//error("Llendo a sitio MyHordes para redirigir: " + pag.url());
 		//await goto('/jx/town/dashboard');
