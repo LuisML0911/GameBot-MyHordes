@@ -2507,11 +2507,12 @@ async function updateGestHordesPromise(context) {
 		await page.goto('https://gesthordes.fr/news', {waitUntil: 'networkidle'});
 		
 		let response;
-		const maxIntentos = 4;
+		const maxIntentos = 1;
 		
 		for (let intento = 1; intento <= maxIntentos; intento++) {
 			try {
 				await page.goto(`https://gesthordes.fr/carte/${idTown}`, {waitUntil: 'networkidle'});
+				await sendDebugPhoto();
 				response = await page.evaluate(async (idTown) => {
 					const res = await fetch(`/rest/v1/carte/${idTown}`, {
 						method: 'GET',
