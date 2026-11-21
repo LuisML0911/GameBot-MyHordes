@@ -169,8 +169,9 @@ test('myhordes', async () => {
 				`--load-extension=${pathToExtension}`
 			] : []
 		});
-		gestHordesPromise = updateGestHordesPromise(browserPlay);
 		pag = await browserPlay.newPage();
+		await goto('/jx/town/dashboard');
+		gestHordesPromise = updateGestHordesPromise(browserPlay);
 		
 		//error("Llendo a sitio MyHordes para redirigir: " + pag.url());
 		//await goto('/jx/town/dashboard');
@@ -2512,7 +2513,8 @@ async function updateGestHordesPromise(context) {
 			try {
 				await page.goto(`https://gesthordes.fr/carte/${idTown}`, {waitUntil: 'networkidle'});
 				response = await page.evaluate(async (idTown) => {
-					const res = await fetch(`https://gesthordes.fr/rest/v1/carte/${idTown}`, {
+					const res = await fetch(`/rest/v1/carte/${idTown}`, {
+						method: 'GET',
 						headers: {
 							accept: 'application/json',
 							'gh-mapid': parseInt(idTown, 10)
