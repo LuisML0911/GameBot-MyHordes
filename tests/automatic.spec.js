@@ -149,17 +149,21 @@ test('myhordes', async () => {
 	let browserLogin;
 	try {
 		const pathToExtension = await resolveExtensionPath();
-		const { defaultBrowserType: _unusedBrowserType, ...desktopChromeDevice } = devices['Desktop Chrome'];
-		const desktopChrome = {
-			...desktopChromeDevice,
-			channel: 'chromium',
+		const { defaultBrowserType: _unusedBrowserType, ...desktopEdgeDevice } =
+			devices['Desktop Edge'];
+		
+		const desktopEdge = {
+			...desktopEdgeDevice,
+			channel: 'msedge',
 			headless: true,
 			locale: 'es-ES'
 		};
 		
-		browserLogin = await chromium.launchPersistentContext(uniqueProfile, {
-			...desktopChrome
-		});
+		browserLogin = await chromium.launchPersistentContext(
+			uniqueProfile,
+			desktopEdge
+		);
+
 		pag = await browserLogin.newPage();
 		// se dirige al sitio
 		if(!(await login())){
