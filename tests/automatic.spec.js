@@ -1,5 +1,5 @@
 // @ts-check
-import { test, request, chromium } from '@playwright/test';
+import { test, request, chromium, devices } from '@playwright/test';
 import { randomUUID } from 'crypto';
 import { execSync } from 'child_process';
 const { JSDOM } = require("jsdom");
@@ -149,10 +149,16 @@ test('myhordes', async () => {
 	let browserLogin;
 	try {
 		const pathToExtension = await resolveExtensionPath();
+		const { defaultBrowserType: _unusedBrowserType, ...desktopChromeDevice } = devices['Desktop Chrome'];
+		const desktopChrome = {
+			...desktopChromeDevice,
+			channel: 'chromium',
+			headless: true,
+			locale: 'es-ES'
+		};
 		
 		browserLogin = await chromium.launchPersistentContext(uniqueProfile, {
-			//channel: 'msedge',
-			headless: true
+			...desktopChrome
 		});
 		pag = await browserLogin.newPage();
 		// se dirige al sitio
@@ -161,16 +167,15 @@ test('myhordes', async () => {
 		}
 		await new Promise(r => setTimeout(r, 2000));
 		await browserLogin.close();
+		browserLogin = undefined;
 		browserPlay = await chromium.launchPersistentContext(uniqueProfile, {
-			//channel: 'msedge',
-			headless: true,
+			...desktopChrome,
 			args: pathToExtension ? [
 				`--disable-extensions-except=${pathToExtension}`,
 				`--load-extension=${pathToExtension}`
 			] : []
 		});
 		pag = await browserPlay.newPage();
-		/*
 		await goto('/jx/town/dashboard');
 		await new Promise(r => setTimeout(r, 7000));
 		try{
@@ -191,11 +196,11 @@ test('myhordes', async () => {
 				name: "Continuar a Gest'Hordes"
 			}).click()
 		]);
-		await newPage.waitForLoadState();
-		await new Promise(r => setTimeout(r, 2000));
+		await newPage.waitForURL(/https:\/\/gesthordes\.fr\/.*/, { timeout: 15000 });
+		await newPage.waitForLoadState('networkidle');
 		await sendDebugPhoto(newPage);
-		gestHordesPromise = await updateGestHordesPromise(newPage);
-		*/
+		await updateGestHordesPromise(newPage);
+		await newPage.close().catch(() => {});
 		
 		//error("Llendo a sitio MyHordes para redirigir: " + pag.url());
 		//await goto('/jx/town/dashboard');
@@ -217,21 +222,21 @@ test('myhordes', async () => {
 		console.log(exception);
 		await sendTelegramMessage(exception);
 	} finally {
-		if(browserPlay){
-			browserPlay.close();
-		}
-		if(browserLogin){
-			browserLogin.close();
-		}
-		await new Promise(r => setTimeout(r, 1000));
-		//fs.rmSync(uniqueProfile, { recursive: true, force: true });
 		await screenshotPromise;
 		if(gestHordesPromise != undefined){
 			await gestHordesPromise;
 		}
-		if(browsergest){
-			browsergest.close();
+		if(browserPlay){
+			await browserPlay.close();
 		}
+		if(browserLogin){
+			await browserLogin.close();
+		}
+		if(browsergest){
+			await browsergest.close();
+		}
+		await new Promise(r => setTimeout(r, 1000));
+		//fs.rmSync(uniqueProfile, { recursive: true, force: true });
 	}
 });
 async function main(){
@@ -2531,22 +2536,32 @@ async function updateGestHordesPromise(page) {
 		const idTown = lastDataSaved.idTown;
 		
 		let response;
-		const maxIntentos = 1;
+		const maxIntentos = 2;
 		for (let intento = 1; intento <= maxIntentos; intento++) {
 			try {
-				//await page.goto(`https://gesthordes.fr/carte/${idTown}`,  { waitUntil: 'networkidle' });
-				
-				await page.goto('https://gesthordes.fr/news', { waitUntil: 'networkidle' });	
+				if (intento > 1 || !page.url().startsWith('https://gesthordes.fr/')) {
+					await page.goto('https://gesthordes.fr/news', { waitUntil: 'networkidle' });
+				}
+				const ghCookies = await page.context().cookies('https://gesthordes.fr');
+				console.log('GestHordes URL:', page.url(), '| Cookies:', ghCookies.map(c => c.name));
+
 				response = await page.evaluate(async (idTown) => {
-					const res = await fetch(`/rest/v1/carte/${idTown}`, {
+					const res = await fetch(`https://gesthordes.fr/rest/v1/carte/${idTown}`, {
 						method: 'GET',
+						credentials: 'include',
 						headers: {
 							accept: 'application/json',
-							'gh-mapid': parseInt(idTown, 10)
+							'gh-mapid': String(parseInt(idTown, 10))
 						}
 					});
+					const contentType = res.headers.get('content-type') || '';
 					if (!res.ok) {
-						throw new Error(`Respuesta no OK: ${res.status}`);
+						const body = await res.text();
+						throw new Error(`HTTP ${res.status} (${contentType}) - ${body.slice(0, 200)}`);
+					}
+					if (!contentType.includes('application/json')) {
+						const body = await res.text();
+						throw new Error(`Respuesta no JSON (${contentType}) - ${body.slice(0, 200)}`);
 					}
 					return await res.json();
 				}, idTown);
