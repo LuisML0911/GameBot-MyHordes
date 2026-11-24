@@ -1324,7 +1324,7 @@
                 "nbr_item_bank_casse": 0
               },
               "50": {
-                "nbr_item": 16,
+                "nbr_item": 17,
                 "nbr_item_casse": 0,
                 "id": 50,
                 "id_mh": 50,
@@ -2334,7 +2334,7 @@
           }
         ]
       },
-      "date_dern_maj": "Dernière mise à jour le 24/11/2026 à 18:23 par AuxNamCitoyens",
+      "date_dern_maj": "Dernière mise à jour le 24/11/2026 à 18:29 par MylHordez",
       "is_lead": false,
       "my_ville": false,
       "ville": {
@@ -25988,7 +25988,7 @@
           "excavated_maj_by_id": null,
           "fouille_lvl": 2,
           "fouille_maj_day": 3,
-          "fouille_maj_heure": "18:07:47",
+          "fouille_maj_heure": "18:29:23",
           "fouille_maj_by_id": 27997,
           "fouille_restante_min": null,
           "fouille_restante_max": null,
@@ -25996,7 +25996,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": null,
-          "heure_maj": "18:07:47",
+          "heure_maj": "18:29:23",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -26025,7 +26025,7 @@
           "zombie_estim": 0,
           "carte_alter": {
             "112": 1,
-            "113": 0,
+            "113": 1,
             "114": 0,
             "116": 0,
             "117": 1,
@@ -26058,6 +26058,12 @@
             {
               "id": 6204957,
               "item_id": 118,
+              "nombre": 1,
+              "broken": false
+            },
+            {
+              "id": 6206346,
+              "item_id": 50,
               "nombre": 1,
               "broken": false
             }
@@ -66466,13 +66472,13 @@
         "devast": false,
         "water": 75,
         "saison": 19,
-        "date_time": "2026-11-24T18:23:30+01:00",
+        "date_time": "2026-11-24T18:29:23+01:00",
         "chaman": null,
         "guide": null,
         "update_by": {
-          "id": 968,
-          "id_my_hordes": 4120,
-          "pseudo": "AuxNamCitoyens"
+          "id": 27997,
+          "id_my_hordes": 37978,
+          "pseudo": "MylHordez"
         },
         "lang": "es",
         "map_id": 8415,
