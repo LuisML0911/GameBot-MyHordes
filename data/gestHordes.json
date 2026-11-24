@@ -66576,7 +66576,8 @@
         "user_personnalisation": {
           "keep_menu_open": false,
           "menu_bandeau": false,
-          "theme_migration_validated": true
+          "theme_migration_validated": true,
+          "masquer_bouton_aide": false
         }
       },
       "ville": {
@@ -66617,8 +66618,8 @@
         "pos_y": 9
       },
       "version": {
-        "date": "2026-11-14 12:17:00",
-        "version": "4.7.1"
+        "date": "2026-11-24 22:04:00",
+        "version": "4.8.0"
       },
       "version_jeu": "5.0.2",
       "lang": "fr",
