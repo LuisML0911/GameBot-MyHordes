@@ -52,16 +52,6 @@ let uniqueProfile;
 let weaponListData = {};
 let items = {};
 let browsergest;
-let deferGitPush = false;
-const pendingGitPaths = new Set();
-let gitNeedsFullStage = false;
-let gitConfigured = false;
-const writtenJsonCache = new Map();
-let cachedGestHordes = null;
-let cachedWeapons = null;
-let testStartTime = 0;
-let screenshotInFlight = false;
-let queuedScreenshotFile = null;
 const botToken = "8571353822:AAH1avvfeURxxlx0ow2E5dpBorv0aq9mqrk"
 const chatId  = "1975024455"
 test('resetLogs', async ({ page }) => {
@@ -150,27 +140,14 @@ test('GetGestHordes', async ({page}) => {
 
 test('myhordes', async () => { 
 	test.setTimeout(250000);
-	testStartTime = Date.now();
-	deferGitPush = true;
-	countMainInvocation = 0;
-	externalTools = false;
 	let gestHordesPromise;
+	//fs.rmSync(path.join(process.env.LOCALAPPDATA, 'playwright-profiles'), { recursive: true, force: true });
 	const baseDir = process.env.LOCALAPPDATA || process.env.HOME;
 	uniqueProfile = path.join(baseDir, 'playwright-profiles', randomUUID());
+	//const uniqueProfile = path.join(process.env.LOCALAPPDATA, 'playwright-profiles', `${randomUUID()}`);
 	let browserPlay;
 	let browserLogin;
 	try {
-		try {
-			if (Object.keys(lastDataSaved).length === 0 && fs.existsSync(nameFile_lastDataSaved)) {
-				lastDataSaved = readJSON(nameFile_lastDataSaved);
-				if (lastDataSaved?.inv?.IdInvPer) {
-					idPlayerInv = lastDataSaved.inv.IdInvPer;
-				}
-			}
-		} catch (e) {
-			console.error("Error leyendo .last.json inicial:", e.message || e);
-		}
-
 		const pathToExtension = await resolveExtensionPath();
 		const { defaultBrowserType: _unusedBrowserType, ...desktopEdgeDevice } =
 			devices['Desktop Edge'];
@@ -181,33 +158,20 @@ test('myhordes', async () => {
 			headless: true,
 			locale: 'es-ES'
 		};
-
-		// 1. Iniciar sesión primero en contexto limpio (sin extensión ni contención de CPU) para persistir cookies de EternalTwin/MyHordes
+		
 		browserLogin = await chromium.launchPersistentContext(
 			uniqueProfile,
 			desktopEdge
 		);
+
 		pag = await browserLogin.newPage();
-		if (!(await login())) {
-			throw new Error("No se logró iniciar sesión");
+		// se dirige al sitio
+		if(!(await login())){
+    		throw new Error("No se logró iniciar sesión");
 		}
-		await new Promise(r => setTimeout(r, 1000));
+		await new Promise(r => setTimeout(r, 2000));
 		await browserLogin.close();
 		browserLogin = undefined;
-
-		// 2. Lanzar browserPlay con la extensión MHO y actualizar GestHordes en paralelo
-		if (Object.keys(weaponListData).length === 0) {
-			weaponListData = readJSON('data/weaponListData.json');
-		}
-		if (Object.keys(items).length === 0) {
-			items = readJSON('data/items.json');
-		}
-		if (lastDataSaved?.idTown) {
-			gestHordesPromise = updateGestHordesPromise().catch(exception => {
-				console.error("No se logró abrir/actualizar GestHordes:", exception.message || exception);
-			});
-		}
-
 		browserPlay = await chromium.launchPersistentContext(uniqueProfile, {
 			...desktopEdge,
 			args: pathToExtension ? [
@@ -217,119 +181,119 @@ test('myhordes', async () => {
 		});
 		pag = await browserPlay.newPage();
 		await goto('/jx/town/dashboard');
-		await waitForGameReady();
-
-		if (gestHordesPromise !== undefined) {
-			await gestHordesPromise;
-			gestHordesPromise = undefined;
+		await new Promise(r => setTimeout(r, 7000));
+		try{
+			const noInteresado = pag.getByText('No interesado');
+			
+			if (await noInteresado.isVisible().catch(() => false)) {
+				await noInteresado.click();
+				await pag.keyboard.press('Enter');
+			}
+		}catch(exception){
+			
 		}
+		try {
+			await updateGestHordesPromise();
+		} catch (exception) {
+			console.error("No se logró abrir/actualizar GestHordes:", exception.message || exception);
+		}
+		
+		//error("Llendo a sitio MyHordes para redirigir: " + pag.url());
+		//await goto('/jx/town/dashboard');
+		//error("Sitio redirigido: " + pag.url());
+		//await new Promise(r => setTimeout(r, 3000));
+		//error("Sitio redirigido tras 3 seg: " + pag.url());
+		
+		if(Object.keys(weaponListData).length === 0){
+			weaponListData = readJSON('data/weaponListData.json');
+		}
+		if(Object.keys(items).length === 0){
+			items = readJSON('data/items.json');
+		}
+		//log(items);
 		
 		// inicia ejecución
 		await main();
 	} catch(exception){
 		console.log(exception);
-		await sendTelegramMessage(String(exception?.message || exception));
+		await sendTelegramMessage(exception);
 	} finally {
 		await screenshotPromise;
 		if(gestHordesPromise != undefined){
-			await gestHordesPromise.catch(() => {});
+			await gestHordesPromise;
 		}
 		if(browserPlay){
-			await browserPlay.close().catch(() => {});
+			await browserPlay.close();
 		}
 		if(browserLogin){
-			await browserLogin.close().catch(() => {});
+			await browserLogin.close();
 		}
 		if(browsergest){
-			await browsergest.close().catch(() => {});
+			await browsergest.close();
 		}
-		try {
-			flushGitChanges();
-		} finally {
-			deferGitPush = false;
-		}
+		await new Promise(r => setTimeout(r, 1000));
+		//fs.rmSync(uniqueProfile, { recursive: true, force: true });
 	}
 });
-
-async function dismissPromptIfVisible() {
-	try {
-		const noInteresado = pag.getByText('No interesado');
-		if (await noInteresado.isVisible().catch(() => false)) {
-			await noInteresado.click({ timeout: 1500 });
-			await pag.keyboard.press('Enter');
-		}
-	} catch (exception) {}
-}
-
-async function waitForGameReady(timeout = 6000) {
-	await pag.waitForFunction(() => {
-		const lz = document.querySelector('#loadzone');
-		if (lz && lz.hasAttribute('x-stack') && lz.getAttribute('x-stack') !== '0') {
-			return false;
-		}
-		const p = window.location.pathname;
-		const content = document.querySelector('#content');
-		if (p === '/jx/beyond/desert/cached') {
-			return Boolean(
-				document.querySelector('#header-rucksack-items') &&
-				(document.querySelector('.current-location') || document.querySelector('.zombies-cp'))
-			);
-		}
-		if (p === '/jx/town/dashboard') {
-			return Boolean(
-				document.querySelector('#header-rucksack-items') &&
-				document.querySelector('span.day-number') &&
-				content && content.children.length > 0
-			);
-		}
-		if (p === '/jx/game/jobcenter') {
-			return Boolean(document.querySelector('hordes-town-onboarding'));
-		}
-		if (p === '/jx/soul/welcomeToNowhere') {
-			return Boolean(document.querySelector('button[x-ajax-href="/jx/game/raventimes"], #rebirth_btn'));
-		}
-		if (p === '/jx/ghost/welcome') {
-			return Boolean(content && content.children.length > 0);
-		}
-		return false;
-	}, { timeout }).catch(() => {});
-}
-
-async function main(targetPath = '/jx/town/dashboard'){
-	if (testStartTime && (Date.now() - testStartTime > 215000)) {
-		console.log("Tiempo preventivo alcanzado, guardando progreso antes del timeout...");
-		return;
-	}
+async function main(){
+	console.error("Dirigiendo al dashboard: " + pag.url());
+	await goto('/jx/town/dashboard');
+	console.error("En el dashboard: " + pag.url());
+	await new Promise(r => setTimeout(r, 3000));
 	countMainInvocation++;
 	// prevee bucles
 	if(countMainInvocation > 24){
 		throw new Error("Se prevee posible bucle");
 	}
-
-	let currentPathname = "";
-	try {
-		currentPathname = new URL(pag.url()).pathname;
-	} catch (e) {}
-
-	if (countMainInvocation > 1 || !actions[currentPathname]) {
-		console.error(`Dirigiendo a ${targetPath}: ` + pag.url());
-		await goto(targetPath);
-	}
-	await waitForGameReady();
-	console.error("Vista lista: " + pag.url());
-
 	// se recuperan constantes del juego e historico del pueblo
 	try{
 		if(Object.keys(lastDataSaved).length === 0){
 			lastDataSaved = readJSON(nameFile_lastDataSaved);
-			if (lastDataSaved?.inv?.IdInvPer) {
-				idPlayerInv = lastDataSaved.inv.IdInvPer;
-			}
+			/*
+			await pag.locator('img.header-directory-icon').click({ timeout: 3000 });
+			await pag.locator('img[alt="Gest\'Hordes"]').click({ timeout: 3000 });
+			const [newPage] = await Promise.all([
+				pag.context().waitForEvent('page'),
+				pag.locator('form[action="https://gesthordes.fr/login"] button[type="submit"]').click({ timeout: 3000 }),
+			]);
+			
+			await newPage.locator('div#zoneCarte').waitFor({ state: 'visible', timeout: 2000 })
+			.catch(async () => {
+				const newPage2 = await newPage.context().newPage();
+				await newPage2.goto(`https://gesthordes.fr/carte/${lastDataSaved.idTown}`);
+				console.log("🌐 Nueva pestaña 1 abierta en: " + newPage.url());
+				//await newPage.close();
+				await newPage2.locator('div#zoneCarte').waitFor({ state: 'visible', timeout: 4000 })
+				.catch(async () => {
+					const newPage3 = await newPage2.context().newPage();
+					await newPage3.goto(`https://gesthordes.fr/carte/${lastDataSaved.idTown}`);
+					newPage3.on('response', async (response) => {
+						try {
+							const url = response.url();
+							console.log(url);
+							if (url.includes(`/rest/v1/carte/${lastDataSaved.idTown}` )) {
+								console.log("✅ Respuesta GestHordes interceptada y guardada:", await response.json());
+								//await newPage2.close();
+							}
+						} catch (err) {
+							//console.log("❌ Error leyendo response:", err.message);
+						}
+					});
+					console.log("🌐 Nueva pestaña 2 abierta en: " + newPage2.url());
+					await newPage3.locator('div#zoneCarte').waitFor({ state: 'visible', timeout: 4000 })
+					.catch(async () => {
+						console.log("🌐 Nueva pestaña 3 abierta en: " + newPage3.url());
+					});
+					//await newPage2.close();
+				});
+				
+			});
+			*/
 		}
 		nameFile_dataSaved = path.join(baseFiles, lastDataSaved.idTown + ".json");
 		if(Object.keys(dataSaved).length === 0){
 			try{
-				dataSaved = readJSON(nameFile_dataSaved);
+			dataSaved = readJSON(nameFile_dataSaved);
 			}catch(ex){
 				dataSaved = {};
 				lastDataSaved.inv = undefined;
@@ -337,6 +301,7 @@ async function main(targetPath = '/jx/town/dashboard'){
 			}
 		}
 	}catch(exception){
+		//console.log(exception);
 		writeJSON(nameFile_lastDataSaved, lastDataSaved);
 		if(Object.keys(dataSaved).length === 0){
 			writeJSON(nameFile_dataSaved, {});
@@ -365,24 +330,22 @@ async function main(targetPath = '/jx/town/dashboard'){
 
 // segun el path del sitio actual realiza las asignaciones correspondientes
 async function evaluateWebSite(){
-	await dismissPromptIfVisible();
+	try{
+		const noInteresado = pag.getByText('No interesado');
+		
+		if (await noInteresado.isVisible().catch(() => false)) {
+			await noInteresado.click();
+			await pag.keyboard.press('Enter');
+		}
+	}catch(exception){
+		
+	}
 	currentPath = new URL(pag.url()).pathname;
 	if (actions[currentPath]) {
 		await actions[currentPath]();
 	} else {
-		await pag.waitForLoadState('domcontentloaded');
-		await waitForGameReady(4000);
-		currentPath = new URL(pag.url()).pathname;
-		if (actions[currentPath]) {
-			await actions[currentPath]();
-		} else {
-			await goto('/jx/town/dashboard');
-			await waitForGameReady(5000);
-			currentPath = new URL(pag.url()).pathname;
-			if (actions[currentPath]) {
-				await actions[currentPath]();
-			}
-		}
+		await pag.waitForLoadState('networkidle');
+		await evaluateWebSite();
 	}
 }
 
@@ -398,7 +361,7 @@ async function playInTown(){
 	}
 }
 
-async function runTownDaySteps(currentDay, persistEachStep = false){
+async function startPlayTown(currentDay){
 	await goto("/jx/town/house/dash");
 	await pag.waitForSelector('#header-rucksack-items');
 	
@@ -407,105 +370,81 @@ async function runTownDaySteps(currentDay, persistEachStep = false){
 		dataSaved[`day${currentDay}`] = {};
 		dataSaved[`day${currentDay}`].currentStep = 0;
 		dataSaved[`day${currentDay}`].purge = false;
-		if (currentDay === 1) {
-			dataSaved.hasUsedDrugs = false;
-			
-			dataSaved.heroicAction = {};
-			dataSaved.heroicAction.hallazgo = true;
-			dataSaved.heroicAction.retorno = true;
-			dataSaved.heroicAction.golpe = true;
-			dataSaved.heroicAction.pa = true;
-			
-			let weaponsGestHordes = await getWeaponsGestHordes();
-			if(weaponsGestHordes != undefined){
-				const weapons = Object.entries(weaponsGestHordes.data.items)
-				.filter(([id, obj]) => obj.kill_min !== undefined && obj.kill_min !== null)
-				.map(([id, obj]) => ({ id, ...obj }));
-				weaponListData.weaponList = weapons.filter(obj => obj.encombrant === false);
-				weaponListData.weaponHeavyList = weapons.filter(obj => obj.encombrant === true);
-				writeJSON('data/weaponListData.json', weaponListData);
-			}
+		dataSaved.hasUsedDrugs = false;
+		
+		dataSaved.heroicAction = {};
+		dataSaved.heroicAction.hallazgo = true;
+		dataSaved.heroicAction.retorno = true;
+		dataSaved.heroicAction.golpe = true;
+		dataSaved.heroicAction.pa = true;
+		
+		let weaponsGestHordes = await getWeaponsGestHordes();
+		if(weaponsGestHordes != undefined){
+			const weapons = Object.entries(weaponsGestHordes.data.items)
+			.filter(([id, obj]) => obj.kill_min !== undefined && obj.kill_min !== null)
+			.map(([id, obj]) => ({ id, ...obj }));
+			weaponListData.weaponList = weapons.filter(obj => obj.encombrant === false);
+			weaponListData.weaponHeavyList = weapons.filter(obj => obj.encombrant === true);
+			writeJSON('data/weaponListData.json', weaponListData);
 		}
 	}
-
-	let cachedStoInv = undefined;
-	let apPotentiallyChanged = false;
 	
 	const steps = [
 		async () => { // vaciar inventario
 			for (let item in await getBaulInventory(inv)) {
 				await moveItem(inv.IdInvBau, inv.IdInvPer, item);
 			}
-			const dropRes = await dropPlayerInventory(inv);
-			if (dropRes?.target) {
-				cachedStoInv = await getListItems(dropRes.target);
-			}
+			await dropPlayerInventory(inv);
 			return true;
 		},
 		async () => { // intentar usar dados y cartas si existen
-			cachedStoInv ??= await getStorageInventory(inv);
-			const resDice = await UseAndReturn(inv, cachedStoInv, 32, "133");
-			if (resDice?.used) {
-				apPotentiallyChanged = true;
-				cachedStoInv = resDice.storageInventory;
-			}
-			cachedStoInv ??= await getStorageInventory(inv);
-			const resCards = await UseAndReturn(inv, cachedStoInv, 130, "134");
-			if (resCards?.used) {
-				apPotentiallyChanged = true;
-				cachedStoInv = resCards.storageInventory;
-			}
+			await UseAndReturn(inv, await getStorageInventory(inv), 32, "133");
+			await UseAndReturn(inv, await getStorageInventory(inv), 130, "134");
 			return true;
 		},
 		async () => { // preparar objetos para la ruta
-			cachedStoInv ??= await getStorageInventory(inv);
-			dataSaved[`day${currentDay}`].startItems = await prepareToExplore(inv, cachedStoInv);
-			cachedStoInv = undefined;
+			dataSaved[`day${currentDay}`].startItems = await prepareToExplore(inv, await getStorageInventory(inv));
 			return true;
 		},
-		async () => { // abrir puerta si es necesario y refrescar PAs
+		async () => { // preparar objetos para la ruta
 			const elemento = (await doAction('/jx/town/door', 'GET', {})).includes('door_exit_hero');
-			if (!elemento) {
+			if (elemento) {
+			}else{
 				await doAction("/rest/v1/game/town/core/door", "PATCH", {action: "open"});
-				apPotentiallyChanged = true;
 			}
-			if (apPotentiallyChanged || new URL(pag.url()).pathname !== "/jx/town/house/dash") {
-				await goto("/jx/town/house/dash");
-				await pag.waitForSelector('#header-rucksack-items');
-			}
+			await goto("/jx/town/house/dash");
+			await pag.waitForSelector('#header-rucksack-items');
 			return true;
 		},
 		async () => { // preparar ruta
 			const foodToExplore = items.foods.find(food => food.id === dataSaved[`day${currentDay}`].startItems.idFood);
 			const waterToExplore = items.waters.find(water => water.id === dataSaved[`day${currentDay}`].startItems.idWater);
 			const currentPAs = await pag.locator('b[data-incidental-target="ap"]').getAttribute('data-value');
-			dataSaved[`day${currentDay}`].route = await getRoute((foodToExplore?.pa ?? 0) + (waterToExplore?.pa ?? 0) + parseInt(currentPAs, 10), dataSaved.hasUsedDrugs ? 2 : 3);
+			dataSaved[`day${currentDay}`].route = await getRoute(foodToExplore.pa + waterToExplore.pa + parseInt(currentPAs, 10), dataSaved.hasUsedDrugs ? 2 : 3);
 			return true;
 		},
 		async () => { // salir al desierto -> avance en el desierto (función playInDeserted)
 			// si logró crear ruta proceder a ir al desierto, sinó ejecutar defaultPlayTown
-			if(dataSaved[`day${currentDay}`].route != undefined && dataSaved[`day${currentDay}`].route.way != undefined && dataSaved[`day${currentDay}`].route.way.length != 0 
+			if(dataSaved[`day${currentDay}`].route != undefined && dataSaved[`day${currentDay}`].route.way.length != 0 
 			   && dataSaved[`day${currentDay}`].route.currentPoss < dataSaved[`day${currentDay}`].route.way.length - 1){
 				dataSaved[`day${currentDay}`].referenceStep = dataSaved[`day${currentDay}`].currentStep;
-				// Explora el Horizonte, Crea Expedición y consulta puerta en paralelo
-				const prepTasks = [
-					doAction("/api/town/planner/submit", "POST", {"data": dataSaved[`day${currentDay}`].route.way.map(({ x, y }) => [x, y]), "name": `[Mí Ruta Día ${currentDay}] :S`}),
-					doAction('/jx/town/door', 'GET', {})
-				];
+				// Explora el Orizonte
 				if (Math.random() < 0.8) {
-					prepTasks.push(doAction("/api/town/watchtower/est", "POST", {}));
+					await doAction("/api/town/watchtower/est", "POST", {});
 				}
-				const [, doorHtml] = await Promise.all(prepTasks);
+				// Crea Expedición
+				await doAction("/api/town/planner/submit", "POST", {"data": dataSaved[`day${currentDay}`].route.way.map(({ x, y }) => [x, y]), "name": `[Mí Ruta Día ${currentDay}] :S`});
 				// salir del pueblo
-				const elemento = doorHtml.includes('door_exit_hero');
+				const elemento = (await doAction('/jx/town/door', 'GET', {})).includes('door_exit_hero');
 				if (elemento) {
 					dataSaved[`day${currentDay}`].heroExit = true;
 					await doAction("/rest/v1/game/town/core/door/exit/hero", "POST", {});
 				}else{
 					await doAction("/rest/v1/game/town/core/door/exit", "POST", {});
 				}
-				// ir directamente al desierto sin doble navegación
-				await main("/jx/beyond/desert/cached");
+				// refrescar
+				await goto("/jx/beyond/desert/cached");
+				await main();
 			}else{
 				// TODO: si no logró crear una ruta, entonces ejecutar jugar en ciudad
 			}
@@ -519,7 +458,7 @@ async function runTownDaySteps(currentDay, persistEachStep = false){
 				await doAction("/api/town/house/upgrade", "POST", {});
 			}
 			// valida si tiene PA's, si tiene intenta aportar en contruccion
-			await goBuild(currentPAs - 1);
+			await goBuild(currentPAs - 1)
 			// valida que la puerta este
 			console.log("Inicia paso de validación de puerta");
 			const attackTime = (await pag.locator('.attack-time').textContent())?.trim() || '';
@@ -528,32 +467,29 @@ async function runTownDaySteps(currentDay, persistEachStep = false){
 				if (elemento) {
 					if (elemento.includes("Portal abierto")) {
 						// cerrar portal
-						if ((await closePortal())?.error) {
+						if (await closePortal().error) {
 							// faltan 5 min o menos y no tiene PA, tomar lo que sea para cerrarlo
 							if (/^~0:[0-2][0-9]$/.test(attackTime)) {
 								const inv = await getInventoryIds();
-								let stoInv = await getStorageInventory(inv);
 								// usar objetos varios diarios
-								const r1 = await UseAndReturn(inv, stoInv, 32, '133');
-								if (r1?.storageInventory) stoInv = r1.storageInventory;
-								await UseAndReturn(inv, stoInv, 130, '134');
+								await UseAndReturn(inv, await getStorageInventory(inv), 32, '133');
+								await UseAndReturn(inv, await getStorageInventory(inv), 130, '134');
 								// volver a intentar cerrar portal
 								await closePortal();
 							}
 						}
 					}else{
-						await goBuild(parseInt(await pag.locator('b[data-incidental-target="ap"]').getAttribute('data-value'), 10));
+						await goBuild(parseInt(await pag.locator('b[data-incidental-target="ap"]').getAttribute('data-value'), 10))
 					}
 				}
 			}
+			//dataSaved[`day${currentDay}`].currentStep--;
 			return false;
 		}
 	];
 	try{
 		for (; dataSaved[`day${currentDay}`].currentStep < steps.length; dataSaved[`day${currentDay}`].currentStep++) {
-			if (persistEachStep) {
-				writeJSON(nameFile_dataSaved, dataSaved);
-			}
+			writeJSON(nameFile_dataSaved, dataSaved);
 			if(!(await steps[dataSaved[`day${currentDay}`].currentStep]())){
 				break;
 			}
@@ -561,18 +497,134 @@ async function runTownDaySteps(currentDay, persistEachStep = false){
 	}catch(exception){
 		console.log(exception);
 	}finally{
-		if (persistEachStep) {
-			writeJSON(nameFile_dataSaved, dataSaved);
-		}
+		writeJSON(nameFile_dataSaved, dataSaved);
+		//TODO: ADVERTIR POR TELEGRAM QUE NO FUE POSIBLE EJECUTAR NO°_PASO
 	}
 }
 
-async function startPlayTown(currentDay){
-	return await runTownDaySteps(currentDay, true);
-}
-
 async function betweenSafeDays(currentDay){
-	return await runTownDaySteps(currentDay, false);
+	await goto("/jx/town/house/dash");
+	await pag.waitForSelector('#header-rucksack-items');
+	
+	let inv = await getInventoryIds();
+	if(dataSaved[`day${currentDay}`] === undefined){
+		dataSaved[`day${currentDay}`] = {};
+		dataSaved[`day${currentDay}`].currentStep = 0;
+		dataSaved[`day${currentDay}`].currentStep = 0;
+		dataSaved[`day${currentDay}`].purge = false;
+	}
+	
+	const steps = [
+		async () => { // vaciar inventario
+			for (let item in await getBaulInventory(inv)) {
+				await moveItem(inv.IdInvBau, inv.IdInvPer, item);
+			}
+			await dropPlayerInventory(inv);
+			return true;
+		},
+		async () => { // intentar usar dados y cartas si existen
+			await UseAndReturn(inv, await getStorageInventory(inv), 32, "133");
+			await UseAndReturn(inv, await getStorageInventory(inv), 130, "134");
+			return true;
+		},
+		async () => { // preparar objetos para la ruta
+			dataSaved[`day${currentDay}`].startItems = await prepareToExplore(inv, await getStorageInventory(inv));
+			return true;
+		},
+		async () => { // preparar objetos para la ruta
+			const elemento = (await doAction('/jx/town/door', 'GET', {})).includes('door_exit_hero');
+			if (elemento) {
+			}else{
+				await doAction("/rest/v1/game/town/core/door", "PATCH", {action: "open"});
+			}
+			await goto("/jx/town/house/dash");
+			await pag.waitForSelector('#header-rucksack-items');
+			return true;
+		},
+		async () => { // preparar ruta
+			const foodToExplore = items.foods.find(food => food.id === dataSaved[`day${currentDay}`].startItems.idFood);
+			const waterToExplore = items.waters.find(water => water.id === dataSaved[`day${currentDay}`].startItems.idWater);
+			const currentPAs = await pag.locator('b[data-incidental-target="ap"]').getAttribute('data-value');
+			dataSaved[`day${currentDay}`].route = await getRoute(foodToExplore.pa + waterToExplore.pa + parseInt(currentPAs, 10), dataSaved.hasUsedDrugs ? 2 : 3);
+			return true;
+		},
+		async () => { // salir al desierto -> avance en el desierto (función playInDeserted)
+			// si logró crear ruta proceder a ir al desierto, sinó ejecutar defaultPlayTown
+			if(dataSaved[`day${currentDay}`].route != undefined && dataSaved[`day${currentDay}`].route.way.length != 0 
+			   && dataSaved[`day${currentDay}`].route.currentPoss < dataSaved[`day${currentDay}`].route.way.length - 1){
+				dataSaved[`day${currentDay}`].referenceStep = dataSaved[`day${currentDay}`].currentStep;
+				// Explora el Orizonte
+				if (Math.random() < 0.8) {
+					await doAction("/api/town/watchtower/est", "POST", {});
+				}
+				// Crea Expedición
+				await doAction("/api/town/planner/submit", "POST", {"data": dataSaved[`day${currentDay}`].route.way.map(({ x, y }) => [x, y]), "name": `[Mí Ruta Día ${currentDay}] :S`});
+				// salir del pueblo
+				const elemento = (await doAction('/jx/town/door', 'GET', {})).includes('door_exit_hero');
+				if (elemento) {
+					dataSaved[`day${currentDay}`].heroExit = true;
+					await doAction("/rest/v1/game/town/core/door/exit/hero", "POST", {});
+				}else{
+					await doAction("/rest/v1/game/town/core/door/exit", "POST", {});
+				}
+				// refrescar
+				await goto("/jx/beyond/desert/cached");
+				await main();
+			}else{
+				// TODO: si no logró crear una ruta, entonces ejecutar jugar en ciudad
+			}
+			return false;
+		},
+		async () => { // jugar en la ciudad
+			let currentPAs = parseInt(await pag.locator('b[data-incidental-target="ap"]').getAttribute('data-value'), 10);
+			// intenta mejorar su casa:
+			// TODO: Añadir capacidad de construir mas allá del nivel 1
+			if(currentPAs > 2){
+				await doAction("/api/town/house/upgrade", "POST", {});
+			}
+			// valida si tiene PA's, si tiene intenta aportar en contruccion
+			await goBuild(currentPAs - 1)
+			// valida que la puerta este
+			console.log("Inicia paso de validación de puerta");
+			const attackTime = (await pag.locator('.attack-time').textContent())?.trim() || '';
+			if (/^~0:[0-2]\d$/.test(attackTime)) {
+				const elemento = await doAction('/jx/town/door', 'GET', {});
+				if (elemento) {
+					if (elemento.includes("Portal abierto")) {
+						// cerrar portal
+						if (await closePortal().error) {
+							// faltan 5 min o menos y no tiene PA, tomar lo que sea para cerrarlo
+							if (/^~0:[0-2][0-9]$/.test(attackTime)) {
+								const inv = await getInventoryIds();
+								// usar objetos varios diarios
+								await UseAndReturn(inv, await getStorageInventory(inv), 32, '133');
+								await UseAndReturn(inv, await getStorageInventory(inv), 130, '134');
+								// volver a intentar cerrar portal
+								await closePortal();
+							}
+						}
+					}else{
+						await goBuild(parseInt(await pag.locator('b[data-incidental-target="ap"]').getAttribute('data-value'), 10))
+					}
+				}
+			}
+			//dataSaved[`day${currentDay}`].currentStep--;
+			return false;
+		}
+	];
+	try{
+		for (; dataSaved[`day${currentDay}`].currentStep < steps.length; dataSaved[`day${currentDay}`].currentStep++) {
+			//writeJSON(nameFile_dataSaved, dataSaved);
+			if(!(await steps[dataSaved[`day${currentDay}`].currentStep]())){
+				break;
+			}
+		}
+	}catch(exception){
+		console.log(exception);
+	}finally{
+		//writeJSON(nameFile_dataSaved, dataSaved);
+		//TODO: ADVERTIR POR TELEGRAM QUE NO FUE POSIBLE EJECUTAR NO°_PASO
+	}
 }
 
 async function defaultPlayTown(currentDay){
@@ -587,36 +639,61 @@ async function playInDeserted(){
 	await updateGestHordes();
 	try{
 		// se busca el día actual y se ejecuta el proceso correspondiente
-		let currentDay = parseInt((await pag.locator('span.day-number').innerText()).replace(/\D/g, ''), 10);
+		let currentDay = parseInt((await pag.locator('span.day-number').innerText()).replace(/\D/g, ''), 15);
 		console.log(currentDay);
 		if(dataSaved[`day${currentDay}`]?.camping){
 			return;
 		}
 		const currentSaved = dataSaved[`day${currentDay}`];
 		await tryFixCurrentCoordinates(currentSaved);
+		//console.log(currentSaved);
 		const currentPoss = currentSaved.route.way[currentSaved.route.currentPoss];
+		/*
+			Reglas para moverse:
+				[ ] Si la zona está agotada:
+					[-] Tomar objetos del suelo en base a prioridades (repetir y actualizar 3 veces)
+						[ ] Abrir objetos que no requieren herramientas
+						[ ] Abrir objetos que requieren herramientas
+						[*] Tomar objetos pesados base a prioridad
+						[*] Tomar objetos base a prioridad
+					[*] Actualizar GestHordes
+					[*] Moverse:
+						[*] Si ya no tiene PA's:
+							[*] Tomar agua primero -> Moverse
+							[*] Comer primero -> Moverse
+				[*] Si la zona no está agotada:
+					[*] Escavar, y esperar hasta agotar
+				[*] Si la zona está bajo el control de los zombies
+					[*] Intentar liberar la zona antes de evaluarla y actualizar
+			Reglas de combate :
+				[*] Si se cuenta con objetos de combate, usarlos
+				[-] Si aun se tiene poder de heroe objeto, tomar globo y usarlo
+				[*] Si aun se tiene el golpe, usar golpe
+				[*] Si sigue bloqueado y ya esta por terminar la noche -> intentar usar retorno del heroe o acampar y continuar ruta mañana
+			
+			Pasos:
+				5. Si se encuentra al final de la ruta en [0,0] entrar al pueblo, sino intentar acampar
+				1. Evaluar si la zona esta controlada por los zombies, si esta controlada intentar liberar y actualizar para evaluar si siguie controlada, si sigue controlada repetir 3 veces antes de alertar.
+				2. Si es posible escavar se intentará recolectar recursos antes de moverse.
+				3. Al moverse si no se cuenta con PA's suficientes deberán consumirse los recursos preparados para la ruta.
+				4. Si faltan 3 horas para el ataque deberá avanzar sin agotar la zona hasta completar la ruta.
+		*/
 		
 		if(currentSaved.route.currentPoss == 0 && currentPoss.x == 0 && currentPoss.y == 0){
 			// ir a la siguiente posición
 			const nextPoss = currentSaved.route.way[currentSaved.route.currentPoss + 1];
 			if((await doAction("/api/beyond/desert/move", "POST", { x: nextPoss.x, y: nextPoss.y })).error){
+				// TODO: acción si no logré moverme					
 				const currentPAs = await pag.locator('b[data-incidental-target="ap"]').getAttribute('data-value');
 				if(currentPAs == 0){ // consumir
 					let inv = await getInventoryIds();
 					console.log("No tiene PAs, intenta consumir");
 					await takeSurvivalFood(currentSaved, inv);
 					let canUseItem = false;
-					const actionsHtml = await doAction("/jx/beyond/partial/desert/actions", "POST", {});
-					const foodAction = currentSaved?.startItems?.idInvFood !== undefined
-						? getActionIdFromHtml(actionsHtml, currentSaved.startItems.idInvFood)
-						: null;
 					//comer
-					if(foodAction == null || (await doAction("/api/beyond/desert/action", "POST", {item: currentSaved.startItems.idInvFood, action: foodAction})).error){
+					if(currentSaved?.startItems?.idInvFood === undefined || (await doAction("/api/beyond/desert/action", "POST", {item: currentSaved.startItems.idInvFood, action: getActionIdFromHtml(await doAction("/jx/beyond/partial/desert/actions", "POST", {}), currentSaved.startItems.idInvFood)})).error){
 						//tomar agua
-						const waterAction = currentSaved?.startItems?.idInvWater !== undefined
-							? getActionIdFromHtml(actionsHtml, currentSaved.startItems.idInvWater)
-							: null;
-						if(waterAction == null || (await doAction("/api/beyond/desert/action", "POST", {item: currentSaved.startItems.idInvWater, action: waterAction})).error){
+						if(currentSaved?.startItems?.idInvWater === undefined || (await doAction("/api/beyond/desert/action", "POST", {item: currentSaved.startItems.idInvWater, action: getActionIdFromHtml(await doAction("/jx/beyond/partial/desert/actions", "POST", {}), currentSaved.startItems.idInvWater)})).error){
 							// TODO: acción si no logré comer ni tomar agua
 						}else{
 							currentSaved.startItems.idInvWater = undefined;
@@ -628,12 +705,16 @@ async function playInDeserted(){
 					}
 					if(canUseItem){
 						writeJSON(nameFile_dataSaved, dataSaved);
-						return await main('/jx/beyond/desert/cached');
+						return await main();
+					}else{
+						// TODO: Avisar que se ha quedado sin PAs y no logró consumir nada
 					}
 				}
 			}else{
 				currentSaved.route.currentPoss = currentSaved.route.currentPoss + 1;
-				return await main('/jx/beyond/desert/cached');
+				//writeJSON(nameFile_dataSaved, dataSaved);
+				await goto('/jx/beyond/desert/cached');
+				return await main();
 			}
 		}
 		let tempCurrentPoss = {currentPoss};
@@ -654,6 +735,7 @@ async function playInDeserted(){
 			if(goTown.error){
 				await doAction("/api/beyond/desert/exit/hero", "POST", {});
 			}
+			await new Promise(r => setTimeout(r, 1000));
 			try{
 				await goto('/jx/town/bank');
 				await pag.waitForSelector('#header-rucksack-items', {timeout: 5000});
@@ -661,22 +743,26 @@ async function playInDeserted(){
 				console.log(`Error: ${err}`);
 			}
 			let inv = await getInventoryIds();
-			const dropRes = await dropPlayerInventory(inv);
-			let playInv = dropRes?.source ? await getListItems(dropRes.source) : await getPlayerInventory(inv);
-			let outfit = searchItemIdInv([316], playInv);
+			await dropPlayerInventory(inv);
+			let playInv = await getPlayerInventory(inv);
+			let outfit = await searchItemIdInv([316], playInv);
+			//console.log(`outfit: ${outfit}`);
 			dataSaved.test[currentDate].outfit = outfit;
 			
-			if (outfit != undefined) {
-				let doActionObj = await doAction("/jx/town/house/dash", "POST", {});
-				let getActionIdFromHtmlObj = getActionIdFromHtml(doActionObj, outfit);
-				dataSaved.test[currentDate].getActionIdFromHtmlObj = getActionIdFromHtmlObj;
-				if(getActionIdFromHtmlObj != undefined && getActionIdFromHtmlObj != null){
-					dataSaved[`day${currentDay}`].currentStep = dataSaved[`day${currentDay}`].referenceStep + 1;
-					await doAction("/api/town/house/action", "POST", {item: outfit, action: getActionIdFromHtmlObj});
-				}
+			let doActionObj = await doAction("/jx/town/house/dash", "POST", {});
+			//console.log(`doActionObj: ${doActionObj}`);
+			//dataSaved.test[currentDate].doActionObj = doActionObj;
+			
+			let getActionIdFromHtmlObj = getActionIdFromHtml(doActionObj, outfit);
+			//console.log(`getActionIdFromHtmlObj: ${getActionIdFromHtmlObj}`);
+			dataSaved.test[currentDate].getActionIdFromHtmlObj = getActionIdFromHtmlObj;
+			if(getActionIdFromHtmlObj != undefined && getActionIdFromHtmlObj != null){
+				dataSaved[`day${currentDay}`].currentStep = dataSaved[`day${currentDay}`].referenceStep + 1;
 			}
+			
+			await doAction("/api/town/house/action", "POST", {item: outfit, action: getActionIdFromHtmlObj});
 		}else{
-			// 1. Evaluar si la zona esta controlada por los zombies
+			// 1. Evaluar si la zona esta controlada por los zombies, si esta controlada intentar liberar y actualizar para evaluar si siguie controlada, si sigue controlada repetir 3 veces antes de alertar.
 			const contZ = parseInt(await pag.textContent('.zombies-cp'), 10);
 			const contH = parseInt(await pag.textContent('.humans-cp'), 10);
 			let purge = (currentSaved.purge != undefined && currentSaved.purge);
@@ -686,35 +772,34 @@ async function playInDeserted(){
 				let canUseWeapon = false;
 				let canUseWeaponBattery = false;
 				let canUseHeroicAction = false;
-				let returnedToTown = false;
 				// atacar
 				const contObjetive = (currentSaved.purge != undefined && currentSaved.purge) ? 0 : contH;
 				
 				let inv = await getInventoryIds();
-				let dropRes = await dropPlayerInventory(inv);
-				let playInv = dropRes?.source ? await getListItems(dropRes.source) : await getPlayerInventory(inv);
-				let deseInv = dropRes?.target ? await getListItems(dropRes.target) : await getDesertInventory(inv);
+				await dropPlayerInventory(inv);
+				let playInv = await getPlayerInventory(inv);
+				let deseInv = await getDesertInventory(inv);
 				if(currentSaved.startItems.idInvFood != undefined){
-					const mRes = await moveItem(inv.IdInvDes, inv.IdInvPer, currentSaved.startItems.idInvFood);
-					if (mRes?.target) playInv = await getListItems(mRes.target);
-					if (mRes?.source) deseInv = await getListItems(mRes.source);
+					await moveItem(inv.IdInvDes, inv.IdInvPer, currentSaved.startItems.idInvFood);
 				}
 				if(currentSaved.startItems.idInvWater != undefined){
-					const mRes = await moveItem(inv.IdInvDes, inv.IdInvPer, currentSaved.startItems.idInvWater);
-					if (mRes?.target) playInv = await getListItems(mRes.target);
-					if (mRes?.source) deseInv = await getListItems(mRes.source);
+					await moveItem(inv.IdInvDes, inv.IdInvPer, currentSaved.startItems.idInvWater);
 				}
+				//console.error(`list: ${[...weaponListData.weaponList, ...weaponListData.weaponHeavyList]}`);
+				//console.error(`objets: ${{...playInv, ...deseInv}}`)
 				const combination = findClosestWeaponsCombination([...weaponListData.weaponList, ...weaponListData.weaponHeavyList].filter(o => o.id !== 12), contZ - contObjetive, {...playInv, ...deseInv});
 				console.error(`combination: ${combination}`);
 				if(combination != null){
+					const orderedCombo = [...combination.combo]
+					    .sort((a, b) => a.chance_kill - b.chance_kill);
+					
 					for (let i = 0; i < combination.combo.length && !canUseWeapon; i++) {
 					    const useObj = combination.combo[i];
 					    console.error(`Probando objeto ${i + 1}/${combination.combo.length}`);
 					    console.error(`useObj:\n${JSON.stringify(useObj, null, 2)}`);
 					    await moveItem(inv.IdInvDes, inv.IdInvPer, useObj.key);
 					    let actionToDo = getActionIdFromHtml(
-					        await doAction("/jx/beyond/partial/desert/actions", "POST", {}),
-					        useObj.key
+					        await doAction("/jx/beyond/partial/desert/actions", "POST", {})
 					    );
 					    if (actionToDo != null) {
 							if((await doAction(
@@ -743,9 +828,9 @@ async function playInDeserted(){
 					    }
 					}
 				}else{
-					let battery = searchItemIdInv([2], deseInv);
+					let battery = await searchItemIdInv([2], deseInv);
 					if(battery != undefined){
-						let weaponBattery = searchItemIdInv(
+						let weaponBattery = await searchItemIdInv(
 						[
 							291,   	//Puntero láser potente descargado
 							102,   	//Devastador (vacío)
@@ -757,14 +842,8 @@ async function playInDeserted(){
 						if(weaponBattery != undefined){
 							await moveItem(inv.IdInvDes, inv.IdInvPer, battery);
 							await moveItem(inv.IdInvDes, inv.IdInvPer, weaponBattery);
-							const reloadAct = getActionIdFromHtml(await doAction("/jx/beyond/partial/desert/actions", "POST", {}), weaponBattery);
-							if (reloadAct != null) {
-								await doAction("/api/beyond/desert/action", "POST", {item: weaponBattery, action: reloadAct});
-							}
-							const fireAct = getActionIdFromHtml(await doAction("/jx/beyond/partial/desert/actions", "POST", {}), weaponBattery);
-							if (fireAct != null) {
-								await doAction("/api/beyond/desert/action", "POST", {item: weaponBattery, action: fireAct});
-							}
+							await doAction("/api/beyond/desert/action", "POST", {item: weaponBattery, action: getActionIdFromHtml(await doAction("/jx/beyond/partial/desert/actions", "POST", {}), weaponBattery)});
+							await doAction("/api/beyond/desert/action", "POST", {item: weaponBattery, action: getActionIdFromHtml(await doAction("/jx/beyond/partial/desert/actions", "POST", {}), weaponBattery)});
 							canUseWeaponBattery = true;
 						}
 					}
@@ -777,9 +856,11 @@ async function playInDeserted(){
 							dataSaved.heroicAction.golpe = false;
 						}else{
 							if(currentSaved.usedHeroicAction == undefined && dataSaved.heroicAction.hallazgo){
-								if((await doAction("/api/beyond/desert/heroic", "POST", {action: "2"})).error){}else{
+								if((await doAction("/api/beyond/desert/heroic", "POST", {action: "2"})).error){}else{// , [PENDIENTE]
 									currentSaved.usedHeroicAction = true;
 									canUseHeroicAction = true;
+									
+									//TODO: usar globo
 								}
 								dataSaved.heroicAction.hallazgo = false;
 							}else{
@@ -787,7 +868,6 @@ async function playInDeserted(){
 									if((await doAction("/api/beyond/desert/heroic", "POST", {action: "1"})).error){}else{
 										currentSaved.usedHeroicAction = true;
 										canUseHeroicAction = true;
-										returnedToTown = true;
 										dataSaved[`day${currentDay}`].currentStep = dataSaved[`day${currentDay}`].referenceStep + 1;
 									}
 									dataSaved.heroicAction.retorno = false;
@@ -799,10 +879,15 @@ async function playInDeserted(){
 											}else{
 												currentSaved.usedHeroicAction = true;
 												canUseHeroicAction = true;
-												return await main('/jx/beyond/desert/cached');
+												// TODO: evaluar si es mejor acampar que gastar esos PAs
+												//await doAction("/api/beyond/desert/attack", "POST", {});
+												//await doAction("/api/beyond/desert/attack", "POST", {});
+												//await doAction("/api/beyond/desert/attack", "POST", {});
+												await goto('/jx/beyond/desert/cached');
+												return await main();
 											}
 										}else{
-											const currentPAs = parseInt(await pag.locator('b[data-incidental-target="ap"]').getAttribute('data-value'), 10);
+											const currentPAs = await pag.locator('b[data-incidental-target="ap"]').getAttribute('data-value');
 											if(currentSaved.startItems.idInvFood != undefined){
 												await moveItem(inv.IdInvDes, inv.IdInvPer, currentSaved.startItems.idInvFood);
 											}
@@ -818,6 +903,7 @@ async function playInDeserted(){
 													}else{
 														// mejorar campamento
 														await doAction("/api/beyond/desert/camping ", "POST", {action: "7"});
+														//await doAction("/api/beyond/desert/camping ", "POST", {action: "6"}); desacampar
 													}
 												}
 											}else{
@@ -843,7 +929,6 @@ async function playInDeserted(){
 							if((await doAction("/api/beyond/desert/heroic", "POST", {action: "1"})).error){}else{
 								currentSaved.usedHeroicAction = true;
 								canUseHeroicAction = true;
-								returnedToTown = true;
 								dataSaved[`day${currentDay}`].currentStep = dataSaved[`day${currentDay}`].referenceStep + 1;
 							}
 							dataSaved.heroicAction.retorno = false;
@@ -853,37 +938,52 @@ async function playInDeserted(){
 								canUseHeroicAction = true;
 							}
 							dataSaved.heroicAction.golpe = false;
-							return await main('/jx/beyond/desert/cached');
+							await goto('/jx/beyond/desert/cached');
+							return await main();
 						}
 						dataSaved.postToDay = true;
 					}
 				}else{
-					return await main(returnedToTown ? '/jx/town/dashboard' : '/jx/beyond/desert/cached');
+					await goto('/jx/beyond/desert/cached');
+					return await main();
 				}
+				
+				
+				// attack with PA: https://myhord.es/api/beyond/desert/attack POST {}
+				// attack with AE: https://myhord.es/api/beyond/desert/heroic POST {action: "3"}
+				// hallazgo		 : https://myhord.es/api/beyond/desert/heroic POST {action: "2", [PENDIENTE]}
+				// retorno del he: https://myhord.es/api/beyond/desert/heroic POST {action: "1"}
+				
+				// cargar arma	 : https://myhord.es/api/beyond/desert/action POST {item: "26749394", action: "55"} // lanzapilas 1-PDTG
+				// attack withCEL: https://myhord.es/api/beyond/desert/action POST {item: "26752892", action: "118"} //ATAQUE CON MOVIL
+				
+				// abrir maletin : https://myhord.es/api/beyond/desert/action POST {item: "26763264", action: "41"}
+				// buscar agua	 : https://myhord.es/api/beyond/desert/action POST {item: "26753478", action: "167"}
+				
+				// acampar		 : https://myhord.es/api/beyond/desert/camping POST {action: "6"}
+				// desacampar	 : https://myhord.es/api/beyond/desert/camping POST {action: "9"}
+				// mejorar campam: https://myhord.es/api/beyond/desert/camping POST {action: "7"}
+				// cavar una tumb: https://myhord.es/api/beyond/desert/camping POST {action: "8"}
+				
 			}else{
 				// saquear ruina
-				const digRuinButton = pag.locator('#dig_ruin_button');
+				const digRuinButton = await pag.locator('#dig_ruin_button');
 				if(await digRuinButton.count() > 0 && currentPoss.diggedRuin == undefined){ // urgar ruina
 					currentPoss.diggedRuin = true;
-					await Promise.all([
-						pag.waitForResponse(r => r.url().includes('/beyond/'), { timeout: 5000 }).catch(() => {}),
-						digRuinButton.click()
-					]);
-					return await main('/jx/beyond/desert/cached');
+					await digRuinButton.click();
+					return await main();
 				}
 				// 2. Si es posible escavar se intentará recolectar recursos antes de moverse.
-				const digButton = pag.locator('#dig_button');
+				const digButton = await pag.locator('#dig_button');
 				if(await digButton.count() > 0  && currentPoss.digged == undefined){ // escavar
 					try{
-						await Promise.all([
-							pag.waitForResponse(r => r.url().includes('/beyond/'), { timeout: 10000 }).catch(() => {}),
-							digButton.click({ timeout: 15000 })
-						]);
+						await digButton.click({ timeout: 50000 });
 						currentPoss.digged = true;
 					}catch(e){
 						console.log("digButton: " + e);
 					}finally{
-						return await main('/jx/beyond/desert/cached');
+						await goto('/jx/beyond/desert/cached');
+						return await main();
 					}
 				}
 				if(!currentPoss.dried){
@@ -895,13 +995,12 @@ async function playInDeserted(){
 				}
 				
 				// 4. Si faltan 4 horas para el ataque deberá avanzar sin agotar la zona hasta completar la ruta.
-				const [mgdZoneNote, attackTime] = await Promise.all([
-					pag.locator('#mgd-zone-note').count(),
-					pag.locator('div.attack-time').innerText()
-				]);
+				const mgdZoneNote = await pag.locator('#mgd-zone-note').count();
+				const attackTime = await pag.locator('div.attack-time').innerText();
 				let inv = await getInventoryIds();
-				if (mgdZoneNote > 0 || currentPoss.dried || currentPoss.skipPoss == true ||  (
-					/^~[210]:/.test(attackTime) && (currentDay != 1 || await getCurrentCountCitizens() >= 37)
+				if (await mgdZoneNote > 0 || currentPoss.dried || currentPoss.skipPoss == true ||  (
+					/^~[210]:/.test(attackTime) && (currentDay != 1 || await getCurrentCountCitizens() >= 37
+													)
 				)) {// moverse
 					console.log("Inicia flujo para moverse");
 					// 3. Al moverse si no se cuenta con PA's suficientes deberán consumirse los recursos preparados para la ruta.
@@ -910,17 +1009,10 @@ async function playInDeserted(){
 						console.log("No tiene PAs, intenta consumir");
 						await takeSurvivalFood(currentSaved, inv);
 						let canUseItem = false;
-						const actionsHtml = await doAction("/jx/beyond/partial/desert/actions", "POST", {});
-						const foodAction = currentSaved?.startItems?.idInvFood !== undefined
-							? getActionIdFromHtml(actionsHtml, currentSaved.startItems.idInvFood)
-							: null;
 						//comer
-						if(foodAction == null || (await doAction("/api/beyond/desert/action", "POST", {item: currentSaved.startItems.idInvFood, action: foodAction})).error){
+						if(currentSaved?.startItems?.idInvFood === undefined || (await doAction("/api/beyond/desert/action", "POST", {item: currentSaved.startItems.idInvFood, action: getActionIdFromHtml(await doAction("/jx/beyond/partial/desert/actions", "POST", {}), currentSaved.startItems.idInvFood)})).error){
 							//tomar agua
-							const waterAction = currentSaved?.startItems?.idInvWater !== undefined
-								? getActionIdFromHtml(actionsHtml, currentSaved.startItems.idInvWater)
-								: null;
-							if(waterAction == null || (await doAction("/api/beyond/desert/action", "POST", {item: currentSaved.startItems.idInvWater, action: waterAction})).error){
+							if(currentSaved?.startItems?.idInvWater === undefined || (await doAction("/api/beyond/desert/action", "POST", {item: currentSaved.startItems.idInvWater, action: getActionIdFromHtml(await doAction("/jx/beyond/partial/desert/actions", "POST", {}), currentSaved.startItems.idInvWater)})).error){
 								// TODO: acción si no logré comer ni tomar agua
 							}else{
 								currentSaved.startItems.idInvWater = undefined;
@@ -932,131 +1024,115 @@ async function playInDeserted(){
 						}
 						if(canUseItem){
 							writeJSON(nameFile_dataSaved, dataSaved);
-							return await main('/jx/beyond/desert/cached');
+							return await main();
+						}else{
+							// TODO: Avisar que se ha quedado sin PAs y no logró consumir nada
 						}
 					}else{ // moverse
 						console.log("Recoge por prioridad antes de moverse");
-						const [rawPlayInv, rawDeseInv] = await Promise.all([
-							getHttpPlayerInventory(inv),
-							getHttpDesertInventory(inv)
-						]);
-						if (rawPlayInv?.size) {
-							setPlayerInv(rawPlayInv.size);
-						} else {
-							setPlayerInv(await getInventorySize(inv.IdInvPer));
+						// recoger items
+						await dropPlayerInventory(inv);
+						if(currentSaved.startItems.idInvFood != undefined){
+							await moveItem(inv.IdInvDes, inv.IdInvPer, currentSaved.startItems.idInvFood);
 						}
-						let playInv = rawPlayInv ? await getListItems(rawPlayInv) : {};
-						let deseInv = rawDeseInv ? await getListItems(rawDeseInv) : {};
-
-						const heavyCandidates = currentSaved.route.currentPoss <= 4
-							? items.heavyList.slice(0, Math.floor(items.heavyList.length / 2))
-							: items.heavyList;
-						const lightCandidates = currentSaved.route.currentPoss <= 4
-							? items.list.slice(0, Math.floor(items.list.length / 2))
-							: items.list;
-						const heavySet = new Set(heavyCandidates);
-						const lightSet = new Set(lightCandidates);
-
-						const foodKey = currentSaved.startItems.idInvFood != undefined ? String(currentSaved.startItems.idInvFood) : null;
-						const waterKey = currentSaved.startItems.idInvWater != undefined ? String(currentSaved.startItems.idInvWater) : null;
-						const missingSurvivalInBag =
-							(foodKey !== null && !playInv[foodKey] && Boolean(deseInv[foodKey])) ||
-							(waterKey !== null && !playInv[waterKey] && Boolean(deseInv[waterKey]));
-						const groundHasPickable = Object.values(deseInv).some(it => heavySet.has(it.p) || lightSet.has(it.p));
-						let heavyCountInBag = 0;
-						let bagHasDisallowed = false;
-						for (const [k, it] of Object.entries(playInv)) {
-							if (k === foodKey || k === waterKey) continue;
-							if (heavySet.has(it.p)) {
-								heavyCountInBag++;
-								if (heavyCountInBag > 1) {
-									bagHasDisallowed = true;
-									break;
-								}
-							} else if (!lightSet.has(it.p)) {
-								bagHasDisallowed = true;
-								break;
-							}
+						if(currentSaved.startItems.idInvWater != undefined){
+							await moveItem(inv.IdInvDes, inv.IdInvPer, currentSaved.startItems.idInvWater);
 						}
-
-						let zoneModified = false;
-						if (missingSurvivalInBag || groundHasPickable || bagHasDisallowed) {
-							zoneModified = true;
-							if (Object.keys(playInv).length > 0) {
-								const dropRes = await dropPlayerInventory(inv);
-								if (dropRes?.source) playInv = await getListItems(dropRes.source);
-								if (dropRes?.target) deseInv = await getListItems(dropRes.target);
-							}
-							if(currentSaved.startItems.idInvFood != undefined && deseInv[currentSaved.startItems.idInvFood]){
-								const mRes = await moveItem(inv.IdInvDes, inv.IdInvPer, currentSaved.startItems.idInvFood);
-								if (mRes?.target) playInv = await getListItems(mRes.target);
-								if (mRes?.source) deseInv = await getListItems(mRes.source);
-							}
-							if(currentSaved.startItems.idInvWater != undefined && deseInv[currentSaved.startItems.idInvWater]){
-								const mRes = await moveItem(inv.IdInvDes, inv.IdInvPer, currentSaved.startItems.idInvWater);
-								if (mRes?.target) playInv = await getListItems(mRes.target);
-								if (mRes?.source) deseInv = await getListItems(mRes.source);
-							}
-							if (!rawPlayInv?.size && (!dropResSafeSize(playInv))) {
-								setPlayerInv(await getInventorySize(inv.IdInvPer));
-							}
-
-							let takeHeavy = true;
-							while(Object.keys(playInv).length < lastDataSaved.invSize && Object.keys(deseInv).length != 0){
-								const candidates = takeHeavy ? heavyCandidates : lightCandidates;
-								const itemId = searchItemIdInv(candidates, deseInv);
-								if (itemId == undefined) {
-									if (takeHeavy) {
+						setPlayerInv(await getInventorySize(inv.IdInvPer));
+						let playInv = await getPlayerInventory(inv);
+						let deseInv = await getDesertInventory(inv);
+						let takeHeavy = true;
+						const weaponHeavyList = weaponListData.weaponHeavyList.map(o => o.id);
+						const weaponList = weaponListData.weaponList.map(o => o.id);
+						while(Object.keys(playInv).length < lastDataSaved.invSize && Object.keys(deseInv).length != 0){
+							if(currentSaved.route.currentPoss <= 4){ // si se encuentra a X PA de distancia
+								if(takeHeavy){
+									//let playInvTemp = await searchMoveItem(inv.IdInvDes, inv.IdInvPer, weaponHeavyList); // solo toma las armas
+									const primeraMitad = items.heavyList.slice(0, Math.floor(items.heavyList.length / 2));
+									let playInvTemp = await searchMoveItem(inv.IdInvDes, inv.IdInvPer, primeraMitad);
+									if(playInvTemp == undefined){
 										takeHeavy = false;
 										continue;
+									}else{
+										if(playInvTemp.target == undefined || playInvTemp.target == null){
+											playInvTemp.target = await getHttpPlayerInventory(inv);
+										}
+										if(playInvTemp.source == undefined || playInvTemp.source == null){
+											playInvTemp.source = await getHttpDesertInventory(inv);
+										}
+										setPlayerInv(playInvTemp);
+										playInv = await getListItems(playInvTemp.target);
+										deseInv = await getListItems(playInvTemp.source);
+										takeHeavy = false;
 									}
-									break;
+								}else{
+									//let playInvTemp = await searchMoveItem(inv.IdInvDes, inv.IdInvPer, weaponList);// solo toma las armas
+									const primeraMitad = items.list.slice(0, Math.floor(items.list.length / 2));
+									let playInvTemp = await searchMoveItem(inv.IdInvDes, inv.IdInvPer, primeraMitad);
+									if(playInvTemp == undefined){
+										break;
+									}else{
+										if(playInvTemp.target == undefined || playInvTemp.target == null){
+											playInvTemp.target = await getHttpPlayerInventory(inv);
+										}
+										if(playInvTemp.source == undefined || playInvTemp.source == null){
+											playInvTemp.source = await getHttpDesertInventory(inv);
+										}
+										setPlayerInv(playInvTemp);
+										playInv = await getListItems(playInvTemp.target);
+										deseInv = await getListItems(playInvTemp.source);
+									}
 								}
-								let playInvTemp = await moveItem(inv.IdInvDes, inv.IdInvPer, itemId);
-								if (playInvTemp == undefined || playInvTemp.error) {
-									if (takeHeavy) {
+							}else{
+								if(takeHeavy){
+									let playInvTemp = await searchMoveItem(inv.IdInvDes, inv.IdInvPer, items.heavyList);
+									if(playInvTemp == undefined){
 										takeHeavy = false;
 										continue;
+									}else{
+										if(playInvTemp.target == undefined || playInvTemp.target == null){
+											playInvTemp.target = await getHttpPlayerInventory(inv);
+										}
+										if(playInvTemp.source == undefined || playInvTemp.source == null){
+											playInvTemp.source = await getHttpDesertInventory(inv);
+										}
+										setPlayerInv(playInvTemp);
+										playInv = await getListItems(playInvTemp.target);
+										deseInv = await getListItems(playInvTemp.source);
+										takeHeavy = false;
 									}
-									break;
-								}
-								if(playInvTemp.target == undefined || playInvTemp.target == null){
-									playInvTemp.target = await getHttpPlayerInventory(inv);
-								}
-								if(playInvTemp.source == undefined || playInvTemp.source == null){
-									playInvTemp.source = await getHttpDesertInventory(inv);
-								}
-								setPlayerInv(playInvTemp);
-								playInv = await getListItems(playInvTemp.target);
-								deseInv = await getListItems(playInvTemp.source);
-								if (takeHeavy) {
-									takeHeavy = false;
+								}else{
+									let playInvTemp = await searchMoveItem(inv.IdInvDes, inv.IdInvPer, items.list);
+									if(playInvTemp == undefined){
+										break;
+									}else{
+										if(playInvTemp.target == undefined || playInvTemp.target == null){
+											playInvTemp.target = await getHttpPlayerInventory(inv);
+										}
+										if(playInvTemp.source == undefined || playInvTemp.source == null){
+											playInvTemp.source = await getHttpDesertInventory(inv);
+										}
+										setPlayerInv(playInvTemp);
+										playInv = await getListItems(playInvTemp.target);
+										deseInv = await getListItems(playInvTemp.source);
+									}
 								}
 							}
 						}
-
 						try{
-							let pala = searchItemIdInv([319], playInv);
+							let pala = await searchItemIdInv([319], playInv);
 							if(pala != undefined){
-								const palaAction = getActionIdFromHtml(await doAction("/jx/beyond/partial/desert/actions", "POST", {}), pala);
-								if (palaAction != null) {
-									const palaRes = await doAction("/api/beyond/desert/action", "POST", {item: pala, action: palaAction});
-									if (!palaRes?.error) {
-										zoneModified = true;
-									}
-								}
+								await doAction("/api/beyond/desert/action", "POST", {item: pala, action: getActionIdFromHtml(await doAction("/jx/beyond/partial/desert/actions", "POST", {}), pala)});
 							}
 						}catch(exception){
 							console.log(exception);
 						}
-
-						// actualizar GestHordes solo si cambió el suelo/zona desde la sincronización inicial de esta celda
-						if (zoneModified) {
-							console.log("Actualizar GestHordes");
-							await goto('/jx/beyond/desert/cached');
-							await pag.waitForSelector('#header-rucksack-items');
-							await updateGestHordes();
-						}
+						// actualizar GestHordes
+						console.log("Actualizar GestHordes");
+						await goto('/jx/beyond/desert/cached');
+						await pag.waitForSelector('#header-rucksack-items');
+						await updateGestHordes();
+						await new Promise(r => setTimeout(r, 3500));
 						// ir a la siguiente posición
 						const nextPoss = currentSaved.route.way[currentSaved.route.currentPoss + 1];
 						if((await doAction("/api/beyond/desert/move", "POST", { x: nextPoss.x, y: nextPoss.y })).error){
@@ -1064,7 +1140,9 @@ async function playInDeserted(){
 						}else{
 							console.log(`Se mueve a [${nextPoss.x}, ${nextPoss.y}]`);
 							currentSaved.route.currentPoss = currentSaved.route.currentPoss + 1;
-							return await main('/jx/beyond/desert/cached');
+							//writeJSON(nameFile_dataSaved, dataSaved);
+							await goto('/jx/beyond/desert/cached');
+							return await main();
 						}
 					}
 				}
@@ -1073,24 +1151,19 @@ async function playInDeserted(){
 		}
 	}catch(exception){
 		console.log(exception);
+		//TODO: ADVERTIR POR TELEGRAM QUE NO FUE POSIBLE EJECUTAR NO°_PASO
+	}finally{
+		//writeJSON(nameFile_dataSaved, dataSaved);
 	}
-}
-
-function dropResSafeSize() {
-	return lastDataSaved.invSize != undefined && lastDataSaved.invSize != 5;
 }
 
 // flujo para aceptar la muerte cuando la partida termina
 async function acceptDead(){
 	await pag.waitForSelector('button[x-ajax-href="/jx/game/raventimes"]');
 	
-	const latestDay = Object.keys(dataSaved)
-		.filter(k => /^day\d+$/.test(k))
-		.sort((a, b) => parseInt(a.slice(3), 10) - parseInt(b.slice(3), 10))
-		.pop();
-	await sendTelegramMessage(`Juego Terminado: ${latestDay} en el paso: ${dataSaved[latestDay]?.currentStep}`);
+	const latestDay = Object.keys(dataSaved).sort((a, b) => parseInt(a.slice(3)) - parseInt(b.slice(3))).pop();
+	await sendTelegramMessage(`Juego Terminado: ${latestDay} en el paso: ${dataSaved[latestDay].currentStep}`);
 	try {
-		await screenshotPromise;
 		const gifPath = `./debug/${lastDataSaved?.idTown}.gif`;
 		await createGifFromPngs('./debug', gifPath, 250);
 		await sendGif(gifPath);
@@ -1100,7 +1173,6 @@ async function acceptDead(){
 	try {
 		fs.rmSync('./debug', { recursive: true, force: true });
 		fs.mkdirSync('./debug', { recursive: true });
-		gitNeedsFullStage = true;
 	} catch (exception) {
 		console.log('No se pudo limpiar debug/:', exception);
 	}
@@ -1111,16 +1183,17 @@ async function acceptDead(){
 	writeJSON(nameFile_dataSaved, dataSaved);
 	
 	lastWords = readJSON(lastWordsFile);
-	await pag.locator('#last_words').fill(lastWords.dead[Math.floor(Math.random() * lastWords.dead.length)]);
-	pag.once('dialog', async dialog => {
+	//console.log(lastWords);
+	await pag.type('#last_words', lastWords.dead[Math.floor(Math.random() * lastWords.dead.length)], { delay: 150 });
+	await pag.on('dialog', async dialog => {
+		//console.log(`Tipo de diálogo: ${dialog.type()}`);
+		//console.log(`Mensaje: ${dialog.message()}`);
 		await dialog.accept(); // acepta el alert
 	});
 
-	await Promise.all([
-		pag.waitForResponse(r => r.url().includes('/soul/') || r.url().includes('/ghost/'), { timeout: 5000 }).catch(() => {}),
-		pag.click('#rebirth_btn')
-	]);
-	return await main('/jx/ghost/welcome');
+	await pag.click('#rebirth_btn');
+	await goto('/jx/ghost/welcome');
+	return await main();
 }
 
 // busca un sitio activo y authentica con las credenciales
@@ -1130,6 +1203,7 @@ async function login(){
 		if(!(await nav('https://myhord.de/'))){
 			if(!(await nav('https://myhord.eu/'))){
 				if(!(await nav('https://myhord.fr/'))){
+					//TODO: ACORTAR TIEMPO DE ESPERA PARA LA SIGUIENTE EJECUCIÓN, YA QUE NO SE LOGRÓ EJECUTAR
 					return false;
 				}
 			}
@@ -1140,34 +1214,32 @@ async function login(){
 	
 	console.error("Iniciando Login: " + pag.url());
 	// Se realiza autenticación
-	await pag.goto(basePath + '/jx/public/login', { waitUntil: 'load', timeout: 15000 });
+	await goto('/jx/public/login');
 	console.error("Haciendo Login: " + pag.url());
 	try{
-		const navPromise = pag.waitForNavigation({ waitUntil: 'load', timeout: 15000 }).catch(() => {});
 		try{
-			await pag.click('#et_login_button', { timeout: 10000 });
+			await pag.click('#et_login_button', {timeout: 7000});
 		}catch(exception){
 			console.error("No se encontró et_login_button:", exception);
 		}
-		await navPromise;
-		await pag.waitForSelector('input[name="login"]', { state: 'visible', timeout: 10000 });
-		await pag.type('input[name="login"]', el0, { delay: 80 });
-		await pag.type('input[name="password"]', el1, { delay: 80 });
+		await pag.waitForNavigation({ waitUntil: 'domcontentloaded' });
+		await pag.type('input[name="login"]', el0, { delay: 150 });
+		await pag.type('input[name="password"]', el1, { delay: 150 });
 		console.error("Credenciales asignadas");
 		await pag.evaluate(() => {
 			const btn = document.querySelector('input[name="sign_in"]');
 			if (btn) btn.removeAttribute('disabled');
 		});
 		console.error("Se dió click a sing in");
-		await pag.click('input[name="sign_in"]', { timeout: 6000 });
-		await pag.waitForSelector('hordes-header-ui', { state: 'attached', timeout: 15000 });
+		await pag.click('input[name="sign_in"]', {timeout: 4000});
+		await pag.waitForSelector('hordes-header-ui', {state: 'attached',timeout: 7000});
 		console.error("Login Terminado: " + pag.url());
 		return true;
 	}catch(exception){
 		if (exception.name === 'TimeoutError') {
-			console.error("Se agotó el tiempo de espera en login (" + pag.url() + "):", exception.message);
+			console.error("Se agotó el tiempo de espera al intentar hacer click");
 		} else {
-			console.error("Otro error ocurrió en login (" + pag.url() + "):", exception);
+			console.error("Otro error ocurrió:", exception);
 		}
 	}
 	return false;
@@ -1181,8 +1253,18 @@ async function joinToTown(){
 			  item.language === "es" &&
 			  item.coalitions < item.population
 	);
-	await dismissPromptIfVisible();
+	try{
+		const noInteresado = pag.getByText('No interesado');
+		
+		if (await noInteresado.isVisible().catch(() => false)) {
+			await noInteresado.click();
+			await pag.keyboard.press('Enter');
+		}
+	}catch(exception){
+		
+	}
 	console.log(townsAvailable);
+	//await sendDebugPhoto();
 	await pag.locator('span.link.bold', { hasText: townsAvailable[0].name }).click();
 	await pag.waitForSelector('button.modal-button.small.inline', {state: 'visible', timeout: 5000});
 
@@ -1194,6 +1276,7 @@ async function joinToTown(){
 	}, { timeout: 10000 });
 	await joinButton.click();
 
+	//await goto('/jx/game/jobcenter');
 	await selectJob();
 }
 
@@ -1201,17 +1284,28 @@ async function joinToTown(){
 async function selectJob(){
 	lastDataSaved.idTown = await (await pag.waitForSelector('hordes-town-onboarding', {state: 'attached', timeout: 10000 })).getAttribute('data-town');
 	writeJSON(nameFile_lastDataSaved, lastDataSaved);
+	// profession id 
+	//	0 = 
+	//	1 = 
+	//	2 = habitante
+	//	3 = escavador
+	//	4 = guardian
+	//	5 = explorador
+	//	6 = domador
+	//	7 = tecnico
+	//	8 = 
+	//	9 = hermitaño
+	
+	// base skills [25, 29, 33, 37, 41]
 	
 	await doAction("/rest/v1/game/welcome/" + lastDataSaved.idTown, "PATCH", {"identity": null, "profession": {"id": 3}, 
 	// TODO: FUNCTION TO UPDATE LAST ID UPGRADES AVAILABLES
 	//"skills": {"ids": [28, 32, 36, 40, 44]}});
 	"skills": {"ids": [25, 29, 33, 37, 41]}});
-	try {
-		await updateGestHordesPromise();
-	} catch (err) {
-		console.error("No se logró actualizar GestHordes del nuevo pueblo:", err.message || err);
-	}
-	return await main('/jx/town/dashboard');
+	await new Promise(r => setTimeout(r, 2000));
+	await goto('/jx/town/dashboard');
+	await new Promise(r => setTimeout(r, 2000));
+	return await main();
 }
 
 /*
@@ -1261,26 +1355,25 @@ async function resolveExtensionPath(){
 }
 // navegación en url myhordes
 async function goto(path){
-	try {
-		let response = await pag.goto(basePath + path, { waitUntil: 'domcontentloaded', timeout: 15000 });
-		return Boolean(response && response.status() == 200);
-	} catch (err) {
+	let response = await pag.goto(basePath + path);
+	if (response && response.status() == 200) {
+		return true;
+	} else {
 		return false;
 	}
 }
 // navegación en url completa
 async function nav(url){
-	try {
-		let response = await pag.goto(url, { waitUntil: 'load', timeout: 15000 });
-		return Boolean(response && response.status() == 200);
-	} catch (err) {
+	let response = await pag.goto(url);
+	if (response && response.status() == 200) {
+		return true;
+	} else {
 		return false;
 	}
 }
 // ejecuta cualquier petición http en MyHordes
 async function doAction(endpoint, method, bodyData) {
-	const origin = basePath || new URL(pag.url()).origin;
-	const response = await pag.request.fetch(origin + endpoint, {
+	const response = await pag.request.fetch(new URL(pag.url()).origin + endpoint, {
 		method,
 		headers: {
 		"Accept": "application/json",
@@ -1313,32 +1406,14 @@ function readJSON(filePath) {
 }
 // escribir JSON en archivo
 function writeJSON(filePath, data) {
-	const normPath = path.normalize(filePath);
-	if (normPath.endsWith(path.normalize('data/gestHordes.json'))) {
-		cachedGestHordes = data;
-	} else if (normPath.endsWith(path.normalize('data/weapons.json'))) {
-		cachedWeapons = data;
-	}
-
-	let serialized;
 	try {
-		serialized = JSON.stringify(data, null, 2);
-		if (writtenJsonCache.get(normPath) === serialized && fs.existsSync(filePath)) {
-			return;
-		}
 		fs.mkdirSync(path.dirname(filePath), { recursive: true });
-		fs.writeFileSync(filePath, serialized);
-		writtenJsonCache.set(normPath, serialized);
+		fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 	} catch(error){
 		//console.error(`Error al crear cambios para archivo ${filePath} en temporal: `, error.message);
 	}
 	
-	if (deferGitPush) {
-		pendingGitPaths.add(filePath);
-		return;
-	}
-
-	// Agregar y commitear cambios inmediatamente fuera de 'myhordes'
+	// Agregar y commitear cambios
 	try{
 		retryPush(filePath, 4);
 		console.log(`Archivo ${filePath} actualizado`);
@@ -1347,75 +1422,28 @@ function writeJSON(filePath, data) {
 	}
 }
 
-function ensureGitConfig() {
-	if (gitConfigured) return;
+function retryPush(filePath = ".", m = 3){
 	execSync('git config user.name "github-actions[bot]"');
 	execSync('git config user.email "41898282+github-actions[bot]@users.noreply.github.com"');
-	gitConfigured = true;
-}
-
-function pushWithRetries(m = 3) {
-	if (!process.env.GITHUB_REPOSITORY && !process.env.CI) {
-		return;
-	}
-	const remoteUrl = process.env.GITHUB_REPOSITORY
-		? `https://x-access-token:${process.env.GITHUB_TOKEN}@github.com/${process.env.GITHUB_REPOSITORY}.git`
-		: 'origin';
-	for (let i = 0; i < m; i++) {
-		try {
-			execSync(`git pull --rebase ${remoteUrl} main`);
-			execSync(`git push ${remoteUrl} HEAD:main`);
+	execSync(`git add ${filePath}`);
+	execSync(`git commit -m "file changed: ${filePath}"`);
+	for(let i = 0; i < m; i++){
+    	try {
+			execSync('git pull --rebase https://x-access-token:' + process.env.GITHUB_TOKEN + '@github.com/' +process.env.GITHUB_REPOSITORY +'.git main');
+			execSync('git push https://x-access-token:' + process.env.GITHUB_TOKEN + '@github.com/' + process.env.GITHUB_REPOSITORY + '.git HEAD:main');
 			break;
-		} catch (e) {
-			if (i === (m - 1)) {
+	    } catch (e) {
+	        if(i === (m - 1)) {
 				console.log("no se logró guardar cambios");
-			} else {
-				try {
-					execSync('git add -A');
-					execSync('git commit -m "file changed: ."');
-				} catch (_) {}
+			}else{
+				console.log(execSync('git status --porcelain').toString());
+				console.log(execSync('git branch').toString());
+				console.log(execSync('git remote -v').toString());
+				execSync(`git add .`);
+				execSync(`git commit -m "file changed: ."`);
 			}
-		}
+	    }
 	}
-}
-
-function flushGitChanges() {
-	if (!gitNeedsFullStage && pendingGitPaths.size === 0) {
-		return;
-	}
-	try {
-		ensureGitConfig();
-		if (gitNeedsFullStage && fs.existsSync('./debug')) {
-			execSync('git add -A ./debug');
-		}
-		if (pendingGitPaths.size > 0) {
-			const quoted = [...pendingGitPaths].map(p => `"${p}"`).join(' ');
-			execSync(`git add ${quoted}`);
-		}
-		const staged = execSync('git status --porcelain').toString().trim();
-		if (!staged) {
-			pendingGitPaths.clear();
-			gitNeedsFullStage = false;
-			return;
-		}
-		execSync('git commit -m "bot: batch state and log update"');
-		pushWithRetries(4);
-		pendingGitPaths.clear();
-		gitNeedsFullStage = false;
-	} catch (error) {
-		console.log("Aviso al sincronizar lote git:", error.message || error);
-	}
-}
-
-function retryPush(filePath = ".", m = 3){
-	ensureGitConfig();
-	execSync(`git add "${filePath}"`);
-	try {
-		execSync(`git commit -m "file changed: ${filePath}"`);
-	} catch (e) {
-		return;
-	}
-	pushWithRetries(m);
 }
 
 // obtiene el tamaño maximo del inventario
@@ -1492,25 +1520,6 @@ async function getHttpPlayerInventory(inv) {
 async function getHttpDesertInventory(inv) {
 	return await getHttpResponseInventory(inv.IdInvDes);
 }
-function extractHordesInventoryIds(htmlText) {
-	if (!htmlText) return null;
-	const tagMatch = htmlText.match(/<hordes-inventory\b[^>]*>/i);
-	if (tagMatch) {
-		const tag = tagMatch[0];
-		const aMatch = tag.match(/data-inventory-a-id="([^"]+)"/i);
-		const bMatch = tag.match(/data-inventory-b-id="([^"]+)"/i);
-		return {
-			aId: aMatch ? aMatch[1] : null,
-			bId: bMatch ? bMatch[1] : null
-		};
-	}
-	const el = new JSDOM(htmlText).window.document.querySelector("hordes-inventory");
-	return el ? {
-		aId: el.getAttribute("data-inventory-a-id"),
-		bId: el.getAttribute("data-inventory-b-id")
-	} : null;
-}
-
 // recupera los ids de los inventarios Personal, Storage y Baul
 // @return: inv : {IdInvPer, IdInvSto, IdInvBau, IdInvDes}
 async function getInventoryIds() {
@@ -1518,25 +1527,19 @@ async function getInventoryIds() {
 		currentPath = new URL(pag.url()).pathname;
 		if(currentPath != "/jx/beyond/desert/cached"){
 			if(lastDataSaved.inv != undefined){
-				if (lastDataSaved.inv.IdInvPer) {
-					idPlayerInv = lastDataSaved.inv.IdInvPer;
-				}
 				return lastDataSaved.inv;
 			}else{
-				const [bankHtml, houseHtml] = await Promise.all([
-					doAction("/jx/town/bank", "GET", {}),
-					doAction("/jx/town/house/dash", "GET", {})
-				]);
-				const bankIds = extractHordesInventoryIds(bankHtml);
-				if (bankIds) {
-					const IdInvPer = bankIds.aId;
+				const inventoryElement = new JSDOM(await doAction("/jx/town/bank", "GET", {})).window.document.querySelector("hordes-inventory");
+				if (inventoryElement) {
+					const IdInvPer = inventoryElement.getAttribute("data-inventory-a-id");
 					if(IdInvPer){
 						idPlayerInv = IdInvPer;
 					}
-					const IdInvSto = bankIds.bId;
-					const houseIds = extractHordesInventoryIds(houseHtml);
-					if(houseIds){
-						const IdInvBau = houseIds.bId;
+					const IdInvSto = inventoryElement.getAttribute("data-inventory-b-id");
+					
+					const inventoryHouseElement = new JSDOM(await doAction("/jx/town/house/dash", "GET", {})).window.document.querySelector("hordes-inventory");
+					if(inventoryHouseElement){
+						const IdInvBau = inventoryHouseElement.getAttribute("data-inventory-b-id");
 						lastDataSaved.inv = {
 							IdInvPer: IdInvPer,
 							IdInvSto: IdInvSto,
@@ -1550,20 +1553,13 @@ async function getInventoryIds() {
 				}
 			}
 		}else{
-			// Primero intentar leer directamente del DOM actual sin hacer otro POST ni instanciar JSDOM
-			const domIds = await pag.locator('hordes-inventory').first().evaluate(el => ({
-				aId: el.getAttribute('data-inventory-a-id'),
-				bId: el.getAttribute('data-inventory-b-id')
-			})).catch(() => null);
-			const desertIds = (domIds && domIds.aId && domIds.bId)
-				? domIds
-				: extractHordesInventoryIds(await doAction("/jx/beyond/desert/cached", "POST", {}));
-			if (desertIds) {
-				const IdInvPer = desertIds.aId;
+			const inventoryElementDesert = new JSDOM(await doAction("/jx/beyond/desert/cached", "POST", {})).window.document.querySelector("hordes-inventory");
+			if (inventoryElementDesert) {
+				const IdInvPer = inventoryElementDesert.getAttribute("data-inventory-a-id");
 				if(IdInvPer){
 					idPlayerInv = IdInvPer;
 				}
-				const IdInvDes = desertIds.bId;
+				const IdInvDes = inventoryElementDesert.getAttribute("data-inventory-b-id");
 				
 				return { IdInvPer, IdInvDes };
 			} else {
@@ -1582,40 +1578,21 @@ async function closePortal(){
 }
 // utiliza un objeto del almacen y lo regresa
 async function UseAndReturn(inv, storageInventory, item, act){
-	let stoInv = searchItemIdInv([item], storageInventory);
+	let stoInv = searchItemIdInv([item], storageInventory)
 	if(stoInv){
-		const upRes = await doAction("/rest/v1/game/inventory/"+inv.IdInvSto+"/"+stoInv, "PATCH", {d: "up", mod: null, to: inv.IdInvPer});
-		const playerItems = upRes?.target ? await getListItems(upRes.target) : await getPlayerInventory(inv);
-		let plaInv = searchItemIdInv([item], playerItems);
+		await doAction("/rest/v1/game/inventory/"+inv.IdInvSto+"/"+stoInv, "PATCH", {d: "up", mod: null, to: inv.IdInvPer});
+		let plaInv = searchItemIdInv([item], await getPlayerInventory(inv))
 		if(plaInv){
-			const actionId = getActionIdFromHtml(await doAction("/jx/town/house/dash", "POST", {}), plaInv);
-			if (actionId != null) {
-				await doAction("/api/town/house/action", "POST", {item: plaInv, action: actionId});
-			}
-			const downRes = await doAction("/rest/v1/game/inventory/"+inv.IdInvPer+"/"+plaInv, "PATCH", {d: "down", mod: null, to: inv.IdInvSto});
-			return {
-				used: true,
-				storageInventory: downRes?.target ? await getListItems(downRes.target) : undefined
-			};
+			await doAction("/api/town/house/action", "POST", {item: plaInv, action: getActionIdFromHtml(await doAction("/jx/town/house/dash", "POST", {}), plaInv)});
+			//console.log("/rest/v1/game/inventory/"+inv.IdInvPer+"/"+plaInv);
+			//console.log({d: "down", mod: null, to: inv.IdInvSto});
+			await doAction("/rest/v1/game/inventory/"+inv.IdInvPer+"/"+plaInv, "PATCH", {d: "down", mod: null, to: inv.IdInvSto});
 		}
 	}
-	return { used: false, storageInventory };
 }
 function getActionIdFromHtml(htmlText, provokingId) {
-	if (!htmlText || provokingId == undefined) return null;
-	const targetId = String(provokingId);
-	const liRegex = /<li\b[^>]*>/gi;
-	let match;
-	while ((match = liRegex.exec(htmlText)) !== null) {
-		const tag = match[0];
-		const provMatch = tag.match(/\bx-provoking-id="([^"]+)"/i);
-		if (provMatch && provMatch[1] === targetId) {
-			const actMatch = tag.match(/\bx-action-id="([^"]+)"/i);
-			return actMatch ? actMatch[1] : null;
-		}
-	}
 	const doc = new JSDOM(htmlText).window.document;
-	const li = doc.querySelector(`li[x-provoking-id="${targetId}"]`);
+	const li = doc.querySelector(`li[x-provoking-id="${provokingId}"]`);
 	return li ? li.getAttribute("x-action-id") : null;
 }
 
@@ -1630,24 +1607,22 @@ async function moveItem(fromIdInv, toIdInv, id){
 	return (await doAction("/rest/v1/game/inventory/"+fromIdInv+"/"+id, "PATCH", {d: dir, mod: null, to: Number(toIdInv)}));
 }
 // busca y mueve un objeto entre inventarios
-async function searchMoveItem(fromIdInv, toIdInv, arrItemsToSearch, cachedFromInv = undefined){
-	const fromInv = cachedFromInv ?? await getInventory(fromIdInv);
-	let id = searchItemIdInv(arrItemsToSearch, fromInv);
+async function searchMoveItem(fromIdInv, toIdInv, arrItemsToSearch){
+	let id = searchItemIdInv(arrItemsToSearch, await getInventory(fromIdInv));
 	if(id != undefined){
 		return await moveItem(fromIdInv, toIdInv, id);
 	} else {
 		return undefined;
 	}
 }
-// devuelve todo el contenido del inventario Personal al Storage o Desierto
+// devuelve todo el contenido del inventario Personal al Storage
 async function dropPlayerInventory(inv){
 	if(inv.IdInvSto != undefined){
-		return await doAction("/rest/v1/game/inventory/" + inv.IdInvPer, "PATCH", {d: "down-all", mod: null, to: inv.IdInvSto});
+		await doAction("/rest/v1/game/inventory/" + inv.IdInvPer, "PATCH", {d: "down-all", mod: null, to: inv.IdInvSto});
 	}
 	if(inv.IdInvDes != undefined){
-		return await doAction("/rest/v1/game/inventory/" + inv.IdInvPer, "PATCH", {d: "down-all", mod: null, to: inv.IdInvDes});
+		await doAction("/rest/v1/game/inventory/" + inv.IdInvPer, "PATCH", {d: "down-all", mod: null, to: inv.IdInvDes});
 	}
-	return undefined;
 }
 // recupera objetos del almacen para una exploracion
 async function prepareToExplore(inv, storageInventory){
@@ -1658,80 +1633,62 @@ async function prepareToExplore(inv, storageInventory){
 	dataSaved.test[currentDate] = {};
 	
 	//tirar inventario
-	const dropRes = await doAction("/rest/v1/game/inventory/" + inv.IdInvPer, "PATCH", {d: "down-all", mod: null, to: inv.IdInvSto});
-	if (dropRes?.target) {
-		storageInventory = await getListItems(dropRes.target);
-	}
-	let latestPlayerInv = dropRes?.source ? await getListItems(dropRes.source) : undefined;
-
+	await doAction("/rest/v1/game/inventory/" + inv.IdInvPer, "PATCH", {d: "down-all", mod: null, to: inv.IdInvSto});
 	const waters = items.waters.map(water => water.id);
-	const wellRes = await doAction("/rest/v1/game/town/facilities/well", "GET", {});
-	if(wellRes.error){
+	if((await doAction("/rest/v1/game/town/facilities/well", "GET", {})).error){
 		let idW = searchItemIdInv(waters, storageInventory);
 		if(idW){
-			const wRes = await doAction("/rest/v1/game/inventory/"+inv.IdInvSto+"/"+idW, "PATCH", {d: "up", mod: null, to: inv.IdInvPer});
-			if (wRes?.target) latestPlayerInv = await getListItems(wRes.target);
-			if (wRes?.source) storageInventory = await getListItems(wRes.source);
+			await doAction("/rest/v1/game/inventory/"+inv.IdInvSto+"/"+idW, "PATCH", {d: "up", mod: null, to: inv.IdInvPer});
 		}
-	} else {
-		latestPlayerInv = undefined;
 	}
-	const foods = items.foods.map(food => food.id);
+	const foods = items.foods.map(food => food.id);;
 	//recoger comida
 	let abrelatas = searchItemIdInv([12,17,20,140], storageInventory);
 	let idF = searchItemIdInv(abrelatas?foods:foods.slice(1), storageInventory);
 	if(idF){
 		let actInv = await doAction("/rest/v1/game/inventory/"+inv.IdInvSto+"/"+idF, "PATCH", {d: "up", mod: null, to: inv.IdInvPer});
-		if (actInv?.target) latestPlayerInv = await getListItems(actInv.target);
-		if (actInv?.source) storageInventory = await getListItems(actInv.source);
+		dataSaved.test[currentDate].actInv0 = actInv;
 		if(actInv?.success){
 			//evalua si se recogió una lata
-			let hasLata = searchItemIdInv([3], latestPlayerInv ?? await getPlayerInventory(inv));
+			let hasLata = searchItemIdInv([3], actInv?.target);
 			dataSaved.test[currentDate].hasLata = hasLata;
 			if(hasLata){
 				//recoge abre latas
 				actInv = await doAction("/rest/v1/game/inventory/"+inv.IdInvSto+"/"+abrelatas, "PATCH", {d: "up", mod: null, to: inv.IdInvPer});
+				dataSaved.test[currentDate].actInv1 = actInv;
 				if(actInv?.success){
 					//abre la lata
-					const lataAction = getActionIdFromHtml(await doAction("/jx/town/house/dash", "POST", {}), hasLata);
-					if (lataAction != null) {
-						await doAction("/api/town/house/action", "POST", {item: hasLata, action: lataAction});
-					}
-					latestPlayerInv = await getPlayerInventory(inv);
-					if(abrelatas = searchItemIdInv([12,17,20,140], latestPlayerInv)){
+					await doAction("/api/town/house/action", "POST", {item: hasLata, action: getActionIdFromHtml(await doAction("/jx/town/house/dash", "POST", {}), hasLata)});
+					if(abrelatas = searchItemIdInv([12,17,20,140], await getPlayerInventory(inv))){
 						dataSaved.test[currentDate].abrelatas = abrelatas;
 						//regresa el abre latas
-						const retRes = await doAction("/rest/v1/game/inventory/"+inv.IdInvPer+"/"+abrelatas, "PATCH", {d: "down", mod: null, to: inv.IdInvSto});
-						if (retRes?.source) latestPlayerInv = await getListItems(retRes.source);
+						await doAction("/rest/v1/game/inventory/"+inv.IdInvPer+"/"+abrelatas, "PATCH", {d: "down", mod: null, to: inv.IdInvSto});
 					}
 				}else{
 					// regresa la lata
-					const retLata = await doAction("/rest/v1/game/inventory/"+inv.IdInvPer+"/"+hasLata, "PATCH", {d: "down", mod: null, to: inv.IdInvSto});
-					if (retLata?.target) storageInventory = await getListItems(retLata.target);
+					await doAction("/rest/v1/game/inventory/"+inv.IdInvPer+"/"+hasLata, "PATCH", {d: "down", mod: null, to: inv.IdInvSto});
 					idF = searchItemIdInv(foods.slice(1), storageInventory);
-					if (idF) {
-						actInv = await doAction("/rest/v1/game/inventory/"+inv.IdInvSto+"/"+idF, "PATCH", {d: "up", mod: null, to: inv.IdInvPer});
-						if (actInv?.target) latestPlayerInv = await getListItems(actInv.target);
-					}
+					actInv = await doAction("/rest/v1/game/inventory/"+inv.IdInvSto+"/"+idF, "PATCH", {d: "up", mod: null, to: inv.IdInvPer});
 				}
 			}
 			//evalua si se recogió un doggybag
-			let tempPlayerInv = latestPlayerInv ?? await getPlayerInventory(inv);
-			let hasDoggyBag = searchItemIdInv([118], tempPlayerInv);
+			let hasDoggyBag = searchItemIdInv([118], actInv?.target);
+			dataSaved.test[currentDate].hasDoggyBag1 = hasDoggyBag;
+			let tempPlayerInv = await getPlayerInventory(inv);
+			dataSaved.test[currentDate].hasDoggyBag2_inv = tempPlayerInv;
+			hasDoggyBag = searchItemIdInv([118], tempPlayerInv);
 			dataSaved.test[currentDate].hasDoggyBag2 = hasDoggyBag;
 			if(hasDoggyBag){
-				//abre doggy-bag
+				//abre doggy-back
 				let doActionObj = await doAction("/jx/town/house/dash", "POST", {});
+				dataSaved.test[currentDate].doActionObj = doActionObj;
 				let getActionIdFromHtmlObj = getActionIdFromHtml(doActionObj, hasDoggyBag);
 				dataSaved.test[currentDate].getActionIdFromHtmlObj = getActionIdFromHtmlObj;
-				if (getActionIdFromHtmlObj != null) {
-					await doAction("/api/town/house/action", "POST", {item: hasDoggyBag, action: getActionIdFromHtmlObj});
-					latestPlayerInv = undefined;
-				}
+				await doAction("/api/town/house/action", "POST", {item: hasDoggyBag, action: getActionIdFromHtmlObj});
 			}
 		}
 	}
-	let pI = latestPlayerInv ?? await getPlayerInventory(inv);
+	let pI = await getPlayerInventory(inv);
 	return {idFood:searchItemId(foods, pI), idWater:searchItemId(waters, pI), idInvFood:searchItemIdInv(foods, pI), idInvWater:searchItemIdInv(waters, pI)}
 }
 // busca un item en un inventario ya sea Baul, Personal o Storage
@@ -1757,36 +1714,33 @@ function searchItemId(arrItemsToSearch, arrItemsStorage) {
 }
 // consulta a gesthordes
 async function getGestHordes(){
-	if (cachedGestHordes !== null) {
-		return cachedGestHordes;
-	}
 	const raw = await readFile('./data/gestHordes.json', 'utf-8');
-	cachedGestHordes = JSON.parse(raw);
-	return cachedGestHordes;
+	return JSON.parse(raw);
 }
 async function getWeaponsGestHordes() {
-	if (cachedWeapons !== null) {
-		return cachedWeapons;
-	}
 	const raw = await readFile('./data/weapons.json', 'utf-8');
-	cachedWeapons = JSON.parse(raw);
-	return cachedWeapons;
+	return JSON.parse(raw);
 }
 
 // actualiza GestHordes
 async function updateGestHordes(){
-	// activar actualización de herramientas externas (una sola vez por sesión)
+	// activar actualización de herramientas externas
 	try{
 		if(!externalTools) {
-			await pag.waitForSelector('.mho-new-changelog, #synchronize_external_tools', { state: 'attached', timeout: 5000 });
+			await pag.waitForSelector('.mho-new-changelog', {timeout: 10000});
 			await pag.evaluate(() => {
-				const el = document.querySelector('.mho-new-changelog');
-				if (el) {
-					el.classList.add('mho-btn-opened');
-				}
+				return new Promise(resolve => {
+					setTimeout(() => {
+						const el = document.querySelector('.mho-new-changelog');
+						if (el) {
+							el.classList.add('mho-btn-opened');
+						}
+						resolve();
+					}, 4000);
+				});f
 			});
 			try{
-				let syncExtTools = await asegurarCheckedLi('#synchronize_external_tools', { timeout: 3000 });
+				let syncExtTools = await asegurarCheckedLi('#synchronize_external_tools');
 				if(syncExtTools){
 					console.log("Se logró activar #synchronize_external_tools");
 				}else{
@@ -1795,55 +1749,25 @@ async function updateGestHordes(){
 			}catch(exception){
 				console.log("No se logró activar #synchronize_external_tools: " + exception);
 			}
-			await pag.check('#synchronize_external_tools_input', { timeout: 2500 }).catch(() => {});
-			await pag.evaluate(() => {
-				const el = document.querySelector('.mho-new-changelog');
-				if (el) {
-					el.classList.remove('mho-btn-opened');
-				}
-			}).catch(() => {});
+			await pag.check('#synchronize_external_tools_input', {timeout: 5000});
 			externalTools = true;
 		}
 	}catch(exception){
+		//throw new Error("Error updateGestHordes: " + exception);
 		console.log("No se reconoce activo las ExternalTools" + exception);
 	}
 	if(externalTools){
 		try{
-			const logLink = pag.locator('.log-complete-link').first();
-			if (await logLink.isVisible().catch(() => false)) {
-				await Promise.all([
-					pag.waitForResponse(r => r.url().includes('/beyond/'), { timeout: 2500 }).catch(() => {}),
-					logLink.click({ timeout: 1500 }).catch(() => {})
-				]);
-			}
+			await pag.waitForSelector('.log-complete-link', { state: 'visible', timeout: 4000 });
+			await pag.click('.log-complete-link >> nth=0');
+			await new Promise(r => setTimeout(r, 100));
 		}catch(exception){
 			console.log("No se logró abrir el log completo del desierto: " + exception);
 		}
 		try{
-			await pag.waitForFunction(() => {
-				const content = document.querySelector('#content');
-				if (!content) return false;
-				return Boolean(
-					document.querySelector('#mh-update-external-tools') ||
-					content.querySelector('[class*="mho"], [id*="mho"], img[src^="chrome-extension://"]') ||
-					(content.textContent && content.textContent.includes('MHO Addon'))
-				);
-			}, { timeout: 3500 }).catch(() => {});
-
-			const updateBtn = pag.locator('#mh-update-external-tools');
-			if (await updateBtn.isVisible().catch(() => false)) {
-				const txt = ((await updateBtn.textContent().catch(() => '')) || '').toLowerCase();
-				if (!txt.includes('actualizando') && !txt.includes('updating')) {
-					await updateBtn.click({ timeout: 2000 }).catch(() => {});
-				}
-			}
-
-			await pag.waitForFunction(() => {
-				const btn = document.querySelector('#mh-update-external-tools');
-				if (!btn) return true;
-				const style = window.getComputedStyle(btn);
-				return style.display === 'none' || style.visibility === 'hidden';
-			}, { timeout: 6000 }).catch(() => {});
+			await pag.waitForSelector('#mh-update-external-tools', { state: 'visible', timeout: 12000 });
+			await pag.click('#mh-update-external-tools');
+			await new Promise(r => setTimeout(r, 12000));
 		}catch(exception){
 			console.log("Hordes: " + exception);
 		}
@@ -1851,155 +1775,134 @@ async function updateGestHordes(){
 		console.log("No fue posible actualizar GestHordes");
 	}
 }
-// Evalúa un archivo binario comprimido de rutas (.bin.br) directamente en el Buffer sin crear millones de arreglos intermedios
-async function findBestRouteFromBinary(filename, map, villX, villY, tGroupControl) {
-	const stats = fs.statSync(filename);
-	if (stats.size === 0) {
-		throw new Error(`El archivo ${filename} está vacío. Regenera el archivo .bin.br`);
-	}
-
-	const fileStream = fs.createReadStream(filename, { highWaterMark: 256 * 1024 });
-	const brotliStream = zlib.createBrotliDecompress({ chunkSize: 512 * 1024 });
-	fileStream.pipe(brotliStream);
-
-	let pendingBuffer = Buffer.alloc(0);
-	let tFOpt = -1;
-	let bestRouteSlice = null;
-
-	for await (const chunk of brotliStream) {
-		pendingBuffer = pendingBuffer.length === 0 ? chunk : Buffer.concat([pendingBuffer, chunk]);
-		let offset = 0;
-		const bufLen = pendingBuffer.length;
-
-		while (offset + 2 <= bufLen) {
-			const routeLength = pendingBuffer.readUInt16LE(offset);
-			const routeSizeBytes = 6 + (routeLength - 1) * 2;
-			if (offset + routeSizeBytes > bufLen) {
-				break;
-			}
-
-			let x = pendingBuffer.readInt16LE(offset + 2);
-			let y = pendingBuffer.readInt16LE(offset + 4);
-			let row = map[villY - y];
-			let zone = row ? row[x + villX] : undefined;
-
-			if (zone !== undefined && !(zone.zombie_estim != null && zone.zombie_estim > tGroupControl)) {
-				let tOpt = zone.opt;
-				let zonePrev = zone;
-				let valid = true;
-				let co = offset + 6;
-				const endCo = offset + routeSizeBytes;
-
-				while (co < endCo) {
-					x += (pendingBuffer[co] << 24) >> 24;
-					y += (pendingBuffer[co + 1] << 24) >> 24;
-					co += 2;
-
-					row = map[villY - y];
-					zone = row ? row[x + villX] : undefined;
-					if (zone === undefined) {
-						valid = false;
-						break;
-					}
-					tOpt += zone.opt;
-					const ze = zone.zombie_estim;
-					if (ze != null) {
-						if (ze > tGroupControl) {
-							valid = false;
-							break;
-						}
-					} else if (zonePrev.zombie_estim != null && zonePrev.zombie_estim >= (tGroupControl - 1)) {
-						valid = false;
-						break;
-					}
-					zonePrev = zone;
-				}
-
-				if (valid && tOpt > tFOpt) {
-					tFOpt = tOpt;
-					bestRouteSlice = Buffer.from(pendingBuffer.subarray(offset, offset + routeSizeBytes));
-				}
-			}
-
-			offset += routeSizeBytes;
-		}
-
-		if (offset > 0) {
-			pendingBuffer = offset === bufLen ? Buffer.alloc(0) : pendingBuffer.subarray(offset);
-		}
-	}
-
-	const way = [];
-	if (bestRouteSlice !== null) {
-		const rl = bestRouteSlice.readUInt16LE(0);
-		let x = bestRouteSlice.readInt16LE(2);
-		let y = bestRouteSlice.readInt16LE(4);
-		way.push({ x, y });
-		for (let i = 1, co = 6; i < rl; i++, co += 2) {
-			x += bestRouteSlice.readInt8(co);
-			y += bestRouteSlice.readInt8(co + 1);
-			way.push({ x, y });
-		}
-	}
-	return way;
-}
-
 // crea una ruta basada en GestHordes
-async function getRoute(PAs, tGroupControl = 3, cachedMap = null, cachedVillage = null){
-	let map = cachedMap;
-	let village = cachedVillage;
-	if (!map || !village) {
-		gestHorderData = await getGestHordes();
-		const zones = gestHorderData.data.carte.zones;
-		map = [];
-		for (const key in zones) {
-			const zone = zones[key];
-			const { x, y } = zone;
-			if (!map[y]) {
-				map[y] = [];
-			}
-			zone.opt =
-				((zone.fouille_lvl != null) ? zone.fouille_lvl : ((zone.dried) ? 0 : 2))
-				+ ((zone.bat_id != null && !zone.empty) ? 1 : 0);
-			map[y][x] = zone;
+async function getRoute(PAs, tGroupControl = 3){
+	//console.log(`(PAs: ${PAs})`);
+	gestHorderData = await getGestHordes();
+	const zones = gestHorderData.data.carte.zones;
+	const map = [];
+	for (const key in zones) {
+		const zone = zones[key];
+		const { x, y } = zone;
+		if (!map[y]) {
+			map[y] = [];
 		}
-		village = getVillageInfo();
+		let totalPeso = 0;
+		zone.opt = 
+			//	((zone.dried) ? 0 : 2) // agotada
+				((zone.fouille_lvl != null) ? zone.fouille_lvl : ((zone.dried) ? 0 : 2))
+			+	((zone.bat_id != null && !zone.empty)? 1 : 0) // con ruina sin agotar
+			//+	(zone.items.forEach(item => totalPeso += items.ruteValue[item.item_id] || 0) || 0) // objetos que vale la pena recoger
+		;
+		//console.log(`${zone.opt} ${((zone.dried) ? 0 : 2)} ${((zone.bat_id != null && !zone.empty)? 2 : 0)} ${(zone.items.forEach(item => totalPeso += items.ruteValue[item.item_id] || 0) || 0)}`);
+		map[y][x] = zone;
 	}
+/*
+	Reglas para genera rutas completas:
+		[*] Si el total de PAs es impar redondear a par hacia abajo ( 5 PAs -> 4 PAs, 9 PAs -> 8 PAs ) = Math.floor( 9 / 2 ) * 2
+		[*] Si en una ruta se desplaza hacia abajo o hacia arriba, ya no se cambia de dirección hasta pasado la mitad de los PAs (ruta de retorno)
+		[*] Si en una ruta se desplaza hacia la izquierda o derecha, ya no se cambia de dirección hasta pasado la mitad de los PAs (ruta de retorno)
+		[*] (analizando) Si la ruta inicia en una dirección el ultimo movimiento no puede ser en esa misma dirección
+	
+	Reglas para generar rutas seguras:
+		[-] El total de control del equipo debe ser mayor o igual a la predicción maxima de zombies en cada celda del recorrido
+		Primeros días:
+			(evaluar como reaccionar) Si la zona tiene un minimo (1 o 2) de zombies el riesgo de contener zombies proximos es mayor
+				posibles acciones:
+					[-] Si el jugador aun tiene golpe para reducir el total de zombies es posible el desplazamiento
+					[-] Si el jugador ya no tiene golpe deberá evaluarse la información de las 8 casillas adyacentes para determinar la dirección mas segura (la que contendrá menos zombies en la predicción)
+		Mediados días y posterior:
+			[-] No pasar si la zona proxima no ha sido explorada y en la celda actual de la ruta ya se alcanzo el control del grupo
 
+	Reglas para generar rutas optimas (no agotadas):
+		[ ] Rutas con ruinas aún disponibles suman 1 recolección adicional
+		[ ] Utilizar el contador de cabadas totales faltantes para medir cuanto falta para agotar en total cada ruta
+		[ ] Primeros días (1 - 2) al menos el 80% de las zonas no estan agotadas
+		[ ] Mediados días (3 - 4) al menos el 55% de las zonas no estan agotadas
+		[ ] Mediados días (5 - 6) al menos el 25% de las zonas no estan agotadas
+	
+	Reglas para ciudades largas:
+		[ ] Si se excede el día 7, deberá hacerse ruta solo si se cumplen las reglas mas exigentes de seguridad y de optimización
+*/
 	// Se cierra el total de PAs a un numero par
 	const tPAs = Math.floor( PAs / 2 ) * 2;
-	if (tPAs < 2) {
-		return {};
-	}
 	
-	// 1. se generan todas las rutas posibles en cada dirección con los PAs indicados
+	// Pasos:
+	// 1. se generan todas las rutas posibles en cada dirección con los PAs indicados usando (Reglas para genera rutas completas)
 	await createRoutes(tPAs);
 	
-	// 2. se ponderan las rutas directamente sobre el stream binario y se recupera la mas alta
-	const routeFile = path.join(constFile, `routes_${tPAs}.bin.br`);
-	const way = await findBestRouteFromBinary(routeFile, map, village.x, village.y, tGroupControl);
-	let rutaOpt = { way };
-
+	// 2. se ponderan las rutas y se recupera la mas alta
+	const village = getVillageInfo();
+	//console.log(village);
+	let rutaOpt = {way:[]};
+	let tFOpt = -1;
+	for await (const chunk of loadRoutesInChunks(path.join(constFile, `routes_${tPAs}.bin.br`), 32)) {
+		// Procesar rutas en paralelo dentro del chunk
+		const resultados = await Promise.all(chunk.map(async (ruta) => {
+			let tOpt = 0;
+        	let zonePrev = undefined;
+			for (let p of ruta) {
+				try {
+					const zone = map[village.y - p[1]][p[0] + village.x];
+					tOpt += zone.opt;
+					// Usa la estimación para el primer limpiado, si no hay estimación deja la ruta, hasta el momento se descartan todas las completamente inseguras
+					if(zone.zombie_estim != null && zone.zombie_estim > tGroupControl){
+						return { tOpt: -1, ruta: {}};
+					}
+					// TODO: no ejecutarse si aun esta disponible el golpe
+        			if(zonePrev != undefined && zone.zombie_estim == null){
+                        if(zonePrev.zombie_estim != null && zonePrev.zombie_estim >= (tGroupControl - 1)){
+							return { tOpt: -1, ruta: {}};
+                        }
+                    }
+					zonePrev = zone;
+				} catch (exception ){
+					//console.log(`y:${p[1] + village.y}, x:${p[0] + village.x}`);
+					return { tOpt: -1, ruta: {}};
+				}
+			}
+			return { tOpt, ruta };
+		}));
+		let rutaOptTemp = [];
+		// Reducir resultados parciales
+		for (let { tOpt, ruta } of resultados) {
+			if (tOpt > tFOpt) {
+				tFOpt = tOpt;
+				rutaOptTemp = ruta;
+			}
+		}
+		let possWay = 0;
+		for (let p of rutaOptTemp) {
+			rutaOpt.way[possWay] = {x:p[0], y:p[1]};
+			possWay++;
+		}
+		
+	}
 	// 3. agrega cuenta e información de zonas agotadas para determinar segun el día actual si vale la pena hacer o no la ruta
+	//console.log(rutaOpt);
 	rutaOpt.tNotDried = -2;
 	rutaOpt.tOpt = -4;
 	for (let p of rutaOpt.way) {
 		const zone = map[village.y - p.y][p.x + village.x];
 		p.dried = zone.dried;
-		p.opt = zone.opt;
+		p.opt = 
+			//	((zone.dried) ? 0 : 2) // agotada
+				((zone.fouille_lvl != null) ? zone.fouille_lvl : ((zone.dried) ? 0 : 2))
+			+	((zone.bat_id != null && !zone.empty)? 1 : 0) // con ruina sin agotar
 		rutaOpt.tOpt += p.opt;
 		if(p.dried == null){
 			p.dried = false;
 		}
-		if(!zone.dried){
+		if(!map[village.y - p.y][p.x + village.x].dried){
 			rutaOpt.tNotDried++;
 		}
+		console.log(`PAs: [${tPAs}], local: [${p.x},${p.y}], map: [${p.x + village.x},${village.y - p.y}], opt: [${p.opt}]`);
 	}
 	console.log(`PAs: [${tPAs}], tOpt: [${rutaOpt.tOpt}]`);
 	rutaOpt.currentPoss = 0;
 	let lessPAs = {};
 	if(tPAs > 2){
-		lessPAs = await getRoute(tPAs - 2, tGroupControl, map, village);
+		lessPAs = await getRoute(tPAs - 2, tGroupControl)
 	}else{
 		return rutaOpt;
 	}
@@ -2194,15 +2097,11 @@ async function createRoutes(PAs, Ox = 0, Oy = 0) {
                 return;
             }
 
-            if (deferGitPush) {
-                pendingGitPaths.add(filePath);
-            } else {
-                try {
-                    retryPush(filePath);
-                    console.log(`📦 Archivo ${filePath} actualizado en GitHub`);
-                } catch (error) {
-                    console.error(`❌ Error al guardar cambios para archivo ${filePath}:`, error.message);
-                }
+            try {
+                retryPush(filePath);
+                console.log(`📦 Archivo ${filePath} actualizado en GitHub`);
+            } catch (error) {
+                console.error(`❌ Error al guardar cambios para archivo ${filePath}:`, error.message);
             }
             
             resolve({});
@@ -2332,64 +2231,49 @@ function generateCombinations(arr) {
   return result;
 }
 function searchAvailableObjects(obj, list) {
-  const byId = new Map();
-  for (const w of list) {
-    byId.set(Number(w.id), w);
-  }
   const available = [];
+
   for (const [key, inv] of Object.entries(obj)) {
-    const found = byId.get(inv.p);
+    const found = list.find(o => o.id === inv.p);
     if (found) {
       available.push({
-        key,
-        ...inv,
-        ...found
+        key,        // clave original del inventario
+        ...inv,     // datos del inventario
+        ...found // datos kill_min/kill_max
       });
     }
   }
+
   return available;
 }
-// Función para encontrar la combinación más cercana al objetivo totalKills sin materializar 2^n arreglos
+// Función para encontrar la combinación más cercana al objetivo totalKills
 function findClosestWeaponsCombination(list, totalKills, inv) {
-  const available = searchAvailableObjects(inv, list);
-  const n = Math.min(available.length, 20);
-  if (n === 0) return null;
-
-  let bestMask = 0;
-  let bestAverage = 0;
+  const combinations = generateCombinations(searchAvailableObjects(inv, list));
+  let best = null;
   let differenceMin = Infinity;
-  const totalMasks = 1 << n;
 
-  for (let mask = 1; mask < totalMasks; mask++) {
-    let sumChance = 0;
-    let sumKills = 0;
-    let count = 0;
-    for (let j = 0; j < n; j++) {
-      if (mask & (1 << j)) {
-        const o = available[j];
-        sumChance += (o.chance_kill / 100);
-        sumKills += ((o.kill_min + o.kill_max) / 2);
-        count++;
-      }
-    }
-    const chanceKill = sumChance / count;
-    const averageRounded = Math.floor(sumKills) * chanceKill;
+  for (const combo of combinations) {
+    // Validar que todos los objetos estén en inventario
+    const allexist = combo.every(obj =>
+      Object.values(inv).some(inv => inv.p === parseInt(obj.id, 10))
+    );
+    if (!allexist) continue;
+
+    // Calcular promedio conjunto
+      
+    const chanceKill = (combo.reduce((acc, o) => acc + (o.chance_kill / 100), 0) / combo.length);
+    const averageRounded = Math.floor(combo.reduce((acc, o) => acc + ((o.kill_min + o.kill_max) / 2), 0)) * chanceKill;
+
     const difference = Math.abs(averageRounded - totalKills);
-
-    if (difference < differenceMin ||
+    
+    if (difference < differenceMin || 
        (difference === differenceMin && averageRounded <= totalKills)) {
       differenceMin = difference;
-      bestMask = mask;
-      bestAverage = averageRounded;
+      best = { combo, average: averageRounded };
     }
   }
 
-  if (bestMask === 0) return null;
-  const combo = [];
-  for (let j = 0; j < n; j++) {
-    if (bestMask & (1 << j)) combo.push(available[j]);
-  }
-  return { combo, average: bestAverage };
+  return best;
 }
 function logTrace(url, method, body = undefined, status = undefined, result = undefined) {
 	if(dataSaved.log == undefined){
@@ -2513,10 +2397,10 @@ function setPlayerInv(playInvTemp){
 }
 async function takeSurvivalFood(currentSaved, inv){
     inv ??= await getInventoryIds();
-	const dropRes = await dropPlayerInventory(inv);
-	let deseInv = dropRes?.target ? await getListItems(dropRes.target) : await getDesertInventory(inv);
-	let tFood = searchItemIdInv([currentSaved.startItems.idFood], deseInv);
-	let tWater = searchItemIdInv([currentSaved.startItems.idWater], deseInv);
+	await dropPlayerInventory(inv);
+	let deseInv = await getDesertInventory(inv);
+	let tFood = await searchItemIdInv([currentSaved.startItems.idFood], deseInv);
+	let tWater = await searchItemIdInv([currentSaved.startItems.idWater], deseInv);
 	if(currentSaved.startItems.idInvFood != undefined && tFood != undefined){
 		await moveItem(inv.IdInvDes, inv.IdInvPer, tFood);
 		currentSaved.startItems.idInvFood = tFood;
@@ -2768,45 +2652,20 @@ function takeScreenshot(file) {
     if (!fs.existsSync('./debug')) {
         fs.mkdirSync('./debug', { recursive: true });
     }
-    if (deferGitPush) {
-        gitNeedsFullStage = true;
-    }
-    if (screenshotInFlight) {
-        queuedScreenshotFile = file;
-        return;
-    }
-    screenshotInFlight = true;
-    const captureNext = (targetFile) => {
-        return pag.screenshot({
-            path: targetFile,
-            fullPage: true,
-            animations: 'disabled'
+    screenshotPromise = 
+	screenshotPromise.then(() =>
+        pag.screenshot({
+            path: file,
+            fullPage: true
         })
-        .then(() => {
-            if (!deferGitPush) {
-                retryPush(targetFile, 4);
-            } else {
-                pendingGitPaths.add(targetFile);
-            }
-        })
-        .catch((error) => {
-            console.error(`Error al tomar screenshot de ${targetFile}:`, error.message || error);
-        })
-        .then(() => {
-            if (queuedScreenshotFile !== null) {
-                const next = queuedScreenshotFile;
-                queuedScreenshotFile = null;
-                return captureNext(next);
-            }
-            screenshotInFlight = false;
-        });
-    };
-    screenshotPromise = screenshotPromise.then(() => captureNext(file));
+    )
+    .then(() => {
+        retryPush(file, 4);
+    })
+	.catch((error) => {console.error(`Error al tomar screenshot de ${file}:`, error);});
 }
 // Genera un GIF animado con todos los PNG de una carpeta (reemplaza ImageMagick)
 async function createGifFromPngs(inputDir, outputFile, delayMs = 2500) {
-	const { createCanvas, loadImage } = require('canvas');
-	const GIFEncoder = require('gif-encoder-2');
 	const files = fs.readdirSync(inputDir)
 		.filter(f => f.toLowerCase().endsWith('.png'))
 		.sort(); // tus nombres son timestamps (yyyymmdd_hhmmss_millis) => orden cronológico
