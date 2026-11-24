@@ -2533,15 +2533,16 @@ async function asegurarCheckedLi(selector, { timeout = 7000 } = {}) {
   return true;
 }
 
-async function updateGestHordesPromise(page) {
-	/*
+async function updateGestHordesPromise(pagess) {
+	
 	browsergest = await chromium.launch({
+		channel: 'msedge',
 		headless: true
 	});
 
 	const context = await browsergest.newContext();
-	*/
-	//const page = await context.newPage();
+	
+	const page = await context.newPage();
 
 	try {
 		lastDataSaved = readJSON(nameFile_lastDataSaved);
