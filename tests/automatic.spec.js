@@ -188,19 +188,27 @@ test('myhordes', async () => {
 		}catch(exception){
 			
 		}
-		await pag.locator('div.header-directory.app-directory.closed').click();
-		await pag.locator('li >> span.name:text-is("Gest\'Hordes")').click();
-		const [newPage] = await Promise.all([
-			browserPlay.waitForEvent('page'),
-			pag.getByRole('button', {
-				name: "Continuar a Gest'Hordes"
-			}).click()
-		]);
-		await newPage.waitForURL(/https:\/\/gesthordes\.fr\/.*/, { timeout: 15000 });
-		await newPage.waitForLoadState('networkidle');
-		await sendDebugPhoto(newPage);
-		await updateGestHordesPromise(newPage);
-		await newPage.close().catch(() => {});
+		try {
+			await pag.locator('div.header-directory.app-directory.closed').click();
+			await pag.locator('li >> span.name:text-is("Gest\'Hordes")').click();
+			const [newPage] = await Promise.all([
+				browserPlay.waitForEvent('page'),
+				pag.getByRole('button', {
+					name: "Continuar a Gest'Hordes"
+				}).click()
+			]);
+			try {
+				await newPage.waitForURL(/https:\/\/gesthordes\.fr\/.*/, { timeout: 30000 });
+				await newPage.waitForLoadState('domcontentloaded');
+				await newPage.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => {});
+				await sendDebugPhoto(newPage);
+				await updateGestHordesPromise(newPage);
+			} finally {
+				await newPage.close().catch(() => {});
+			}
+		} catch (exception) {
+			console.error("No se logró abrir/actualizar GestHordes:", exception.message || exception);
+		}
 		
 		//error("Llendo a sitio MyHordes para redirigir: " + pag.url());
 		//await goto('/jx/town/dashboard');
@@ -2539,35 +2547,56 @@ async function updateGestHordesPromise(page) {
 		const maxIntentos = 2;
 		for (let intento = 1; intento <= maxIntentos; intento++) {
 			try {
-				if (intento > 1 || !page.url().startsWith('https://gesthordes.fr/')) {
-					await page.goto('https://gesthordes.fr/news', { waitUntil: 'networkidle' });
-				}
 				const ghCookies = await page.context().cookies('https://gesthordes.fr');
-				console.log('GestHordes URL:', page.url(), '| Cookies:', ghCookies.map(c => c.name));
+				console.log(`GestHordes intento ${intento} | URL:`, page.url(), '| Cookies:', ghCookies.map(c => c.name));
 
-				response = await page.evaluate(async (idTown) => {
-					const res = await fetch(`https://gesthordes.fr/rest/v1/carte/${idTown}`, {
-						method: 'GET',
-						credentials: 'include',
-						headers: {
-							accept: 'application/json',
-							'gh-mapid': String(parseInt(idTown, 10))
+				if (intento === 1) {
+					if (!page.url().startsWith('https://gesthordes.fr/')) {
+						await page.goto('https://gesthordes.fr/news', { waitUntil: 'domcontentloaded', timeout: 30000 });
+					}
+					response = await page.evaluate(async (idTown) => {
+						const res = await fetch(`https://gesthordes.fr/rest/v1/carte/${idTown}`, {
+							method: 'GET',
+							credentials: 'include',
+							signal: AbortSignal.timeout(15000),
+							headers: {
+								accept: 'application/json',
+								'gh-mapid': String(parseInt(idTown, 10))
+							}
+						});
+						const contentType = res.headers.get('content-type') || '';
+						if (!res.ok) {
+							const body = await res.text();
+							throw new Error(`HTTP ${res.status} (${contentType}) - ${body.slice(0, 200)}`);
 						}
-					});
-					const contentType = res.headers.get('content-type') || '';
-					if (!res.ok) {
-						const body = await res.text();
-						throw new Error(`HTTP ${res.status} (${contentType}) - ${body.slice(0, 200)}`);
+						if (!contentType.includes('application/json')) {
+							const body = await res.text();
+							throw new Error(`Respuesta no JSON (${contentType}) - ${body.slice(0, 200)}`);
+						}
+						return await res.json();
+					}, idTown);
+				} else {
+					const [intercepted] = await Promise.all([
+						page.waitForResponse(
+							res => res.url().includes(`/rest/v1/carte/${idTown}`) && res.request().method() === 'GET',
+							{ timeout: 20000 }
+						),
+						page.goto(`https://gesthordes.fr/carte/${idTown}`, {
+							waitUntil: 'domcontentloaded',
+							timeout: 30000
+						})
+					]);
+					const contentType = intercepted.headers()['content-type'] || '';
+					if (!intercepted.ok()) {
+						const body = await intercepted.text().catch(() => '');
+						throw new Error(`Interceptado HTTP ${intercepted.status()} (${contentType}) - ${body.slice(0, 200)}`);
 					}
-					if (!contentType.includes('application/json')) {
-						const body = await res.text();
-						throw new Error(`Respuesta no JSON (${contentType}) - ${body.slice(0, 200)}`);
-					}
-					return await res.json();
-				}, idTown);
+					response = await intercepted.json();
+				}
 				
 				break; // Salimos del bucle si tuvo éxito
 			} catch (error) {
+				console.error(`GestHordes intento ${intento}/${maxIntentos} falló:`, error.message);
 				if (intento === maxIntentos) {
 					throw new Error(`Se agotaron los ${maxIntentos} intentos para ${idTown}. Último error: ${error.message}`);
 				}
