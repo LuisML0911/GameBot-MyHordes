@@ -213,6 +213,59 @@
           "y": 0
         }
       }
+    },
+    "20261124_015839_434": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8135805",
+        "method": "PATCH",
+        "body": {
+          "d": "down-all",
+          "mod": null,
+          "to": "8129385"
+        }
+      }
+    },
+    "20261124_015839_607": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8129385/29805255",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": 8135805
+        }
+      }
+    },
+    "20261124_015839_776": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8129385/29889947",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": 8135805
+        }
+      }
+    },
+    "20261124_015844_170": {
+      "request": {
+        "url": "/api/beyond/desert/action",
+        "method": "POST",
+        "body": {
+          "item": "29817533",
+          "action": null
+        }
+      }
+    },
+    "20261124_015902_311": {
+      "request": {
+        "url": "/api/beyond/desert/move",
+        "method": "POST",
+        "body": {
+          "x": 2,
+          "y": 0
+        }
+      }
     }
   },
   "day3": {
@@ -344,7 +397,7 @@
       ],
       "tNotDried": 15,
       "tOpt": 30,
-      "currentPoss": 1
+      "currentPoss": 2
     },
     "referenceStep": 5
   },
