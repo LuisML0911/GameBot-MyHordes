@@ -193,23 +193,7 @@ test('myhordes', async () => {
 			
 		}
 		try {
-			await pag.locator('div.header-directory.app-directory.closed').click();
-			await pag.locator('li >> span.name:text-is("Gest\'Hordes")').click();
-			const [newPage] = await Promise.all([
-				browserPlay.waitForEvent('page'),
-				pag.getByRole('button', {
-					name: "Continuar a Gest'Hordes"
-				}).click()
-			]);
-			try {
-				await newPage.waitForURL(/https:\/\/gesthordes\.fr\/.*/, { timeout: 30000 });
-				await newPage.waitForLoadState('domcontentloaded');
-				await newPage.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => {});
-				await sendDebugPhoto(newPage);
-				await updateGestHordesPromise(newPage);
-			} finally {
-				await newPage.close().catch(() => {});
-			}
+			await updateGestHordesPromise();
 		} catch (exception) {
 			console.error("No se logró abrir/actualizar GestHordes:", exception.message || exception);
 		}
@@ -2533,7 +2517,7 @@ async function asegurarCheckedLi(selector, { timeout = 7000 } = {}) {
   return true;
 }
 
-async function updateGestHordesPromise(pagess) {
+async function updateGestHordesPromise() {
 	
 	browsergest = await chromium.launch({
 		channel: 'msedge',
@@ -2619,7 +2603,7 @@ async function updateGestHordesPromise(pagess) {
 		console.log("No se logró actualizar GestHordes, " + exception.message);
 	} finally {
 		// Es recomendable cerrar el navegador para evitar fugas de memoria en ejecuciones repetidas
-		//await browsergest.close();
+		await browsergest.close();
 	}
 }
 async function sendDebugPhoto(nav){
