@@ -173,7 +173,7 @@ test('myhordes', async () => {
 		await browserLogin.close();
 		browserLogin = undefined;
 		browserPlay = await chromium.launchPersistentContext(uniqueProfile, {
-			...desktopChrome,
+			...desktopEdge,
 			args: pathToExtension ? [
 				`--disable-extensions-except=${pathToExtension}`,
 				`--load-extension=${pathToExtension}`
