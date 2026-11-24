@@ -1307,7 +1307,7 @@
                 "id": 49,
                 "id_mh": 49,
                 "category_objet_id": 1,
-                "nbr_item_bank": 14,
+                "nbr_item_bank": 15,
                 "nbr_item_bank_casse": 0
               },
               "50": {
@@ -1370,7 +1370,7 @@
                 "id": 136,
                 "id_mh": 136,
                 "category_objet_id": 1,
-                "nbr_item_bank": 5,
+                "nbr_item_bank": 6,
                 "nbr_item_bank_casse": 0
               },
               "137": {
@@ -1388,7 +1388,7 @@
                 "id": 138,
                 "id_mh": 138,
                 "category_objet_id": 1,
-                "nbr_item_bank": 4,
+                "nbr_item_bank": 5,
                 "nbr_item_bank_casse": 0
               },
               "139": {
@@ -1397,7 +1397,7 @@
                 "id": 139,
                 "id_mh": 139,
                 "category_objet_id": 1,
-                "nbr_item_bank": 22,
+                "nbr_item_bank": 23,
                 "nbr_item_bank_casse": 0
               },
               "142": {
@@ -1689,7 +1689,7 @@
                 "id": 76,
                 "id_mh": 76,
                 "category_objet_id": 6,
-                "nbr_item_bank": 2,
+                "nbr_item_bank": 1,
                 "nbr_item_bank_casse": 0
               },
               "84": {
@@ -1971,7 +1971,7 @@
           "b6": 5,
           "b7": 1,
           "alcool": 0,
-          "drogue": 11,
+          "drogue": 10,
           "drogue_pa": 0
         },
         "max_alter": {
@@ -2032,14 +2032,13 @@
           "420": 1,
           "440": 1,
           "480": 2,
-          "490": 14,
+          "490": 15,
           "500": 6,
           "580": 1,
           "640": 1,
           "650": 4,
-          "760": 2,
+          "760": 1,
           "770": 2,
-          "830": 1,
           "840": 5,
           "850": 6,
           "880": 1,
@@ -2053,10 +2052,10 @@
           "1250": 1,
           "1260": 1,
           "1300": 1,
-          "1360": 5,
+          "1360": 6,
           "1370": 5,
-          "1380": 4,
-          "1390": 22,
+          "1380": 5,
+          "1390": 23,
           "1460": 3,
           "1470": 2,
           "1480": 3,
@@ -2319,7 +2318,7 @@
           }
         ]
       },
-      "date_dern_maj": "Dernière mise à jour le 24/11/2026 à 09:52 par MylHordez",
+      "date_dern_maj": "Dernière mise à jour le 24/11/2026 à 10:18 par MylHordez",
       "is_lead": false,
       "my_ville": false,
       "ville": {
@@ -25833,7 +25832,7 @@
           "excavated_maj_by_id": null,
           "fouille_lvl": 1,
           "fouille_maj_day": 3,
-          "fouille_maj_heure": "09:52:16",
+          "fouille_maj_heure": "10:18:43",
           "fouille_maj_by_id": 27997,
           "fouille_restante_min": null,
           "fouille_restante_max": null,
@@ -25841,7 +25840,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": null,
-          "heure_maj": "09:52:16",
+          "heure_maj": "10:18:43",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -66294,7 +66293,7 @@
         "devast": false,
         "water": 79,
         "saison": 19,
-        "date_time": "2026-11-24T09:52:16+01:00",
+        "date_time": "2026-11-24T10:18:43+01:00",
         "chaman": null,
         "guide": null,
         "update_by": {
