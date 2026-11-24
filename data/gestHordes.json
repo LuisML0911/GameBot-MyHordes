@@ -1628,7 +1628,7 @@
                 "nbr_item_bank_casse": 0
               },
               "92": {
-                "nbr_item": 1,
+                "nbr_item": 2,
                 "nbr_item_casse": 0,
                 "id": 92,
                 "id_mh": 92,
@@ -2269,8 +2269,8 @@
         "max_pa": 37,
         "estim_day": 3,
         "estimation": {
-          "min_jour": 85,
-          "max_jour": 110,
+          "min_jour": 86,
+          "max_jour": 109,
           "maxed_jour": false,
           "min_planif": 0,
           "max_planif": 0,
@@ -2335,7 +2335,7 @@
           }
         ]
       },
-      "date_dern_maj": "Dernière mise à jour le 24/11/2026 à 19:37 par MylHordez",
+      "date_dern_maj": "Dernière mise à jour le 24/11/2026 à 19:52 par MylHordez",
       "is_lead": false,
       "my_ville": false,
       "ville": {
@@ -25987,9 +25987,9 @@
           "excavated_maj_day": null,
           "excavated_maj_heure": null,
           "excavated_maj_by_id": null,
-          "fouille_lvl": 2,
+          "fouille_lvl": 1,
           "fouille_maj_day": 3,
-          "fouille_maj_heure": "19:37:43",
+          "fouille_maj_heure": "19:52:59",
           "fouille_maj_by_id": 27997,
           "fouille_restante_min": null,
           "fouille_restante_max": null,
@@ -25997,7 +25997,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": null,
-          "heure_maj": "19:37:43",
+          "heure_maj": "19:52:59",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -26028,7 +26028,7 @@
             "112": 1,
             "113": 1,
             "114": 0,
-            "116": 0,
+            "116": 1,
             "117": 1,
             "118": 0
           },
@@ -26065,6 +26065,12 @@
             {
               "id": 6206346,
               "item_id": 50,
+              "nombre": 1,
+              "broken": false
+            },
+            {
+              "id": 6207095,
+              "item_id": 92,
               "nombre": 1,
               "broken": false
             }
@@ -49866,7 +49872,7 @@
           "zombie_min": null,
           "zombie_max": null,
           "zombie_kill": null,
-          "pdc": 15,
+          "pdc": 16,
           "dried": true,
           "danger": 0,
           "tag": 5,
@@ -66467,7 +66473,7 @@
         "devast": false,
         "water": 75,
         "saison": 19,
-        "date_time": "2026-11-24T19:37:43+01:00",
+        "date_time": "2026-11-24T19:52:58+01:00",
         "chaman": null,
         "guide": null,
         "update_by": {
