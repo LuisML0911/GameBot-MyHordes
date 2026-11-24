@@ -171,20 +171,6 @@ test('myhordes', async () => {
 			console.error("Error leyendo .last.json inicial:", e.message || e);
 		}
 
-		// Actualizar GestHordes en paralelo mientras se abre el navegador y se inicia sesión
-		if (lastDataSaved?.idTown) {
-			gestHordesPromise = updateGestHordesPromise().catch(exception => {
-				console.error("No se logró abrir/actualizar GestHordes:", exception.message || exception);
-			});
-		}
-
-		if (Object.keys(weaponListData).length === 0) {
-			weaponListData = readJSON('data/weaponListData.json');
-		}
-		if (Object.keys(items).length === 0) {
-			items = readJSON('data/items.json');
-		}
-
 		const pathToExtension = await resolveExtensionPath();
 		const { defaultBrowserType: _unusedBrowserType, ...desktopEdgeDevice } =
 			devices['Desktop Edge'];
@@ -196,6 +182,32 @@ test('myhordes', async () => {
 			locale: 'es-ES'
 		};
 
+		// 1. Iniciar sesión primero en contexto limpio (sin extensión ni contención de CPU) para persistir cookies de EternalTwin/MyHordes
+		browserLogin = await chromium.launchPersistentContext(
+			uniqueProfile,
+			desktopEdge
+		);
+		pag = await browserLogin.newPage();
+		if (!(await login())) {
+			throw new Error("No se logró iniciar sesión");
+		}
+		await new Promise(r => setTimeout(r, 1000));
+		await browserLogin.close();
+		browserLogin = undefined;
+
+		// 2. Lanzar browserPlay con la extensión MHO y actualizar GestHordes en paralelo
+		if (Object.keys(weaponListData).length === 0) {
+			weaponListData = readJSON('data/weaponListData.json');
+		}
+		if (Object.keys(items).length === 0) {
+			items = readJSON('data/items.json');
+		}
+		if (lastDataSaved?.idTown) {
+			gestHordesPromise = updateGestHordesPromise().catch(exception => {
+				console.error("No se logró abrir/actualizar GestHordes:", exception.message || exception);
+			});
+		}
+
 		browserPlay = await chromium.launchPersistentContext(uniqueProfile, {
 			...desktopEdge,
 			args: pathToExtension ? [
@@ -203,12 +215,9 @@ test('myhordes', async () => {
 				`--load-extension=${pathToExtension}`
 			] : []
 		});
-		pag = browserPlay.pages()[0] || await browserPlay.newPage();
-
-		// se dirige al sitio e inicia sesión directamente en el contexto con extensión
-		if (!(await login())) {
-			throw new Error("No se logró iniciar sesión");
-		}
+		pag = await browserPlay.newPage();
+		await goto('/jx/town/dashboard');
+		await waitForGameReady();
 
 		if (gestHordesPromise !== undefined) {
 			await gestHordesPromise;
@@ -1116,52 +1125,49 @@ async function acceptDead(){
 
 // busca un sitio activo y authentica con las credenciales
 async function login(){
-	// Se busca servidor activo navegando directamente a la ruta de login
-	const servers = [
-		'https://myhord.es',
-		'https://myhord.de',
-		'https://myhord.eu',
-		'https://myhord.fr'
-	];
-	let connected = false;
-	for (const srv of servers) {
-		if (await nav(`${srv}/jx/public/login`)) {
-			connected = true;
-			break;
+	// Se busca servidor activo
+	if(!(await nav('https://myhord.es/'))){
+		if(!(await nav('https://myhord.de/'))){
+			if(!(await nav('https://myhord.eu/'))){
+				if(!(await nav('https://myhord.fr/'))){
+					return false;
+				}
+			}
 		}
-	}
-	if (!connected) {
-		return false;
 	}
 	// Se recupera URL base final que si haya logrado responder
 	basePath = new URL(pag.url()).origin;
 	
+	console.error("Iniciando Login: " + pag.url());
+	// Se realiza autenticación
+	await pag.goto(basePath + '/jx/public/login', { waitUntil: 'load', timeout: 15000 });
 	console.error("Haciendo Login: " + pag.url());
 	try{
+		const navPromise = pag.waitForNavigation({ waitUntil: 'load', timeout: 15000 }).catch(() => {});
 		try{
-			await pag.click('#et_login_button', {timeout: 7000});
+			await pag.click('#et_login_button', { timeout: 10000 });
 		}catch(exception){
 			console.error("No se encontró et_login_button:", exception);
 		}
-		const loginInput = pag.locator('input[name="login"]');
-		await loginInput.waitFor({ state: 'visible', timeout: 10000 });
-		await loginInput.fill(el0);
-		await pag.locator('input[name="password"]').fill(el1);
+		await navPromise;
+		await pag.waitForSelector('input[name="login"]', { state: 'visible', timeout: 10000 });
+		await pag.type('input[name="login"]', el0, { delay: 80 });
+		await pag.type('input[name="password"]', el1, { delay: 80 });
 		console.error("Credenciales asignadas");
 		await pag.evaluate(() => {
 			const btn = document.querySelector('input[name="sign_in"]');
 			if (btn) btn.removeAttribute('disabled');
 		});
 		console.error("Se dió click a sing in");
-		await pag.click('input[name="sign_in"]', {timeout: 4000});
-		await pag.waitForSelector('hordes-header-ui', {state: 'attached', timeout: 10000});
+		await pag.click('input[name="sign_in"]', { timeout: 6000 });
+		await pag.waitForSelector('hordes-header-ui', { state: 'attached', timeout: 15000 });
 		console.error("Login Terminado: " + pag.url());
 		return true;
 	}catch(exception){
 		if (exception.name === 'TimeoutError') {
-			console.error("Se agotó el tiempo de espera al intentar hacer click");
+			console.error("Se agotó el tiempo de espera en login (" + pag.url() + "):", exception.message);
 		} else {
-			console.error("Otro error ocurrió:", exception);
+			console.error("Otro error ocurrió en login (" + pag.url() + "):", exception);
 		}
 	}
 	return false;
@@ -1265,7 +1271,7 @@ async function goto(path){
 // navegación en url completa
 async function nav(url){
 	try {
-		let response = await pag.goto(url, { waitUntil: 'domcontentloaded', timeout: 12000 });
+		let response = await pag.goto(url, { waitUntil: 'load', timeout: 15000 });
 		return Boolean(response && response.status() == 200);
 	} catch (err) {
 		return false;
