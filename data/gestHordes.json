@@ -1315,7 +1315,7 @@
                 "nbr_item_bank_casse": 0
               },
               "49": {
-                "nbr_item": 35,
+                "nbr_item": 34,
                 "nbr_item_casse": 0,
                 "id": 49,
                 "id_mh": 49,
@@ -1893,7 +1893,7 @@
                 "nbr_item_bank_casse": 0
               },
               "153": {
-                "nbr_item": 8,
+                "nbr_item": 7,
                 "nbr_item_casse": 0,
                 "id": 153,
                 "id_mh": 153,
@@ -1981,7 +1981,7 @@
         "ressources_specifiques": {
           "water": 13,
           "potion": 0,
-          "b6": 6,
+          "b6": 7,
           "b7": 0,
           "alcool": 0,
           "drogue": 9,
@@ -2055,12 +2055,13 @@
           "910": 1,
           "920": 1,
           "1000": 2,
+          "1080": 1,
           "1110": 2,
           "1120": 8,
           "1180": 1,
           "1190": 1,
           "1200": 1,
-          "1220": 2,
+          "1220": 3,
           "1250": 1,
           "1260": 1,
           "1300": 2,
@@ -2334,7 +2335,7 @@
           }
         ]
       },
-      "date_dern_maj": "Dernière mise à jour le 24/11/2026 à 19:03 par MylHordez",
+      "date_dern_maj": "Dernière mise à jour le 24/11/2026 à 19:36 par AuxNamCitoyens",
       "is_lead": false,
       "my_ville": false,
       "ville": {
@@ -25988,7 +25989,7 @@
           "excavated_maj_by_id": null,
           "fouille_lvl": 2,
           "fouille_maj_day": 3,
-          "fouille_maj_heure": "19:03:47",
+          "fouille_maj_heure": "19:07:40",
           "fouille_maj_by_id": 27997,
           "fouille_restante_min": null,
           "fouille_restante_max": null,
@@ -25996,7 +25997,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": null,
-          "heure_maj": "19:03:47",
+          "heure_maj": "19:07:40",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -50016,7 +50017,7 @@
           "fouille_restante_maj_heure": "18:23:30",
           "fouille_restante_maj_by_id": 968,
           "dig": null,
-          "heure_maj": "18:23:30",
+          "heure_maj": "19:36:22",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -50044,7 +50045,7 @@
           "diff_jours": 0,
           "zombie_estim": 6,
           "carte_alter": {
-            "112": 4,
+            "112": 3,
             "113": 1,
             "114": 0,
             "116": 0,
@@ -50090,7 +50091,7 @@
             {
               "id": 6206264,
               "item_id": 49,
-              "nombre": 3,
+              "nombre": 2,
               "broken": false
             },
             {
@@ -50102,12 +50103,6 @@
             {
               "id": 6206266,
               "item_id": 139,
-              "nombre": 1,
-              "broken": false
-            },
-            {
-              "id": 6206267,
-              "item_id": 153,
               "nombre": 1,
               "broken": false
             },
@@ -66472,13 +66467,13 @@
         "devast": false,
         "water": 75,
         "saison": 19,
-        "date_time": "2026-11-24T19:03:47+01:00",
+        "date_time": "2026-11-24T19:36:22+01:00",
         "chaman": null,
         "guide": null,
         "update_by": {
-          "id": 27997,
-          "id_my_hordes": 37978,
-          "pseudo": "MylHordez"
+          "id": 968,
+          "id_my_hordes": 4120,
+          "pseudo": "AuxNamCitoyens"
         },
         "lang": "es",
         "map_id": 8415,
