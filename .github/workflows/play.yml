@@ -38,10 +38,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-playwright-
 
-      - name: Install Chromium
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install chromium
-
       - name: Install Microsoft Edge if missing
         run: |
           if ! command -v microsoft-edge > /dev/null 2>&1; then
