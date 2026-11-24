@@ -1307,7 +1307,7 @@
                 "id": 49,
                 "id_mh": 49,
                 "category_objet_id": 1,
-                "nbr_item_bank": 15,
+                "nbr_item_bank": 14,
                 "nbr_item_bank_casse": 0
               },
               "50": {
@@ -1316,7 +1316,7 @@
                 "id": 50,
                 "id_mh": 50,
                 "category_objet_id": 1,
-                "nbr_item_bank": 1,
+                "nbr_item_bank": 0,
                 "nbr_item_bank_casse": 0
               },
               "58": {
@@ -1370,7 +1370,7 @@
                 "id": 136,
                 "id_mh": 136,
                 "category_objet_id": 1,
-                "nbr_item_bank": 4,
+                "nbr_item_bank": 5,
                 "nbr_item_bank_casse": 0
               },
               "137": {
@@ -1379,7 +1379,7 @@
                 "id": 137,
                 "id_mh": 137,
                 "category_objet_id": 1,
-                "nbr_item_bank": 3,
+                "nbr_item_bank": 5,
                 "nbr_item_bank_casse": 0
               },
               "138": {
@@ -1388,7 +1388,7 @@
                 "id": 138,
                 "id_mh": 138,
                 "category_objet_id": 1,
-                "nbr_item_bank": 11,
+                "nbr_item_bank": 10,
                 "nbr_item_bank_casse": 0
               },
               "139": {
@@ -1706,7 +1706,7 @@
                 "id": 1,
                 "id_mh": 1,
                 "category_objet_id": 7,
-                "nbr_item_bank": 4,
+                "nbr_item_bank": 5,
                 "nbr_item_bank_casse": 0
               },
               "3": {
@@ -1930,7 +1930,7 @@
           }
         },
         "ressources_specifiques": {
-          "water": 4,
+          "water": 5,
           "potion": 0,
           "b6": 6,
           "b7": 1,
@@ -1978,7 +1978,7 @@
           }
         ],
         "items_banque": {
-          "10": 4,
+          "10": 5,
           "20": 9,
           "30": 1,
           "120": 1,
@@ -1997,8 +1997,7 @@
           "420": 1,
           "440": 1,
           "480": 2,
-          "490": 15,
-          "500": 1,
+          "490": 14,
           "580": 1,
           "640": 1,
           "650": 4,
@@ -2019,9 +2018,9 @@
           "1250": 1,
           "1260": 1,
           "1300": 1,
-          "1360": 4,
-          "1370": 3,
-          "1380": 11,
+          "1360": 5,
+          "1370": 5,
+          "1380": 10,
           "1390": 22,
           "1460": 3,
           "1470": 2,
@@ -2219,8 +2218,8 @@
         "max_pa": 37,
         "estim_day": 3,
         "estimation": {
-          "min_jour": 84,
-          "max_jour": 114,
+          "min_jour": 85,
+          "max_jour": 113,
           "maxed_jour": false,
           "min_planif": 0,
           "max_planif": 0,
@@ -2285,7 +2284,7 @@
           }
         ]
       },
-      "date_dern_maj": "Dernière mise à jour le 24/11/2026 à 03:35 par MylHordez",
+      "date_dern_maj": "Dernière mise à jour le 24/11/2026 à 04:02 par MylHordez",
       "is_lead": false,
       "my_ville": false,
       "ville": {
@@ -2300,7 +2299,7 @@
         "hard": false,
         "chaos": false,
         "devast": false,
-        "water": 86,
+        "water": 82,
         "saison": 19,
         "origin": 2,
         "map_id": 8415,
@@ -25601,7 +25600,7 @@
           "excavated_maj_by_id": null,
           "fouille_lvl": 1,
           "fouille_maj_day": 3,
-          "fouille_maj_heure": "03:35:37",
+          "fouille_maj_heure": "04:02:39",
           "fouille_maj_by_id": 27997,
           "fouille_restante_min": null,
           "fouille_restante_max": null,
@@ -25609,7 +25608,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": null,
-          "heure_maj": "03:35:37",
+          "heure_maj": "04:02:39",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -66207,9 +66206,9 @@
         "hard": false,
         "chaos": false,
         "devast": false,
-        "water": 86,
+        "water": 82,
         "saison": 19,
-        "date_time": "2026-11-24T03:35:37+01:00",
+        "date_time": "2026-11-24T04:02:38+01:00",
         "chaman": null,
         "guide": null,
         "update_by": {
