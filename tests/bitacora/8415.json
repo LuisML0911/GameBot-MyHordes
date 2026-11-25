@@ -3515,6 +3515,41 @@
           "y": -1
         }
       }
+    },
+    "20261125_205127_852": {
+      "request": {
+        "url": "/api/beyond/desert/exit",
+        "method": "POST",
+        "body": {}
+      }
+    },
+    "20261125_205133_834": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8135805",
+        "method": "PATCH",
+        "body": {
+          "d": "down-all",
+          "mod": null,
+          "to": "8128796"
+        }
+      }
+    },
+    "20261125_205137_089": {
+      "request": {
+        "url": "/jx/town/house/dash",
+        "method": "POST",
+        "body": {}
+      }
+    },
+    "20261125_205140_153": {
+      "request": {
+        "url": "/api/town/house/action",
+        "method": "POST",
+        "body": {
+          "item": "29817529",
+          "action": "163"
+        }
+      }
     }
   },
   "day3": {
@@ -6131,10 +6166,14 @@
           "p": 1
         }
       }
+    },
+    "20261125_205127_154": {
+      "outfit": "29817529",
+      "getActionIdFromHtmlObj": "163"
     }
   },
   "day4": {
-    "currentStep": 5,
+    "currentStep": 6,
     "purge": false,
     "startItems": {
       "idFood": 121,
@@ -6277,7 +6316,7 @@
       ],
       "tNotDried": 15,
       "tOpt": 31,
-      "currentPoss": 17
+      "currentPoss": 18
     },
     "referenceStep": 5
   }
