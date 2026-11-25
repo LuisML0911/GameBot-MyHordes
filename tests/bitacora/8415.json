@@ -3741,6 +3741,16 @@
         "method": "POST",
         "body": {}
       }
+    },
+    "20261125_233048_791": {
+      "request": {
+        "url": "/api/beyond/desert/move",
+        "method": "POST",
+        "body": {
+          "x": 1,
+          "y": 0
+        }
+      }
     }
   },
   "day3": {
@@ -8066,7 +8076,7 @@
       ],
       "tNotDried": 10,
       "tOpt": 25,
-      "currentPoss": 0
+      "currentPoss": 1
     },
     "referenceStep": 5
   }
