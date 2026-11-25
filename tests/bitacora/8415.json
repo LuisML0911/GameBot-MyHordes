@@ -3277,6 +3277,72 @@
           "y": -2
         }
       }
+    },
+    "20261125_203716_596": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8135805",
+        "method": "PATCH",
+        "body": {
+          "d": "down-all",
+          "mod": null,
+          "to": "8129331"
+        }
+      }
+    },
+    "20261125_203720_372": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8129331/29878733",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": 8135805
+        }
+      }
+    },
+    "20261125_203723_481": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8129331/29859177",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": 8135805
+        }
+      }
+    },
+    "20261125_203723_950": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8129331/29869470",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": 8135805
+        }
+      }
+    },
+    "20261125_203726_964": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8129331/29870602",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": 8135805
+        }
+      }
+    },
+    "20261125_203729_969": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8129331/29871479",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": 8135805
+        }
+      }
     }
   },
   "day3": {
