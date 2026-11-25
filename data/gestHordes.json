@@ -1020,7 +1020,7 @@
                 "nbr_item_bank_casse": 0
               },
               "49": {
-                "nbr_item": 36,
+                "nbr_item": 37,
                 "nbr_item_casse": 0,
                 "id": 49,
                 "id_mh": 49,
@@ -1351,7 +1351,7 @@
                 "nbr_item_bank_casse": 0
               },
               "60": {
-                "nbr_item": 14,
+                "nbr_item": 15,
                 "nbr_item_casse": 0,
                 "id": 60,
                 "id_mh": 60,
@@ -1795,7 +1795,7 @@
           "112": 6,
           "113": 2,
           "114": 1,
-          "116": 1,
+          "116": 2,
           "117": 3,
           "118": 0
         },
@@ -2137,7 +2137,7 @@
           }
         ]
       },
-      "date_dern_maj": "Dernière mise à jour le 25/11/2026 à 12:22 par MylHordez",
+      "date_dern_maj": "Dernière mise à jour le 25/11/2026 à 12:40 par Nouchtchev",
       "is_lead": false,
       "my_ville": false,
       "ville": {
@@ -25583,7 +25583,7 @@
           "excavated_maj_by_id": 27997,
           "fouille_lvl": 1,
           "fouille_maj_day": 4,
-          "fouille_maj_heure": "12:22:52",
+          "fouille_maj_heure": "12:30:02",
           "fouille_maj_by_id": 27997,
           "fouille_restante_min": 0,
           "fouille_restante_max": 0,
@@ -25591,7 +25591,7 @@
           "fouille_restante_maj_heure": "04:31:33",
           "fouille_restante_maj_by_id": 27997,
           "dig": null,
-          "heure_maj": "12:22:52",
+          "heure_maj": "12:30:02",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -57156,7 +57156,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": null,
-          "heure_maj": "10:36:22",
+          "heure_maj": "12:40:33",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -57184,10 +57184,10 @@
           "diff_jours": 0,
           "zombie_estim": 0,
           "carte_alter": {
-            "112": 0,
+            "112": 1,
             "113": 0,
             "114": 0,
-            "116": 1,
+            "116": 2,
             "117": 0,
             "118": 0
           },
@@ -57201,7 +57201,7 @@
           },
           "carte_scrut": null,
           "marqueur_only": false,
-          "citoyen_id": 968,
+          "citoyen_id": 2514,
           "marqueur_id": null,
           "catapulte_id": null,
           "bat_id": null,
@@ -57212,12 +57212,18 @@
             {
               "id": 6210617,
               "item_id": 60,
-              "nombre": 1,
+              "nombre": 2,
               "broken": false
             },
             {
               "id": 6210618,
               "item_id": 148,
+              "nombre": 1,
+              "broken": false
+            },
+            {
+              "id": 6211038,
+              "item_id": 49,
               "nombre": 1,
               "broken": false
             }
@@ -66493,13 +66499,13 @@
         "devast": false,
         "water": 62,
         "saison": 19,
-        "date_time": "2026-11-25T12:22:52+01:00",
+        "date_time": "2026-11-25T12:40:33+01:00",
         "chaman": null,
         "guide": null,
         "update_by": {
-          "id": 27997,
-          "id_my_hordes": 37978,
-          "pseudo": "MylHordez"
+          "id": 2514,
+          "id_my_hordes": 8026,
+          "pseudo": "Nouchtchev"
         },
         "lang": "es",
         "map_id": 8415,
