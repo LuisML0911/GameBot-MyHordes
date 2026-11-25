@@ -2481,6 +2481,39 @@
           "y": -3
         }
       }
+    },
+    "20261125_201811_736": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8135805",
+        "method": "PATCH",
+        "body": {
+          "d": "down-all",
+          "mod": null,
+          "to": "8129407"
+        }
+      }
+    },
+    "20261125_201812_274": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8129407/29805148",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": 8135805
+        }
+      }
+    },
+    "20261125_201812_562": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8129407/29907595",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": 8135805
+        }
+      }
     }
   },
   "day3": {
