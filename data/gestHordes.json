@@ -1020,7 +1020,7 @@
                 "nbr_item_bank_casse": 0
               },
               "49": {
-                "nbr_item": 39,
+                "nbr_item": 40,
                 "nbr_item_casse": 0,
                 "id": 49,
                 "id_mh": 49,
@@ -1553,6 +1553,15 @@
                 "nbr_item_bank": 2,
                 "nbr_item_bank_casse": 0
               },
+              "44": {
+                "nbr_item": 1,
+                "nbr_item_casse": 0,
+                "id": 44,
+                "id_mh": 44,
+                "category_objet_id": 7,
+                "nbr_item_bank": 0,
+                "nbr_item_bank_casse": 0
+              },
               "78": {
                 "nbr_item": 1,
                 "nbr_item_casse": 0,
@@ -1688,7 +1697,7 @@
                 "nbr_item_bank_casse": 0
               },
               "112": {
-                "nbr_item": 5,
+                "nbr_item": 6,
                 "nbr_item_casse": 0,
                 "id": 112,
                 "id_mh": 112,
@@ -1733,7 +1742,7 @@
                 "nbr_item_bank_casse": 0
               },
               "153": {
-                "nbr_item": 7,
+                "nbr_item": 8,
                 "nbr_item_casse": 0,
                 "id": 153,
                 "id_mh": 153,
@@ -2224,7 +2233,7 @@
           }
         ]
       },
-      "date_dern_maj": "Dernière mise à jour le 25/11/2026 à 20:20 par MylHordez",
+      "date_dern_maj": "Dernière mise à jour le 25/11/2026 à 20:42 par Crollos",
       "is_lead": false,
       "my_ville": false,
       "ville": {
@@ -8632,13 +8641,13 @@
           "x": 19,
           "y": 2,
           "ame_ids": [],
-          "zombie": 4,
+          "zombie": 2,
           "zombie_min": null,
           "zombie_max": null,
           "zombie_kill": null,
           "pdc": 5,
           "dried": false,
-          "danger": 2,
+          "danger": 1,
           "tag": null,
           "day": 4,
           "vue": 1,
@@ -8658,7 +8667,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": null,
-          "heure_maj": "08:40:08",
+          "heure_maj": "20:42:39",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -8684,13 +8693,13 @@
           "zombie_recalcule": false,
           "indic_visite": "vueAuj",
           "diff_jours": 0,
-          "zombie_estim": 4,
+          "zombie_estim": 2,
           "carte_alter": {
-            "112": 1,
+            "112": 2,
             "113": 1,
             "114": 0,
             "116": 0,
-            "117": 0,
+            "117": 1,
             "118": 0
           },
           "carte_alter_encombrant": {
@@ -8714,12 +8723,30 @@
             {
               "id": 6210161,
               "item_id": 49,
-              "nombre": 1,
+              "nombre": 2,
               "broken": false
             },
             {
               "id": 6210162,
               "item_id": 50,
+              "nombre": 1,
+              "broken": false
+            },
+            {
+              "id": 6213443,
+              "item_id": 112,
+              "nombre": 1,
+              "broken": false
+            },
+            {
+              "id": 6213444,
+              "item_id": 153,
+              "nombre": 1,
+              "broken": false
+            },
+            {
+              "id": 6213449,
+              "item_id": 44,
               "nombre": 1,
               "broken": false
             }
@@ -30758,7 +30785,7 @@
           "excavated_maj_by_id": null,
           "fouille_lvl": 2,
           "fouille_maj_day": 4,
-          "fouille_maj_heure": "20:20:36",
+          "fouille_maj_heure": "20:22:33",
           "fouille_maj_by_id": 27997,
           "fouille_restante_min": null,
           "fouille_restante_max": null,
@@ -30766,7 +30793,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": null,
-          "heure_maj": "20:20:36",
+          "heure_maj": "20:22:33",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -66868,13 +66895,13 @@
         "devast": false,
         "water": 62,
         "saison": 19,
-        "date_time": "2026-11-25T20:20:35+01:00",
+        "date_time": "2026-11-25T20:42:39+01:00",
         "chaman": null,
         "guide": null,
         "update_by": {
-          "id": 27997,
-          "id_my_hordes": 37978,
-          "pseudo": "MylHordez"
+          "id": 13329,
+          "id_my_hordes": 21135,
+          "pseudo": "Crollos"
         },
         "lang": "es",
         "map_id": 8415,
