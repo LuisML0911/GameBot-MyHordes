@@ -2100,7 +2100,7 @@
           }
         ]
       },
-      "date_dern_maj": "Dernière mise à jour le 25/11/2026 à 02:24 par MylHordez",
+      "date_dern_maj": "Dernière mise à jour le 25/11/2026 à 03:02 par MylHordez",
       "is_lead": false,
       "my_ville": false,
       "ville": {
@@ -25514,7 +25514,7 @@
           "excavated_maj_by_id": 27997,
           "fouille_lvl": 3,
           "fouille_maj_day": 4,
-          "fouille_maj_heure": "02:24:35",
+          "fouille_maj_heure": "03:02:36",
           "fouille_maj_by_id": 27997,
           "fouille_restante_min": 0,
           "fouille_restante_max": 0,
@@ -25522,7 +25522,7 @@
           "fouille_restante_maj_heure": "04:31:33",
           "fouille_restante_maj_by_id": 27997,
           "dig": null,
-          "heure_maj": "02:24:35",
+          "heure_maj": "03:02:36",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -66307,7 +66307,7 @@
         "devast": false,
         "water": 67,
         "saison": 19,
-        "date_time": "2026-11-25T02:24:35+01:00",
+        "date_time": "2026-11-25T03:02:36+01:00",
         "chaman": null,
         "guide": null,
         "update_by": {
