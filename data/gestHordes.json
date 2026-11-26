@@ -2184,7 +2184,7 @@
           }
         ]
       },
-      "date_dern_maj": "Dernière mise à jour le 26/11/2026 à 02:40 par MylHordez",
+      "date_dern_maj": "Dernière mise à jour le 26/11/2026 à 03:03 par MylHordez",
       "is_lead": false,
       "my_ville": false,
       "ville": {
@@ -28286,7 +28286,7 @@
           "excavated_maj_by_id": 27997,
           "fouille_lvl": 3,
           "fouille_maj_day": 5,
-          "fouille_maj_heure": "02:40:31",
+          "fouille_maj_heure": "03:03:13",
           "fouille_maj_by_id": 27997,
           "fouille_restante_min": 0,
           "fouille_restante_max": 0,
@@ -28294,7 +28294,7 @@
           "fouille_restante_maj_heure": "15:47:42",
           "fouille_restante_maj_by_id": 27997,
           "dig": null,
-          "heure_maj": "02:40:31",
+          "heure_maj": "03:03:13",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -67057,7 +67057,7 @@
         "devast": false,
         "water": 54,
         "saison": 19,
-        "date_time": "2026-11-26T02:40:31+01:00",
+        "date_time": "2026-11-26T03:03:13+01:00",
         "chaman": {
           "id": 29680,
           "id_my_hordes": 39887,
