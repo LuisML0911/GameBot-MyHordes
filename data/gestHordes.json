@@ -32,10 +32,10 @@
         },
         "lvl_t_d_g": 0,
         "defense_data": {
-          "total": 221,
+          "total": 220,
           "buildings": 90,
           "upgrades": 0,
-          "objet": 11,
+          "objet": 10,
           "bonus_od": 10,
           "maison_citoyen": 28,
           "gardiens": 20,
@@ -46,7 +46,7 @@
           "day": 5,
           "bonus_sd": 0,
           "bonus_sd_pct": 0,
-          "def_h_s_d": 221,
+          "def_h_s_d": 220,
           "def_s_d": 0
         }
       },
@@ -1183,7 +1183,7 @@
                 "id": 108,
                 "id_mh": 108,
                 "category_objet_id": 2,
-                "nbr_item_bank": 2,
+                "nbr_item_bank": 1,
                 "nbr_item_bank_casse": 0
               },
               "109": {
@@ -1929,7 +1929,7 @@
           "980": 1,
           "1000": 2,
           "1050": 1,
-          "1080": 2,
+          "1080": 1,
           "1090": 2,
           "1110": 2,
           "1120": 9,
@@ -1945,7 +1945,6 @@
           "1420": 1,
           "1430": 1,
           "1460": 3,
-          "1470": 1,
           "1480": 1,
           "1500": 1,
           "1510": 2,
@@ -2255,7 +2254,7 @@
           }
         ]
       },
-      "date_dern_maj": "Dernière mise à jour le 26/11/2026 à 11:22 par MylHordez",
+      "date_dern_maj": "Dernière mise à jour le 26/11/2026 à 11:28 par MylHordez",
       "is_lead": false,
       "my_ville": false,
       "ville": {
@@ -28351,7 +28350,7 @@
           "excavated_maj_by_id": 27997,
           "fouille_lvl": 1,
           "fouille_maj_day": 5,
-          "fouille_maj_heure": "11:22:00",
+          "fouille_maj_heure": "11:28:16",
           "fouille_maj_by_id": 27997,
           "fouille_restante_min": 0,
           "fouille_restante_max": 0,
@@ -28359,7 +28358,7 @@
           "fouille_restante_maj_heure": "15:47:42",
           "fouille_restante_maj_by_id": 27997,
           "dig": null,
-          "heure_maj": "11:22:00",
+          "heure_maj": "11:28:16",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -67201,7 +67200,7 @@
         "devast": false,
         "water": 51,
         "saison": 19,
-        "date_time": "2026-11-26T11:22:00+01:00",
+        "date_time": "2026-11-26T11:28:16+01:00",
         "chaman": {
           "id": 29680,
           "id_my_hordes": 39887,
