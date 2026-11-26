@@ -2271,7 +2271,7 @@
           }
         ]
       },
-      "date_dern_maj": "Dernière mise à jour le 26/11/2026 à 17:37 par Mani",
+      "date_dern_maj": "Dernière mise à jour le 26/11/2026 à 17:47 par MylHordez",
       "is_lead": false,
       "my_ville": false,
       "ville": {
@@ -33254,7 +33254,7 @@
           "excavated_maj_by_id": null,
           "fouille_lvl": 2,
           "fouille_maj_day": 5,
-          "fouille_maj_heure": "17:25:18",
+          "fouille_maj_heure": "17:47:17",
           "fouille_maj_by_id": 27997,
           "fouille_restante_min": null,
           "fouille_restante_max": null,
@@ -33262,7 +33262,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": null,
-          "heure_maj": "17:37:01",
+          "heure_maj": "17:47:17",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -33307,7 +33307,7 @@
           },
           "carte_scrut": null,
           "marqueur_only": false,
-          "citoyen_id": 20456,
+          "citoyen_id": 27997,
           "marqueur_id": null,
           "catapulte_id": null,
           "bat_id": null,
@@ -67388,7 +67388,7 @@
         "devast": false,
         "water": 48,
         "saison": 19,
-        "date_time": "2026-11-26T17:37:47+01:00",
+        "date_time": "2026-11-26T17:47:17+01:00",
         "chaman": {
           "id": 29680,
           "id_my_hordes": 39887,
@@ -67396,9 +67396,9 @@
         },
         "guide": null,
         "update_by": {
-          "id": 20456,
-          "id_my_hordes": 29329,
-          "pseudo": "Mani"
+          "id": 27997,
+          "id_my_hordes": 37978,
+          "pseudo": "MylHordez"
         },
         "lang": "es",
         "map_id": 8415,
