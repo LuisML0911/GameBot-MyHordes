@@ -215,10 +215,10 @@
             "uppercut": true,
             "vlm": true,
             "don_jh": true,
-            "x": 4,
+            "x": 3,
             "y": -6,
             "en_ville": false,
-            "pos_x": 24,
+            "pos_x": 23,
             "pos_y": 15,
             "nb_camping": 0,
             "nb_camping_pro_noob": 6,
@@ -963,7 +963,7 @@
                 "nbr_item_bank_casse": 0
               },
               "49": {
-                "nbr_item": 51,
+                "nbr_item": 52,
                 "nbr_item_casse": 0,
                 "id": 49,
                 "id_mh": 49,
@@ -1303,7 +1303,7 @@
                 "nbr_item_bank_casse": 0
               },
               "13": {
-                "nbr_item": 3,
+                "nbr_item": 2,
                 "nbr_item_casse": 0,
                 "id": 13,
                 "id_mh": 13,
@@ -1462,7 +1462,7 @@
                 "nbr_item_bank_casse": 0
               },
               "76": {
-                "nbr_item": 6,
+                "nbr_item": 7,
                 "nbr_item_casse": 0,
                 "id": 76,
                 "id_mh": 76,
@@ -2280,7 +2280,7 @@
           }
         ]
       },
-      "date_dern_maj": "Dernière mise à jour le 26/11/2026 à 22:58 par MylHordez",
+      "date_dern_maj": "Dernière mise à jour le 26/11/2026 à 23:35 par Mani",
       "is_lead": false,
       "my_ville": false,
       "ville": {
@@ -35564,7 +35564,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": null,
-          "heure_maj": "21:22:06",
+          "heure_maj": "23:35:27",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -35592,10 +35592,10 @@
           "diff_jours": 0,
           "zombie_estim": 0,
           "carte_alter": {
-            "112": 1,
+            "112": 2,
             "113": 1,
             "114": 0,
-            "116": 1,
+            "116": 0,
             "117": 0,
             "118": 0
           },
@@ -35609,7 +35609,7 @@
           },
           "carte_scrut": null,
           "marqueur_only": false,
-          "citoyen_id": 27997,
+          "citoyen_id": 20456,
           "marqueur_id": null,
           "catapulte_id": null,
           "bat_id": null,
@@ -35618,20 +35618,20 @@
           "status_bat": null,
           "items": [
             {
-              "id": 6220478,
-              "item_id": 13,
-              "nombre": 1,
-              "broken": false
-            },
-            {
               "id": 6220486,
               "item_id": 49,
-              "nombre": 1,
+              "nombre": 2,
               "broken": false
             },
             {
               "id": 6220487,
               "item_id": 50,
+              "nombre": 1,
+              "broken": false
+            },
+            {
+              "id": 6221175,
+              "item_id": 76,
               "nombre": 1,
               "broken": false
             }
@@ -37850,7 +37850,7 @@
           "excavated_maj_by_id": null,
           "fouille_lvl": 3,
           "fouille_maj_day": 5,
-          "fouille_maj_heure": "22:58:51",
+          "fouille_maj_heure": "23:31:14",
           "fouille_maj_by_id": 27997,
           "fouille_restante_min": null,
           "fouille_restante_max": null,
@@ -37858,7 +37858,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": null,
-          "heure_maj": "22:58:51",
+          "heure_maj": "23:31:14",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -40488,7 +40488,7 @@
           "zombie_min": null,
           "zombie_max": null,
           "zombie_kill": null,
-          "pdc": 0,
+          "pdc": 5,
           "dried": null,
           "danger": 0,
           "tag": null,
@@ -40574,7 +40574,7 @@
           "zombie_min": null,
           "zombie_max": null,
           "zombie_kill": null,
-          "pdc": 5,
+          "pdc": 0,
           "dried": null,
           "danger": 1,
           "tag": null,
@@ -67490,7 +67490,7 @@
         "devast": false,
         "water": 45,
         "saison": 19,
-        "date_time": "2026-11-26T22:58:51+01:00",
+        "date_time": "2026-11-26T23:35:26+01:00",
         "chaman": {
           "id": 29680,
           "id_my_hordes": 39887,
@@ -67498,9 +67498,9 @@
         },
         "guide": null,
         "update_by": {
-          "id": 27997,
-          "id_my_hordes": 37978,
-          "pseudo": "MylHordez"
+          "id": 20456,
+          "id_my_hordes": 29329,
+          "pseudo": "Mani"
         },
         "lang": "es",
         "map_id": 8415,
