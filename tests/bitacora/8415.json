@@ -4625,6 +4625,50 @@
           "to": 8129354
         }
       }
+    },
+    "20261126_213136_541": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8135805",
+        "method": "PATCH",
+        "body": {
+          "d": "down-all",
+          "mod": null,
+          "to": "8129354"
+        }
+      }
+    },
+    "20261126_213140_457": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8129354/29927250",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": 8135805
+        }
+      }
+    },
+    "20261126_213140_718": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8129354/29910428",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": 8135805
+        }
+      }
+    },
+    "20261126_213143_901": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8135805/29910428",
+        "method": "PATCH",
+        "body": {
+          "d": "down",
+          "mod": null,
+          "to": 8129354
+        }
+      }
     }
   },
   "day3": {
