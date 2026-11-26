@@ -32,7 +32,7 @@
         },
         "lvl_t_d_g": 0,
         "defense_data": {
-          "total": 164,
+          "total": 221,
           "buildings": 90,
           "upgrades": 0,
           "objet": 11,
@@ -41,12 +41,12 @@
           "gardiens": 20,
           "veilleurs": 0,
           "ames": 5,
-          "morts": 0,
+          "morts": 57,
           "tempos": 0,
           "day": 5,
           "bonus_sd": 0,
           "bonus_sd_pct": 0,
-          "def_h_s_d": 164,
+          "def_h_s_d": 221,
           "def_s_d": 0
         }
       },
@@ -947,7 +947,7 @@
                 "id": 35,
                 "id_mh": 35,
                 "category_objet_id": 1,
-                "nbr_item_bank": 2,
+                "nbr_item_bank": 1,
                 "nbr_item_bank_casse": 0
               },
               "49": {
@@ -956,7 +956,7 @@
                 "id": 49,
                 "id_mh": 49,
                 "category_objet_id": 1,
-                "nbr_item_bank": 20,
+                "nbr_item_bank": 10,
                 "nbr_item_bank_casse": 0
               },
               "50": {
@@ -1564,6 +1564,15 @@
                 "category_objet_id": 7,
                 "nbr_item_bank": 0,
                 "nbr_item_bank_casse": 0
+              },
+              "336": {
+                "nbr_item": 1,
+                "nbr_item_casse": 0,
+                "id": 336,
+                "id_mh": 336,
+                "category_objet_id": 7,
+                "nbr_item_bank": 1,
+                "nbr_item_bank_casse": 0
               }
             },
             "category": {
@@ -1891,7 +1900,7 @@
           "270": 2,
           "290": 1,
           "340": 1,
-          "350": 2,
+          "350": 1,
           "360": 2,
           "370": 1,
           "380": 2,
@@ -1900,7 +1909,7 @@
           "420": 1,
           "430": 1,
           "480": 1,
-          "490": 20,
+          "490": 10,
           "500": 27,
           "520": 1,
           "580": 2,
@@ -2194,7 +2203,7 @@
           }
         ]
       },
-      "date_dern_maj": "Dernière mise à jour le 26/11/2026 à 06:29 par MylHordez",
+      "date_dern_maj": "Dernière mise à jour le 26/11/2026 à 06:39 par MylHordez",
       "is_lead": false,
       "my_ville": false,
       "ville": {
@@ -28296,7 +28305,7 @@
           "excavated_maj_by_id": 27997,
           "fouille_lvl": 2,
           "fouille_maj_day": 5,
-          "fouille_maj_heure": "06:29:18",
+          "fouille_maj_heure": "06:39:56",
           "fouille_maj_by_id": 27997,
           "fouille_restante_min": 0,
           "fouille_restante_max": 0,
@@ -28304,7 +28313,7 @@
           "fouille_restante_maj_heure": "15:47:42",
           "fouille_restante_maj_by_id": 27997,
           "dig": null,
-          "heure_maj": "06:29:18",
+          "heure_maj": "06:39:56",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -28384,6 +28393,12 @@
             {
               "id": 6215497,
               "item_id": 128,
+              "nombre": 1,
+              "broken": false
+            },
+            {
+              "id": 6215656,
+              "item_id": 336,
               "nombre": 1,
               "broken": false
             }
@@ -67079,7 +67094,7 @@
         "devast": false,
         "water": 53,
         "saison": 19,
-        "date_time": "2026-11-26T06:29:18+01:00",
+        "date_time": "2026-11-26T06:39:56+01:00",
         "chaman": {
           "id": 29680,
           "id_my_hordes": 39887,
