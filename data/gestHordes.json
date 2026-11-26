@@ -951,7 +951,7 @@
                 "nbr_item_bank_casse": 0
               },
               "49": {
-                "nbr_item": 40,
+                "nbr_item": 41,
                 "nbr_item_casse": 0,
                 "id": 49,
                 "id_mh": 49,
@@ -2185,7 +2185,7 @@
           }
         ]
       },
-      "date_dern_maj": "Dernière mise à jour le 26/11/2026 à 03:31 par MylHordez",
+      "date_dern_maj": "Dernière mise à jour le 26/11/2026 à 03:55 par MylHordez",
       "is_lead": false,
       "my_ville": false,
       "ville": {
@@ -28285,9 +28285,9 @@
           "excavated_maj_day": 4,
           "excavated_maj_heure": "15:48:17",
           "excavated_maj_by_id": 27997,
-          "fouille_lvl": 3,
+          "fouille_lvl": 2,
           "fouille_maj_day": 5,
-          "fouille_maj_heure": "03:31:13",
+          "fouille_maj_heure": "03:55:54",
           "fouille_maj_by_id": 27997,
           "fouille_restante_min": 0,
           "fouille_restante_max": 0,
@@ -28295,7 +28295,7 @@
           "fouille_restante_maj_heure": "15:47:42",
           "fouille_restante_maj_by_id": 27997,
           "dig": null,
-          "heure_maj": "03:31:13",
+          "heure_maj": "03:55:54",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -28323,7 +28323,7 @@
           "diff_jours": 0,
           "zombie_estim": 0,
           "carte_alter": {
-            "112": 0,
+            "112": 1,
             "113": 0,
             "114": 0,
             "116": 0,
@@ -28363,6 +28363,12 @@
             {
               "id": 6215346,
               "item_id": 136,
+              "nombre": 1,
+              "broken": false
+            },
+            {
+              "id": 6215401,
+              "item_id": 49,
               "nombre": 1,
               "broken": false
             }
@@ -67058,7 +67064,7 @@
         "devast": false,
         "water": 54,
         "saison": 19,
-        "date_time": "2026-11-26T03:31:13+01:00",
+        "date_time": "2026-11-26T03:55:54+01:00",
         "chaman": {
           "id": 29680,
           "id_my_hordes": 39887,
