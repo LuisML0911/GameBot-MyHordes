@@ -145,11 +145,11 @@
             "uppercut": true,
             "vlm": true,
             "don_jh": true,
-            "x": -3,
-            "y": 9,
+            "x": 0,
+            "y": 4,
             "en_ville": false,
-            "pos_x": 17,
-            "pos_y": 0,
+            "pos_x": 20,
+            "pos_y": 5,
             "nb_camping": 0,
             "nb_camping_pro_noob": 6,
             "chance_camping_max": 90,
@@ -945,7 +945,7 @@
           "1": {
             "objet_sol": {
               "2": {
-                "nbr_item": 15,
+                "nbr_item": 14,
                 "nbr_item_casse": 0,
                 "id": 2,
                 "id_mh": 2,
@@ -972,7 +972,7 @@
                 "nbr_item_bank_casse": 0
               },
               "50": {
-                "nbr_item": 25,
+                "nbr_item": 24,
                 "nbr_item_casse": 0,
                 "id": 50,
                 "id_mh": 50,
@@ -999,7 +999,7 @@
                 "nbr_item_bank_casse": 0
               },
               "67": {
-                "nbr_item": 8,
+                "nbr_item": 7,
                 "nbr_item_casse": 0,
                 "id": 67,
                 "id_mh": 67,
@@ -1258,6 +1258,15 @@
                 "nbr_item_bank": 0,
                 "nbr_item_bank_casse": 0
               },
+              "300": {
+                "nbr_item": 1,
+                "nbr_item_casse": 0,
+                "id": 300,
+                "id_mh": 300,
+                "category_objet_id": 2,
+                "nbr_item_bank": 0,
+                "nbr_item_bank_casse": 0
+              },
               "303": {
                 "nbr_item": 1,
                 "nbr_item_casse": 0,
@@ -1303,8 +1312,8 @@
                 "nbr_item_bank_casse": 0
               },
               "18": {
-                "nbr_item": 2,
-                "nbr_item_casse": 0,
+                "nbr_item": 3,
+                "nbr_item_casse": 1,
                 "id": 18,
                 "id_mh": 18,
                 "category_objet_id": 3,
@@ -1409,7 +1418,7 @@
                 "nbr_item_bank_casse": 0
               },
               "154": {
-                "nbr_item": 2,
+                "nbr_item": 3,
                 "nbr_item_casse": 0,
                 "id": 154,
                 "id_mh": 154,
@@ -1434,17 +1443,8 @@
                 "nbr_item_bank": 5,
                 "nbr_item_bank_casse": 0
               },
-              "54": {
-                "nbr_item": 1,
-                "nbr_item_casse": 0,
-                "id": 54,
-                "id_mh": 54,
-                "category_objet_id": 6,
-                "nbr_item_bank": 0,
-                "nbr_item_bank_casse": 0
-              },
               "76": {
-                "nbr_item": 5,
+                "nbr_item": 6,
                 "nbr_item_casse": 0,
                 "id": 76,
                 "id_mh": 76,
@@ -1685,7 +1685,7 @@
                 "nbr_item_bank_casse": 0
               },
               "116": {
-                "nbr_item": 8,
+                "nbr_item": 5,
                 "nbr_item_casse": 0,
                 "id": 116,
                 "id_mh": 116,
@@ -1828,15 +1828,6 @@
                 "nbr_item_bank": 0,
                 "nbr_item_bank_casse": 0
               },
-              "265": {
-                "nbr_item": 1,
-                "nbr_item_casse": 0,
-                "id": 265,
-                "id_mh": 265,
-                "category_objet_id": 8,
-                "nbr_item_bank": 3,
-                "nbr_item_bank_casse": 0
-              },
               "309": {
                 "nbr_item": 1,
                 "nbr_item_casse": 0,
@@ -1873,7 +1864,7 @@
           "112": 7,
           "113": 2,
           "114": 1,
-          "116": 2,
+          "116": 4,
           "117": 3,
           "118": 0
         },
@@ -2272,7 +2263,7 @@
           }
         ]
       },
-      "date_dern_maj": "Dernière mise à jour le 26/11/2026 à 13:38 par Crollos",
+      "date_dern_maj": "Dernière mise à jour le 26/11/2026 à 13:42 par Crollos",
       "is_lead": false,
       "my_ville": false,
       "ville": {
@@ -3765,11 +3756,11 @@
           "x": 17,
           "y": 0,
           "ame_ids": [],
-          "zombie": 18,
+          "zombie": 15,
           "zombie_min": null,
           "zombie_max": null,
           "zombie_kill": null,
-          "pdc": 4,
+          "pdc": 0,
           "dried": false,
           "danger": 3,
           "tag": 9,
@@ -3791,7 +3782,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": 0,
-          "heure_maj": "13:38:33",
+          "heure_maj": "13:39:37",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -3817,7 +3808,7 @@
           "zombie_recalcule": false,
           "indic_visite": "vueAuj",
           "diff_jours": 0,
-          "zombie_estim": 18,
+          "zombie_estim": 15,
           "carte_alter": {
             "112": 0,
             "113": 0,
@@ -3884,7 +3875,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": null,
-          "heure_maj": "13:35:46",
+          "heure_maj": "13:39:51",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -3912,7 +3903,7 @@
           "diff_jours": 0,
           "zombie_estim": 4,
           "carte_alter": {
-            "112": 1,
+            "112": 0,
             "113": 0,
             "114": 0,
             "116": 0,
@@ -3940,12 +3931,6 @@
             {
               "id": 6217424,
               "item_id": 188,
-              "nombre": 1,
-              "broken": false
-            },
-            {
-              "id": 6217425,
-              "item_id": 49,
               "nombre": 1,
               "broken": false
             }
@@ -3983,7 +3968,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": null,
-          "heure_maj": "13:32:54",
+          "heure_maj": "13:40:03",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -4011,20 +3996,20 @@
           "diff_jours": 0,
           "zombie_estim": 3,
           "carte_alter": {
-            "112": 0,
-            "113": 0,
-            "114": 0,
-            "116": 0,
-            "117": 0,
-            "118": 0
+            "112": null,
+            "113": null,
+            "114": null,
+            "116": null,
+            "117": null,
+            "118": null
           },
           "carte_alter_encombrant": {
-            "112": 0,
-            "113": 0,
-            "114": 0,
-            "116": 0,
-            "117": 0,
-            "118": 0
+            "112": null,
+            "113": null,
+            "114": null,
+            "116": null,
+            "117": null,
+            "118": null
           },
           "carte_scrut": null,
           "marqueur_only": false,
@@ -4035,14 +4020,7 @@
           "bat_hypothese_id": null,
           "plan": null,
           "status_bat": null,
-          "items": [
-            {
-              "id": 6217421,
-              "item_id": 265,
-              "nombre": 1,
-              "broken": false
-            }
-          ],
+          "items": [],
           "consignes": []
         },
         "20": {
@@ -4076,7 +4054,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": null,
-          "heure_maj": "13:32:36",
+          "heure_maj": "13:40:16",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -4104,20 +4082,20 @@
           "diff_jours": 0,
           "zombie_estim": 4,
           "carte_alter": {
-            "112": 0,
-            "113": 0,
-            "114": 0,
-            "116": 1,
-            "117": 0,
-            "118": 0
+            "112": null,
+            "113": null,
+            "114": null,
+            "116": null,
+            "117": null,
+            "118": null
           },
           "carte_alter_encombrant": {
-            "112": 0,
-            "113": 0,
-            "114": 0,
-            "116": 0,
-            "117": 0,
-            "118": 0
+            "112": null,
+            "113": null,
+            "114": null,
+            "116": null,
+            "117": null,
+            "118": null
           },
           "carte_scrut": null,
           "marqueur_only": false,
@@ -4128,14 +4106,7 @@
           "bat_hypothese_id": null,
           "plan": null,
           "status_bat": null,
-          "items": [
-            {
-              "id": 6217420,
-              "item_id": 60,
-              "nombre": 1,
-              "broken": false
-            }
-          ],
+          "items": [],
           "consignes": []
         },
         "21": {
@@ -6419,7 +6390,7 @@
           "fouille_restante_maj_heure": "12:58:15",
           "fouille_restante_maj_by_id": 13329,
           "dig": 0,
-          "heure_maj": "13:30:10",
+          "heure_maj": "13:41:06",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -6448,9 +6419,9 @@
           "zombie_estim": 0,
           "carte_alter": {
             "112": 2,
-            "113": 1,
+            "113": 0,
             "114": 0,
-            "116": 2,
+            "116": 4,
             "117": 2,
             "118": 0
           },
@@ -6460,7 +6431,7 @@
             "114": 1,
             "116": 0,
             "117": 0,
-            "118": 0
+            "118": 1
           },
           "carte_scrut": null,
           "marqueur_only": false,
@@ -6503,12 +6474,6 @@
               "broken": false
             },
             {
-              "id": 6201099,
-              "item_id": 116,
-              "nombre": 3,
-              "broken": false
-            },
-            {
               "id": 6205075,
               "item_id": 65,
               "nombre": 1,
@@ -6529,13 +6494,7 @@
             {
               "id": 6210136,
               "item_id": 60,
-              "nombre": 1,
-              "broken": false
-            },
-            {
-              "id": 6210137,
-              "item_id": 67,
-              "nombre": 1,
+              "nombre": 2,
               "broken": false
             },
             {
@@ -6545,16 +6504,34 @@
               "broken": false
             },
             {
-              "id": 6217406,
-              "item_id": 50,
-              "nombre": 1,
-              "broken": false
-            },
-            {
               "id": 6217408,
               "item_id": 135,
               "nombre": 1,
               "broken": true
+            },
+            {
+              "id": 6217443,
+              "item_id": 18,
+              "nombre": 1,
+              "broken": true
+            },
+            {
+              "id": 6217444,
+              "item_id": 76,
+              "nombre": 1,
+              "broken": false
+            },
+            {
+              "id": 6217445,
+              "item_id": 154,
+              "nombre": 1,
+              "broken": false
+            },
+            {
+              "id": 6217446,
+              "item_id": 300,
+              "nombre": 1,
+              "broken": false
             }
           ],
           "consignes": []
@@ -8838,16 +8815,16 @@
           "x": 20,
           "y": 2,
           "ame_ids": [],
-          "zombie": 0,
+          "zombie": 2,
           "zombie_min": null,
           "zombie_max": null,
           "zombie_kill": null,
           "pdc": 0,
           "dried": true,
-          "danger": 0,
+          "danger": 1,
           "tag": null,
-          "day": 4,
-          "vue": 0,
+          "day": 5,
+          "vue": 1,
           "camped": false,
           "empty": false,
           "excavated": false,
@@ -8864,7 +8841,7 @@
           "fouille_restante_maj_heure": "08:38:51",
           "fouille_restante_maj_by_id": 13329,
           "dig": null,
-          "heure_maj": "08:38:51",
+          "heure_maj": "13:41:18",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -8888,9 +8865,9 @@
           "jour_kill": null,
           "mode_estimation": false,
           "zombie_recalcule": false,
-          "indic_visite": "vue24",
-          "diff_jours": 1,
-          "zombie_estim": 1,
+          "indic_visite": "vueAuj",
+          "diff_jours": 0,
+          "zombie_estim": 2,
           "carte_alter": {
             "112": 0,
             "113": 0,
@@ -11235,16 +11212,16 @@
           "x": 20,
           "y": 3,
           "ame_ids": [],
-          "zombie": 0,
+          "zombie": 3,
           "zombie_min": null,
           "zombie_max": null,
           "zombie_kill": null,
           "pdc": 0,
           "dried": false,
-          "danger": 0,
+          "danger": 2,
           "tag": null,
-          "day": 3,
-          "vue": 0,
+          "day": 5,
+          "vue": 1,
           "camped": false,
           "empty": false,
           "excavated": false,
@@ -11261,7 +11238,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": null,
-          "heure_maj": "20:11:29",
+          "heure_maj": "13:41:38",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -11285,24 +11262,24 @@
           "jour_kill": null,
           "mode_estimation": false,
           "zombie_recalcule": false,
-          "indic_visite": "vue48",
-          "diff_jours": 2,
-          "zombie_estim": 2,
+          "indic_visite": "vueAuj",
+          "diff_jours": 0,
+          "zombie_estim": 3,
           "carte_alter": {
-            "112": null,
-            "113": null,
-            "114": null,
-            "116": null,
-            "117": null,
-            "118": null
+            "112": 1,
+            "113": 0,
+            "114": 0,
+            "116": 0,
+            "117": 0,
+            "118": 0
           },
           "carte_alter_encombrant": {
-            "112": null,
-            "113": null,
-            "114": null,
-            "116": null,
-            "117": null,
-            "118": null
+            "112": 0,
+            "113": 0,
+            "114": 0,
+            "116": 0,
+            "117": 0,
+            "118": 0
           },
           "carte_scrut": null,
           "marqueur_only": false,
@@ -11313,7 +11290,14 @@
           "bat_hypothese_id": null,
           "plan": null,
           "status_bat": null,
-          "items": [],
+          "items": [
+            {
+              "id": 6217447,
+              "item_id": 49,
+              "nombre": 1,
+              "broken": false
+            }
+          ],
           "consignes": []
         },
         "321": {
@@ -13633,8 +13617,8 @@
           "dried": false,
           "danger": 0,
           "tag": null,
-          "day": 3,
-          "vue": 0,
+          "day": 5,
+          "vue": 1,
           "camped": false,
           "empty": false,
           "excavated": false,
@@ -13651,7 +13635,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": null,
-          "heure_maj": "20:12:55",
+          "heure_maj": "13:42:18",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -13675,9 +13659,9 @@
           "jour_kill": null,
           "mode_estimation": false,
           "zombie_recalcule": false,
-          "indic_visite": "vue48",
-          "diff_jours": 2,
-          "zombie_estim": 2,
+          "indic_visite": "vueAuj",
+          "diff_jours": 0,
+          "zombie_estim": 0,
           "carte_alter": {
             "112": 0,
             "113": 0,
@@ -13707,12 +13691,6 @@
             {
               "id": 6201123,
               "item_id": 73,
-              "nombre": 1,
-              "broken": false
-            },
-            {
-              "id": 6207201,
-              "item_id": 2,
               "nombre": 1,
               "broken": false
             }
@@ -15991,12 +15969,12 @@
           "zombie_min": null,
           "zombie_max": null,
           "zombie_kill": null,
-          "pdc": 0,
+          "pdc": 4,
           "dried": false,
           "danger": 0,
           "tag": null,
-          "day": 3,
-          "vue": 0,
+          "day": 5,
+          "vue": 1,
           "camped": false,
           "empty": false,
           "excavated": false,
@@ -16013,7 +15991,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": null,
-          "heure_maj": "20:13:16",
+          "heure_maj": "13:42:48",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -16037,9 +16015,9 @@
           "jour_kill": null,
           "mode_estimation": false,
           "zombie_recalcule": false,
-          "indic_visite": "vue48",
-          "diff_jours": 2,
-          "zombie_estim": 2,
+          "indic_visite": "vueAuj",
+          "diff_jours": 0,
+          "zombie_estim": 0,
           "carte_alter": {
             "112": 1,
             "113": 0,
@@ -16069,12 +16047,6 @@
             {
               "id": 6183130,
               "item_id": 49,
-              "nombre": 1,
-              "broken": false
-            },
-            {
-              "id": 6207203,
-              "item_id": 54,
               "nombre": 1,
               "broken": false
             }
@@ -67289,7 +67261,7 @@
         "devast": false,
         "water": 51,
         "saison": 19,
-        "date_time": "2026-11-26T13:38:33+01:00",
+        "date_time": "2026-11-26T13:42:48+01:00",
         "chaman": {
           "id": 29680,
           "id_my_hordes": 39887,
