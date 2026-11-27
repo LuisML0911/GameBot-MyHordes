@@ -20,10 +20,54 @@
           }
         }
       }
+    },
+    "20261127_142008_812": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8161131/29947766",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": 8161130
+        }
+      }
+    },
+    "20261127_142009_005": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8161131/29947767",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": 8161130
+        }
+      }
+    },
+    "20261127_142011_367": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8161131/29947773",
+        "method": "PATCH",
+        "body": {
+          "d": "up",
+          "mod": null,
+          "to": 8161130
+        }
+      }
+    },
+    "20261127_142013_730": {
+      "request": {
+        "url": "/rest/v1/game/inventory/8161130",
+        "method": "PATCH",
+        "body": {
+          "d": "down-all",
+          "mod": null,
+          "to": "8156197"
+        }
+      }
     }
   },
   "day1": {
-    "currentStep": 0,
+    "currentStep": 1,
     "purge": false
   },
   "hasUsedDrugs": false,
