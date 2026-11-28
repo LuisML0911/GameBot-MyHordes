@@ -2641,22 +2641,21 @@ async function sendDebugPhoto(nav){
 	console.log("Foto enviada");
 }
 async function sendGif(path) {
-
-    const form = new FormData();
-
-    form.append(
-        'animation',
-        new Blob([fs.readFileSync(path)]),
-        'history.gif'
-    );
-
-    await fetch(
-        `https://api.telegram.org/bot${botToken}/sendAnimation?chat_id=${chatId}`,
-        {
-            method: 'POST',
-            body: form
-        }
-    );
+	const form = new FormData();
+	
+	form.append(
+	    'document',
+	    new Blob([fs.readFileSync(path)]),
+	    'history.gif'
+	);
+	
+	await fetch(
+	    `https://api.telegram.org/bot${botToken}/sendDocument?chat_id=${chatId}`,
+	    {
+	        method: 'POST',
+	        body: form
+	    }
+	);
 }
 function takeScreenshot(file) {
     if (!fs.existsSync('./debug')) {
