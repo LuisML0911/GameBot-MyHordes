@@ -15,13 +15,13 @@
         },
         "lvl_t_d_g": 0,
         "defense_data": {
-          "total": 40,
+          "total": 47,
           "buildings": 0,
           "upgrades": 0,
           "objet": 2,
           "bonus_od": 10,
-          "maison_citoyen": 23,
-          "gardiens": 5,
+          "maison_citoyen": 25,
+          "gardiens": 10,
           "veilleurs": 0,
           "ames": 0,
           "morts": 0,
@@ -29,7 +29,7 @@
           "day": 1,
           "bonus_sd": 0,
           "bonus_sd_pct": 0,
-          "def_h_s_d": 40,
+          "def_h_s_d": 47,
           "def_s_d": 0
         }
       },
@@ -878,6 +878,41 @@
             "position_maj_heure": null
           },
           {
+            "id": 247055,
+            "citoyen": {
+              "id": 29636,
+              "id_my_hordes": 39835,
+              "pseudo": "Varguax",
+              "tem_arma": false,
+              "nb_charge_camaraderie": 0
+            },
+            "mort": false,
+            "dehors": false,
+            "ban": false,
+            "corps_sain": true,
+            "charge_apag": 3,
+            "job_id": 5,
+            "pef": true,
+            "rdh": true,
+            "sauvetage": true,
+            "second_souffle": true,
+            "trouvaille": true,
+            "uppercut": true,
+            "vlm": true,
+            "don_jh": true,
+            "x": 0,
+            "y": 0,
+            "en_ville": true,
+            "pos_x": 16,
+            "pos_y": 14,
+            "nb_camping": 0,
+            "nb_camping_pro_noob": 6,
+            "chance_camping_max": 90,
+            "position_source": null,
+            "position_maj_jour": null,
+            "position_maj_heure": null
+          },
+          {
             "id": 246951,
             "citoyen": {
               "id": 25437,
@@ -913,7 +948,7 @@
             "position_maj_heure": null
           }
         ],
-        "nb_col_in": 1,
+        "nb_col_in": 2,
         "nb_col_out": 2,
         "arr_createur_vivant": [],
         "ma_position": null
@@ -1078,10 +1113,10 @@
         "ressources_specifiques": {
           "water": 0,
           "potion": 0,
-          "b6": 5,
+          "b6": 7,
           "b7": 1,
           "alcool": 0,
-          "drogue": 8,
+          "drogue": 9,
           "drogue_pa": 3
         },
         "max_alter": {
@@ -1140,6 +1175,7 @@
           "600": 3,
           "650": 2,
           "700": 1,
+          "760": 1,
           "770": 1,
           "830": 1,
           "850": 1,
@@ -1152,7 +1188,8 @@
           "1140": 1,
           "1150": 1,
           "1180": 3,
-          "1210": 2,
+          "1200": 1,
+          "1210": 3,
           "1240": 1,
           "1360": 1,
           "1380": 1,
@@ -1412,7 +1449,7 @@
           }
         ]
       },
-      "date_dern_maj": "Dernière mise à jour le 28/11/2026 à 11:20 par MylHordez",
+      "date_dern_maj": "Dernière mise à jour le 28/11/2026 à 12:00 par MylHordez",
       "is_lead": false,
       "my_ville": false,
       "ville": {
@@ -35259,7 +35296,7 @@
           "excavated_maj_by_id": 19340,
           "fouille_lvl": 2,
           "fouille_maj_day": 1,
-          "fouille_maj_heure": "11:20:11",
+          "fouille_maj_heure": "12:00:40",
           "fouille_maj_by_id": 27997,
           "fouille_restante_min": null,
           "fouille_restante_max": null,
@@ -35267,7 +35304,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": null,
-          "heure_maj": "11:20:11",
+          "heure_maj": "12:00:40",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -64215,7 +64252,7 @@
       "niveau_habilitation": "user",
       "is_co": false,
       "my_ville": false,
-      "pts_saison": 25,
+      "pts_saison": 26,
       "user": {
         "id": 0,
         "id_my_hordes": 0,
@@ -64246,7 +64283,7 @@
         "devast": false,
         "water": 120,
         "saison": 19,
-        "date_time": "2026-11-28T11:20:11+01:00",
+        "date_time": "2026-11-28T12:00:40+01:00",
         "chaman": null,
         "guide": null,
         "update_by": {
@@ -64257,9 +64294,9 @@
         "lang": "es",
         "map_id": 8438,
         "origin": 2,
-        "nb_heros": 25,
-        "nb_vivants": 25,
-        "nombre_point_saison": 25,
+        "nb_heros": 26,
+        "nb_vivants": 26,
+        "nombre_point_saison": 26,
         "plans_chantier_date_maj": "2026-11-28T00:22:18+01:00",
         "plans_chantier_update_by": {
           "id": 27997,
