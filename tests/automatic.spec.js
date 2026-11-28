@@ -2,9 +2,9 @@
 import { test, request, chromium, devices } from '@playwright/test';
 import { randomUUID } from 'crypto';
 import { execSync } from 'child_process';
-const { createCanvas, loadImage } = require('canvas');
 const { JSDOM } = require("jsdom");
 const { Transform } = require('stream');
+const { execSync } = require('child_process');
 const fs = require('fs');
 const readline = require('readline');
 const path = require('path');
@@ -12,7 +12,7 @@ const AdmZip = require('adm-zip');
 const util = require('util');
 const readFile = util.promisify(fs.readFile);
 const zlib = require('zlib');
-const GIFEncoder = require('gifencoder');
+const imagesToGif = require("images-to-gif");
 
 //constantes
 let pag = undefined;
@@ -81,7 +81,13 @@ test('resetLogs', async ({ page }) => {
 
 	try {
 		const gifPath = `./debug/${lastDataSaved?.idTown}.gif`;
-		await createGifFromPngs('./debug', gifPath, 250);
+		await imagesToGif(
+			fs.readdirSync(inputDir)
+		    .filter(file => file.toLowerCase().endsWith('.png'))
+		    .sort()
+		    .map(file => path.join(inputDir, file)),
+			gifPath
+		);
 		await sendGif(gifPath);
 	} catch (exception) {
 		console.log('No se pudo generar/enviar el GIF:', exception);
@@ -1175,7 +1181,13 @@ async function acceptDead(){
 	await sendTelegramMessage(`Juego Terminado: ${latestDay} en el paso: ${dataSaved[latestDay].currentStep}`);
 	try {
 		const gifPath = `./debug/${lastDataSaved?.idTown}.gif`;
-		await createGifFromPngs('./debug', gifPath, 250);
+		await imagesToGif(
+			fs.readdirSync(inputDir)
+		    .filter(file => file.toLowerCase().endsWith('.png'))
+		    .sort()
+		    .map(file => path.join(inputDir, file)),
+			gifPath
+		);
 		await sendGif(gifPath);
 	} catch (exception) {
 		console.log('No se pudo generar/enviar el GIF:', exception);
@@ -2673,48 +2685,4 @@ function takeScreenshot(file) {
         retryPush(file, 4);
     })
 	.catch((error) => {console.error(`Error al tomar screenshot de ${file}:`, error);});
-}
-// Genera un GIF animado con todos los PNG de una carpeta (reemplaza ImageMagick)
-async function createGifFromPngs(inputDir, outputFile, delayMs = 2500) {
-	const files = fs.readdirSync(inputDir)
-		.filter(f => f.toLowerCase().endsWith('.png'))
-		.sort(); // tus nombres son timestamps (yyyymmdd_hhmmss_millis) => orden cronológico
-
-	if (files.length === 0) {
-		throw new Error(`No hay PNGs en ${inputDir}`);
-	}
-
-	// Cargar imágenes y calcular el tamaño máximo:
-	// tus screenshots son fullPage, así que la altura varía entre capturas
-	const images = [];
-	let width = 0;
-	let height = 0;
-	for (const f of files) {
-		const img = await loadImage(path.join(inputDir, f));
-		images.push(img);
-		width = Math.max(width, img.width);
-		height = Math.max(height, img.height);
-	}
-
-	const canvas = createCanvas(width, height);
-	const ctx = canvas.getContext('2d');
-
-	const encoder = new GIFEncoder(width, height, 'neuquant', true);
-	encoder.setDelay(delayMs); // milisegundos por frame
-	encoder.setRepeat(0);      // loop infinito (equivale a -loop 0)
-	encoder.setQuality(10);    // solo aplica a neuquant: 1 = mejor calidad y más lento
-	encoder.start();
-
-	for (const img of images) {
-		ctx.fillStyle = '#000'; // relleno para frames más pequeños que el canvas
-		ctx.fillRect(0, 0, width, height);
-		ctx.drawImage(img, 0, 0);
-		// si prefieres estirar cada captura al tamaño del canvas:
-		// ctx.drawImage(img, 0, 0, width, height);
-		encoder.addFrame(ctx);
-	}
-
-	encoder.finish();
-	fs.writeFileSync(outputFile, encoder.out.getData());
-	return outputFile;
 }
