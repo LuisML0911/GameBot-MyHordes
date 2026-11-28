@@ -1,0 +1,42 @@
+name: Add gifencoder
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  install-dependency:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Show versions
+        run: |
+          node -v
+          npm -v
+
+      - name: Install dependency
+        run: npm install gifencoder --save
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add package.json package-lock.json
+
+          git diff --staged --quiet || git commit -m "Add gifencoder dependency"
+
+      - name: Push changes
+        run: git push
