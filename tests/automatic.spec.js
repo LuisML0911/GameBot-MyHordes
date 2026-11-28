@@ -2709,7 +2709,10 @@ async function createGifFromPngs(inputDir, outputFile, delay = 250) {
             image.bitmap.width !== width ||
             image.bitmap.height !== height
         ) {
-            image.resize(width, height);
+			image.resize({
+			  width: 1920,
+			  height: 5000
+			})
         }
 
         encoder.addFrame(image.bitmap.data);
