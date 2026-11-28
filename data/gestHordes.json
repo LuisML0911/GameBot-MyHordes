@@ -997,6 +997,15 @@
                 "category_objet_id": 1,
                 "nbr_item_bank": 0,
                 "nbr_item_bank_casse": 0
+              },
+              "50": {
+                "nbr_item": 1,
+                "nbr_item_casse": 0,
+                "id": 50,
+                "id_mh": 50,
+                "category_objet_id": 1,
+                "nbr_item_bank": 1,
+                "nbr_item_bank_casse": 0
               }
             },
             "category": {
@@ -1121,13 +1130,13 @@
         },
         "max_alter": {
           "112": 1,
-          "113": 0,
+          "113": 1,
           "114": 0,
           "116": 1,
           "117": 2,
           "118": 0
         },
-        "max_alter_all": 4,
+        "max_alter_all": 5,
         "max_alter_encombrant": {
           "112": 0,
           "113": 0,
@@ -1449,7 +1458,7 @@
           }
         ]
       },
-      "date_dern_maj": "Dernière mise à jour le 28/11/2026 à 12:00 par MylHordez",
+      "date_dern_maj": "Dernière mise à jour le 28/11/2026 à 12:32 par MylHordez",
       "is_lead": false,
       "my_ville": false,
       "ville": {
@@ -35296,7 +35305,7 @@
           "excavated_maj_by_id": 19340,
           "fouille_lvl": 2,
           "fouille_maj_day": 1,
-          "fouille_maj_heure": "12:00:40",
+          "fouille_maj_heure": "12:32:35",
           "fouille_maj_by_id": 27997,
           "fouille_restante_min": null,
           "fouille_restante_max": null,
@@ -35304,7 +35313,7 @@
           "fouille_restante_maj_heure": null,
           "fouille_restante_maj_by_id": null,
           "dig": null,
-          "heure_maj": "12:00:40",
+          "heure_maj": "12:32:35",
           "marqueur_maj_day": null,
           "marqueur_maj_heure": null,
           "catapulte_maj_day": null,
@@ -35333,7 +35342,7 @@
           "zombie_estim": 0,
           "carte_alter": {
             "112": 1,
-            "113": 0,
+            "113": 1,
             "114": 0,
             "116": 1,
             "117": 2,
@@ -35390,6 +35399,12 @@
             {
               "id": 6229196,
               "item_id": 163,
+              "nombre": 1,
+              "broken": false
+            },
+            {
+              "id": 6229841,
+              "item_id": 50,
               "nombre": 1,
               "broken": false
             }
@@ -64283,7 +64298,7 @@
         "devast": false,
         "water": 120,
         "saison": 19,
-        "date_time": "2026-11-28T12:00:40+01:00",
+        "date_time": "2026-11-28T12:32:35+01:00",
         "chaman": null,
         "guide": null,
         "update_by": {
