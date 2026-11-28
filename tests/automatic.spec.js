@@ -2643,6 +2643,16 @@ async function sendDebugPhoto(nav){
 async function sendGif(path) {
 	const form = new FormData();
 	
+	const stats = fs.statSync(path);
+	console.log('GIF local:', stats.size);
+
+	console.log(
+	    'GIF size:',
+	    (fs.statSync(path).size / 1024 / 1024).toFixed(2),
+	    'MB'
+	);
+	
+	
 	form.append(
 	    'document',
 	    new Blob([fs.readFileSync(path)]),
@@ -2694,7 +2704,7 @@ async function createGifFromPngs(inputDir, outputFile, delay = 250) {
     encoder.start();
     encoder.setRepeat(0);
     encoder.setDelay(delay);
-    encoder.setQuality(10);
+    encoder.setQuality(1);
 
     const stream = encoder.createReadStream();
     stream.pipe(fs.createWriteStream(outputFile));
