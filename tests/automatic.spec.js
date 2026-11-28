@@ -70,12 +70,20 @@ test('resetLogs', async ({ page }) => {
 
 	//await createRoutes(18);
 	//await getRoute(18);
-	await createRoutes(20);
+	//await createRoutes(20);
 	//await getRoute(20);
 	//createRoutes(22);
 	//await getRoute(22);
-	writeJSON(nameFile_dataSaved, dataSaved);
+	//writeJSON(nameFile_dataSaved, dataSaved);
 	//await getRoute(2);
+
+	try {
+		const gifPath = `./debug/${lastDataSaved?.idTown}.gif`;
+		await createGifFromPngs('./debug', gifPath, 250);
+		await sendGif(gifPath);
+	} catch (exception) {
+		console.log('No se pudo generar/enviar el GIF:', exception);
+	}
 	
 });
 test('UpdateWeaponData', async ({ page }) => {
