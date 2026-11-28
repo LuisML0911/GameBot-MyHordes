@@ -2642,21 +2642,15 @@ async function sendDebugPhoto(nav){
 }
 async function sendGif(path) {
 	const form = new FormData();
-	
-	const stats = fs.statSync(path);
-	console.log('GIF local:', stats.size);
 
-	console.log(
-	    'GIF size:',
-	    (fs.statSync(path).size / 1024 / 1024).toFixed(2),
-	    'MB'
-	);
-	
+	const tempFile = `${path}.backup`;
+
+	fs.copyFileSync(path, tempFile);
 	
 	form.append(
 	    'document',
-	    new Blob([fs.readFileSync(path)]),
-	    'history.gif'
+	    new Blob([fs.readFileSync(tempFile)]),
+    	'history.gif.backup'
 	);
 	
 	await fetch(
