@@ -2704,15 +2704,19 @@ async function createGifFromPngs(inputDir, outputFile, delay = 250) {
         const image = await Jimp.read(
             path.join(inputDir, file)
         );
-
+		console.log(
+		    file,
+		    image.bitmap.width,
+		    image.bitmap.height
+		);
         if (
             image.bitmap.width !== width ||
             image.bitmap.height !== height
         ) {
 			image.resize({
-			  width: 1920,
-			  height: 5000
-			})
+			    w: width,
+			    h: height
+			});
         }
 
         encoder.addFrame(image.bitmap.data);
