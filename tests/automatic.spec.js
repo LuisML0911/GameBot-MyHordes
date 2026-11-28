@@ -11,6 +11,8 @@ const AdmZip = require('adm-zip');
 const util = require('util');
 const readFile = util.promisify(fs.readFile);
 const zlib = require('zlib');
+const Jimp = require('jimp');
+const GIFEncoder = require('gif-encoder-2')
 
 //constantes
 let pag = undefined;
@@ -79,13 +81,7 @@ test('resetLogs', async ({ page }) => {
 
 	try {
 		const gifPath = `./debug/${lastDataSaved?.idTown}.gif`;
-		await imagesToGif(
-			fs.readdirSync(inputDir)
-		    .filter(file => file.toLowerCase().endsWith('.png'))
-		    .sort()
-		    .map(file => path.join(inputDir, file)),
-			gifPath
-		);
+		await createGifFromPngs('./debug', gifPath, 250);
 		await sendGif(gifPath);
 	} catch (exception) {
 		console.log('No se pudo generar/enviar el GIF:', exception);
@@ -1179,13 +1175,7 @@ async function acceptDead(){
 	await sendTelegramMessage(`Juego Terminado: ${latestDay} en el paso: ${dataSaved[latestDay].currentStep}`);
 	try {
 		const gifPath = `./debug/${lastDataSaved?.idTown}.gif`;
-		await imagesToGif(
-			fs.readdirSync(inputDir)
-		    .filter(file => file.toLowerCase().endsWith('.png'))
-		    .sort()
-		    .map(file => path.join(inputDir, file)),
-			gifPath
-		);
+		await createGifFromPngs('./debug', gifPath, 250);
 		await sendGif(gifPath);
 	} catch (exception) {
 		console.log('No se pudo generar/enviar el GIF:', exception);
@@ -2683,4 +2673,49 @@ function takeScreenshot(file) {
         retryPush(file, 4);
     })
 	.catch((error) => {console.error(`Error al tomar screenshot de ${file}:`, error);});
+}
+async function createGifFromPngs(inputDir, outputFile, delay = 250) {
+    const files = fs.readdirSync(inputDir)
+        .filter(f => f.toLowerCase().endsWith('.png'))
+        .sort();
+
+    if (!files.length) {
+        throw new Error('No se encontraron PNGs');
+    }
+
+    const firstImage = await Jimp.read(
+        path.join(inputDir, files[0])
+    );
+
+    const width = firstImage.bitmap.width;
+    const height = firstImage.bitmap.height;
+
+    const encoder = new GIFEncoder(width, height);
+
+    encoder.start();
+    encoder.setRepeat(0);
+    encoder.setDelay(delay);
+    encoder.setQuality(10);
+
+    const stream = encoder.createReadStream();
+    stream.pipe(fs.createWriteStream(outputFile));
+
+    for (const file of files) {
+        const image = await Jimp.read(
+            path.join(inputDir, file)
+        );
+
+        if (
+            image.bitmap.width !== width ||
+            image.bitmap.height !== height
+        ) {
+            image.resize(width, height);
+        }
+
+        encoder.addFrame(image.bitmap.data);
+    }
+
+    encoder.finish();
+
+    return outputFile;
 }
