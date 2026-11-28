@@ -2,6 +2,7 @@
 import { test, request, chromium, devices } from '@playwright/test';
 import { randomUUID } from 'crypto';
 import { execSync } from 'child_process';
+const { createCanvas, loadImage } = require('canvas');
 const { JSDOM } = require("jsdom");
 const { Transform } = require('stream');
 const fs = require('fs');
@@ -11,7 +12,7 @@ const AdmZip = require('adm-zip');
 const util = require('util');
 const readFile = util.promisify(fs.readFile);
 const zlib = require('zlib');
-const { createCanvas, loadImage } = require('canvas');
+const GIFEncoder = require('gifencoder');
 
 //constantes
 let pag = undefined;
