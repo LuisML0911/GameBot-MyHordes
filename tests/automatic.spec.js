@@ -11,7 +11,6 @@ const AdmZip = require('adm-zip');
 const util = require('util');
 const readFile = util.promisify(fs.readFile);
 const zlib = require('zlib');
-const imagesToGif = require("images-to-gif");
 
 //constantes
 let pag = undefined;
