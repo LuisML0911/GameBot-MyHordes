@@ -4,6 +4,7 @@ import { randomUUID } from 'crypto';
 const { JSDOM } = require("jsdom");
 const { Transform } = require('stream');
 const { execSync } = require('child_process');
+const { Jimp } = require('jimp');
 const fs = require('fs');
 const readline = require('readline');
 const path = require('path');
@@ -11,7 +12,6 @@ const AdmZip = require('adm-zip');
 const util = require('util');
 const readFile = util.promisify(fs.readFile);
 const zlib = require('zlib');
-const Jimp = require('jimp');
 const GIFEncoder = require('gif-encoder-2')
 
 //constantes
