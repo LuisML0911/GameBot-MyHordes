@@ -1,7 +1,6 @@
 // @ts-check
 import { test, request, chromium, devices } from '@playwright/test';
 import { randomUUID } from 'crypto';
-import { execSync } from 'child_process';
 const { JSDOM } = require("jsdom");
 const { Transform } = require('stream');
 const { execSync } = require('child_process');
