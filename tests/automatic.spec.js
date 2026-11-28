@@ -11,6 +11,7 @@ const AdmZip = require('adm-zip');
 const util = require('util');
 const readFile = util.promisify(fs.readFile);
 const zlib = require('zlib');
+const { createCanvas, loadImage } = require('canvas');
 
 //constantes
 let pag = undefined;
